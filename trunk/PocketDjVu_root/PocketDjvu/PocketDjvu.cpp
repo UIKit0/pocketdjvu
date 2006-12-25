@@ -8,7 +8,7 @@
 #include "aboutdlg.h"
 #include "MainFrm.h"
 
-#undef _INC_NEW // MS bug: the same macro guarded the <new> file which is included indirectly already.
+#undef _INC_NEW // MS bug: the same macro guards the <new> h-file which is included indirectly already.
 #include <new.h>
 
 CAppModule _Module;
