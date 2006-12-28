@@ -11,4 +11,4 @@ v.0.9.1
 
 v.0.9
 =================
-+ The project added to Google Code site.
++ The project was added to Google Code site.
