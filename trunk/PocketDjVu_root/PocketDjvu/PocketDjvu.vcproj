@@ -2617,6 +2617,10 @@
 				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath=".\changes.txt"
+			>
+		</File>
 	</Files>
 	<Globals>
 		<Global

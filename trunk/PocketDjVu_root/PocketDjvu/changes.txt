@@ -1,0 +1,14 @@
++  - new
+-  - deleted
+*  - modified
+#  - fixed
+
+v.0.9.1
+=================
++ this file added.
++ the command "Fullscreen" was added to menu.
+* not implemented menu commands were grayed.
+
+v.0.9
+=================
++ The project added to Google Code site.
