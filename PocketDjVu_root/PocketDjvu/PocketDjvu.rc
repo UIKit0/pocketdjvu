@@ -67,11 +67,12 @@ BEGIN
     POPUP "•"
     BEGIN
         MENUITEM "About...",                    ID_APP_ABOUT
-        MENUITEM "Options...",                  ID_TOOLS_OPTIONS
+        MENUITEM "Options...",                  ID_TOOLS_OPTIONS, GRAYED
+        MENUITEM SEPARATOR
         POPUP "Navigation"
         BEGIN
-            MENUITEM "Add bookmark",                ID_NAVIGATE_ADDBOOKMARK
-            MENUITEM "Read bookmark",               ID_NAVIGATE_READBOOKMARK
+            MENUITEM "Add bookmark",                ID_NAVIGATE_ADDBOOKMARK, GRAYED
+            MENUITEM "Read bookmark",               ID_NAVIGATE_READBOOKMARK, GRAYED
             MENUITEM "GoTo Page...",                ID_NAVIGATION_GOTOPAGE
         END
         POPUP "Zoom"
@@ -83,11 +84,15 @@ BEGIN
             MENUITEM "Fit Page",                    ID_ZOOM_FITPAGE
             MENUITEM "Zoom by Rect",                ID_ZOOM_ZOOMBYRECT
         END
+        MENUITEM SEPARATOR
         POPUP "Recent files"
         BEGIN
             MENUITEM "0",                           ID_FILE_MRU_FIRST
         END
         MENUITEM "Open...",                     ID_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "Fullscreen",                  ID_FULLSCREEN
+        MENUITEM SEPARATOR
         MENUITEM "Exit",                        ID_APP_EXIT
     END
 END
@@ -113,8 +118,8 @@ EXSTYLE 0x80000000L
 CAPTION "About"
 FONT 8, "MS Sans Serif"
 BEGIN
-    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,21,20
-    LTEXT           "PocketDjVu v.0.9",IDC_STATIC,34,14,70,8,SS_NOPREFIX
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,20,20
+    LTEXT           "PocketDjVu v.0.9.1",IDC_STATIC,34,14,70,8,SS_NOPREFIX
     LTEXT           "Copyright © 2007\r\nIgor.Solovyov@gmail.com",IDC_STATIC,7,30,97,16
     LTEXT           "This program is licensed under GNU GPL version 2, or above",IDC_STATIC,7,54,97,26
 END
@@ -186,8 +191,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,1
- PRODUCTVERSION 1,0,0,1
+ FILEVERSION 0,9,0,1
+ PRODUCTVERSION 0,9,0,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x21L
@@ -204,13 +209,13 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "SIV"
             VALUE "FileDescription", "PocketDjvu Module"
-            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "FileVersion", "0, 9, 0, 1"
             VALUE "InternalName", "PocketDjvu"
-            VALUE "LegalCopyright", "SIV, Copyright 2006"
+            VALUE "LegalCopyright", "Copyright © 2007, Igor Solovyov"
             VALUE "OriginalFilename", "PocketDjvu.exe"
             VALUE "ProductName", "PocketDjvu Module"
-            VALUE "ProductVersion", "1, 0, 0, 1"
-            VALUE "SpecialBuild", "001"
+            VALUE "ProductVersion", "0, 9, 0, 1"
+            VALUE "SpecialBuild", "002"
         END
     END
     BLOCK "VarFileInfo"
@@ -333,14 +338,4 @@ END
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
-
-
-#ifndef APSTUDIO_INVOKED
-/////////////////////////////////////////////////////////////////////////////
-//
-// Generated from the TEXTINCLUDE 3 resource.
-//
-
-/////////////////////////////////////////////////////////////////////////////
-#endif    // not APSTUDIO_INVOKED
 

@@ -1180,3 +1180,25 @@ LRESULT CMainFrame::OnTrayNotyfy( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lPara
 
   return 0;
 }
+LRESULT CMainFrame::OnFullscreenCmd( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
+{
+  bHandled = true;
+
+  m_bFullScreen = !m_bFullScreen;
+  UpdateScreenMode();
+
+  HMENU hMenu = (HMENU)::SendMessage( m_hWndCECommandBar, SHCMBM_GETMENU, 0, 0 );
+  if ( !hMenu )
+    return 0;
+
+  CMenuHandle mnu;
+  mnu.Attach( hMenu );
+  CMenuHandle sub0Mnu = mnu.GetSubMenu( 0 );
+  ATLASSERT( sub0Mnu );
+  if ( !sub0Mnu )
+    return 0;
+
+  sub0Mnu.CheckMenuItem( ID_FULLSCREEN, MF_BYCOMMAND | (m_bFullScreen ? MF_CHECKED : MF_UNCHECKED) );
+
+  return 0;
+}

@@ -27,13 +27,14 @@
 #define ID_RECENTFILES_MRULAST          32787
 #define ID_FILE_MRU_                    32788
 #define ID_NAVIGATION_GOTOPAGE          32789
+#define ID_FULLSCREEN                   32790
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        204
-#define _APS_NEXT_COMMAND_VALUE         32790
+#define _APS_NEXT_COMMAND_VALUE         32791
 #define _APS_NEXT_CONTROL_VALUE         1008
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
