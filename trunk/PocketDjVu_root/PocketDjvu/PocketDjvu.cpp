@@ -48,9 +48,9 @@ int __cdecl NewHandler( size_t sz )
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lpstrCmdLine, int nCmdShow)
 {
-#ifndef SIV_WAS_FIXED_ACTIVATEPREVIOUSINSTANCE
-#   error ( "See this article: http://rsdn.ru/forum/Message.aspx?mid=2119153&only=1" )
-#endif // SIV_WAS_FIXED_ACTIVATEPREVIOUSINSTANCE
+//#ifndef SIV_WAS_FIXED_ACTIVATEPREVIOUSINSTANCE
+//#   error ( "See this article: http://rsdn.ru/forum/Message.aspx?mid=2119153&only=1" )
+//#endif // SIV_WAS_FIXED_ACTIVATEPREVIOUSINSTANCE
 	HRESULT hRes = CMainFrame::ActivatePreviousInstance(hInstance,lpstrCmdLine,false);
 	if(FAILED(hRes) || S_FALSE == hRes)
 	{

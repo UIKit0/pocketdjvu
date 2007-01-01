@@ -119,9 +119,9 @@ CAPTION "About"
 FONT 8, "MS Sans Serif"
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,7,7,20,20
-    LTEXT           "PocketDjVu v.0.9.1",IDC_STATIC,34,14,70,8,SS_NOPREFIX
-    LTEXT           "Copyright © 2007\r\nIgor.Solovyov@gmail.com",IDC_STATIC,7,30,97,16
-    LTEXT           "This program is licensed under GNU GPL version 2, or above",IDC_STATIC,7,54,97,26
+    LTEXT           "PocketDjVu v.0.9.2",IDC_STATIC,34,14,70,8,SS_NOPREFIX
+    LTEXT           "Copyright © 2007 Igor.Solovyov@gmail.com",IDC_STATIC_CR,7,30,97,16
+    LTEXT           "This program is licensed under GNU GPL version 2, or above",IDC_STATIC_LIC,7,54,97,26
 END
 
 IDD_GOTO_PAGE DIALOG  0, 0, 111, 29
@@ -191,8 +191,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,9,0,1
- PRODUCTVERSION 0,9,0,1
+ FILEVERSION 0,9,0,2
+ PRODUCTVERSION 0,9,0,2
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x21L
@@ -209,12 +209,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "SIV"
             VALUE "FileDescription", "PocketDjvu Module"
-            VALUE "FileVersion", "0, 9, 0, 1"
+            VALUE "FileVersion", "0, 9, 0, 2"
             VALUE "InternalName", "PocketDjvu"
             VALUE "LegalCopyright", "Copyright © 2007, Igor Solovyov"
             VALUE "OriginalFilename", "PocketDjvu.exe"
             VALUE "ProductName", "PocketDjvu Module"
-            VALUE "ProductVersion", "0, 9, 0, 1"
+            VALUE "ProductVersion", "0, 9, 0, 2"
             VALUE "SpecialBuild", "002"
         END
     END
@@ -338,4 +338,14 @@ END
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
 

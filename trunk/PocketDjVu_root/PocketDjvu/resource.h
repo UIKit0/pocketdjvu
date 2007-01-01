@@ -13,6 +13,8 @@
 #define IDC_PG_NUM                      1002
 #define IDC_SPIN1                       1003
 #define IDC_SIP1                        1007
+#define IDC_STATIC_CR                   1008
+#define IDC_STATIC_LIC                  1009
 #define ID_FILE_NEW_WINDOW              32771
 #define ID_TOOLS_OPTIONS                32772
 #define ID_NAVIGATE_ADDBOOKMARK         32775
@@ -35,7 +37,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        204
 #define _APS_NEXT_COMMAND_VALUE         32791
-#define _APS_NEXT_CONTROL_VALUE         1008
+#define _APS_NEXT_CONTROL_VALUE         1010
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

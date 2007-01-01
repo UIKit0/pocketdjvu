@@ -4,10 +4,19 @@
 
 #pragma once
 
-class CAboutDlg : public CStdSimpleDialog<IDD_ABOUTBOX>
+class CAboutDlg : public CStdDialogResizeImpl<CAboutDlg>
 {
-  typedef CStdSimpleDialog<IDD_ABOUTBOX> Base;
+  typedef CStdDialogResizeImpl<CAboutDlg> Base;
 public:
+  enum { IDD = IDD_ABOUTBOX };
+
+  BEGIN_DLGRESIZE_MAP(CAboutDlg)
+    BEGIN_DLGRESIZE_GROUP()
+      DLGRESIZE_CONTROL(IDC_STATIC_CR, DLSZ_SIZE_X)
+      DLGRESIZE_CONTROL(IDC_STATIC_LIC, DLSZ_SIZE_X)
+    END_DLGRESIZE_GROUP()
+  END_DLGRESIZE_MAP()
+
 	BEGIN_MSG_MAP(CAboutDlg)
     CHAIN_MSG_MAP(Base)
 	END_MSG_MAP()
