@@ -960,7 +960,8 @@ void CMainFrame::UpdateMruMenu()
   ATLASSERT( sub0Mnu );
   if ( !sub0Mnu )
     return;
-  CMenuHandle mruMnu = sub0Mnu.GetSubMenu( 4 );
+
+  CMenuHandle mruMnu = sub0Mnu.GetSubMenu( 6 );
   ATLASSERT( mruMnu );
   if ( !mruMnu )
     return;

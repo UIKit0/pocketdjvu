@@ -100,8 +100,8 @@
 			/>
 			<Tool
 				Name="VCCodeSignTool"
-				AuthenticodeSignature="false"
-				Certificate="SHA-1 Hash=|"
+				AuthenticodeSignature="true"
+				Certificate="SHA-1 Hash=1049B790EDA3C369E9C206B44AF16B2657CC1555|1049B790EDA3C369E9C206B44AF16B2657CC1555"
 				ProvisionDevice="2"
 			/>
 			<Tool
@@ -111,7 +111,7 @@
 				ForceDirty="-1"
 				RemoteDirectory=""
 				RegisterOutput="0"
-				AdditionalFiles="atl80.dll|$(VCInstallDir)ce\dll\$(INSTRUCTIONSET)\|%CSIDL_WINDOWS%|0;"
+				AdditionalFiles="atl80.dll|$(VCInstallDir)ce\dll\$(INSTRUCTIONSET)\|%CSIDL_WINDOWS%|0;$(OutDir)\$(TargetFileName)"
 			/>
 			<DebuggerTool
 			/>
@@ -317,7 +317,7 @@
 				ForceDirty="-1"
 				RemoteDirectory=""
 				RegisterOutput="0"
-				AdditionalFiles="atl80.dll|$(VCInstallDir)ce\dll\$(INSTRUCTIONSET)\|%CSIDL_WINDOWS%|0;"
+				AdditionalFiles="atl80.dll|$(VCInstallDir)ce\dll\$(INSTRUCTIONSET)\|%CSIDL_WINDOWS%|0;$(OutDir)\$(ProjectName)_WM5.0_XScale.exe"
 			/>
 			<DebuggerTool
 			/>
