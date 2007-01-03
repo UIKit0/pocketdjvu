@@ -894,6 +894,19 @@ void CMainFrame::LoadSettings()
          !m_appInfo.m_Key.QueryDWORDValue( page, pg ) &&
          !path.IsEmpty() )
     {
+      HANDLE h = ::CreateFile( path,
+                               GENERIC_READ,
+                               FILE_SHARE_READ,
+                               NULL,
+                               OPEN_EXISTING,
+                               FILE_ATTRIBUTE_NORMAL,
+                               0 );
+      if ( INVALID_HANDLE_VALUE == h )
+      {
+        continue;
+      }
+      ::CloseHandle( h );
+
       m_mru[ j ].m_curFillFileName = path;
       m_mru[ j ].m_pageNum = pg;
       ++j;
