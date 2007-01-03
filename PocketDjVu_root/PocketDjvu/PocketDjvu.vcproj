@@ -81,7 +81,7 @@
 				IgnoreImportLibrary="true"
 				AdditionalOptions=" /subsystem:windowsce,5.01"
 				AdditionalDependencies="atlsd.lib libcmtd.lib corelibc.lib coredll.lib commctrl.lib ole32.lib oleaut32.lib uuid.lib atl.lib atlosapis.lib $(NOINHERIT) $(NOINHERIT)"
-				OutputFile="$(OutDir)\$(ProjectName)_2.exe"
+				OutputFile="$(OutDir)\$(ProjectName)_dbg.exe"
 				LinkIncremental="2"
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
@@ -306,8 +306,8 @@
 			/>
 			<Tool
 				Name="VCCodeSignTool"
-				AuthenticodeSignature="false"
-				Certificate="SHA-1 Hash=|"
+				AuthenticodeSignature="true"
+				Certificate="SHA-1 Hash=1049B790EDA3C369E9C206B44AF16B2657CC1555|1049B790EDA3C369E9C206B44AF16B2657CC1555"
 				ProvisionDevice="2"
 			/>
 			<Tool
@@ -453,6 +453,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\misc.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Page.cpp"
 				>
 			</File>
@@ -535,6 +539,10 @@
 			</File>
 			<File
 				RelativePath=".\MainFrm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\misc.h"
 				>
 			</File>
 			<File
