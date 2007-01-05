@@ -31,6 +31,8 @@ public:
 
   BEGIN_UPDATE_UI_MAP(CMainFrame)
     UPDATE_ELEMENT(ID_ZOOM_ZOOMBYRECT, UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+    UPDATE_ELEMENT(ID_SCROLL_BY_TAP,   UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+    UPDATE_ELEMENT(ID_MOVE_BY_STYLUS,  UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
   END_UPDATE_UI_MAP()
 
   static UINT const WM_ICON_NOTIFICATION = WM_APP+100;
@@ -52,6 +54,7 @@ public:
     COMMAND_RANGE_HANDLER(ID_ZOOM_ZOOMIN, ID_ZOOM_FITPAGE, OnZoomCmd)
     COMMAND_ID_HANDLER(ID_NAVIGATION_GOTOPAGE, OnNavigationGotopage)
     COMMAND_ID_HANDLER(ID_FULLSCREEN, OnFullscreenCmd)
+    COMMAND_ID_HANDLER(ID_SCROLL_BY_TAP, OnScrollByTap)
     CHAIN_MSG_MAP(CDoubleBufferImpl<CMainFrame>)
     CHAIN_MSG_MAP(CUpdateUI<CMainFrame>)
     CHAIN_MSG_MAP(CFrameWindowImpl<CMainFrame>)
@@ -78,6 +81,7 @@ public:
   LRESULT OnMru(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
   LRESULT OnNavigationGotopage(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
   LRESULT OnFullscreenCmd(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+  LRESULT OnScrollByTap(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
   LRESULT OnTimer(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
   LRESULT OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
   LRESULT OnTrayNotyfy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
@@ -114,8 +118,27 @@ private:
   void RunTimerLong();
   void RunTimerShort();
   void StopTimer();
-  void FinishZoomCtrl();
+  void FinishCtrl();
   void CalcZoomKandOffset( CRect & r );
+
+  template <int ID, typename TCtrl>
+  void OnCtrlButton()
+  {
+    TCtrl * pCtrl = 0;
+    if ( m_pCtrl )
+    {
+      pCtrl = dynamic_cast<TCtrl*>( m_pCtrl.GetPtr() );
+      FinishCtrl();
+    }
+
+    if ( !pCtrl )
+    {
+      m_pCtrl.Reset( new TCtrl( this ) );
+      m_cmdIDCntrl = ID;
+      SetChainEntry( 0, m_pCtrl.GetPtr() );
+      UISetCheck(ID, true);
+    }
+  }
 
   int Round( double val )
   {
@@ -203,7 +226,8 @@ private:
 #pragma endregion
 
 #pragma region Controllers
-  RectZoomCtrlPtr m_pZoomCtr;
+  ControllerPtr m_pCtrl;
+  int m_cmdIDCntrl;
 #pragma endregion
 
 #pragma region DjVu

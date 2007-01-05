@@ -31,13 +31,16 @@
 #define ID_FILE_MRU_                    32788
 #define ID_NAVIGATION_GOTOPAGE          32789
 #define ID_FULLSCREEN                   32790
+#define ID_MOVE_BY_STYLUS               32791
+#define ID_SCROLL_BY_TAP                32792
+#define ID_ZOOMSCROLL_MOVEBYSTYLUS      32793
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        204
-#define _APS_NEXT_COMMAND_VALUE         32791
+#define _APS_NEXT_COMMAND_VALUE         32794
 #define _APS_NEXT_CONTROL_VALUE         1011
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

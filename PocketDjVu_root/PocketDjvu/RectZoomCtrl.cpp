@@ -6,16 +6,6 @@
 
 #include "./RectZoomCtrl.h"
 
-CRectZoomCtrl::CRectZoomCtrl( ICtrlNotify * pSubscriber ) :
-  m_pSubscriber(pSubscriber)
-  , m_b2nd()
-{
-}
-
-CRectZoomCtrl::~CRectZoomCtrl()
-{
-}
-
 LRESULT CRectZoomCtrl::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& bHandled )
 {
   bHandled = true;
@@ -40,8 +30,9 @@ static void NormalizeRect( CRect & r )
   }
 }
 
-LRESULT CRectZoomCtrl::OnLButtonUp( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
+LRESULT CRectZoomCtrl::OnLButtonUp( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled )
 { 
+  bHandled = true;
   ReleaseCapture();
 
   m_b2nd = false;

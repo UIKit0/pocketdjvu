@@ -2,15 +2,16 @@
 
 #include "./ICtrlNotify.h"
 
-#include "smart_ptr.h"
-//=============================================================================
-class CRectZoomCtrl :
-  public siv_hlpr::CRefCntr<>
-  , public CMessageMap
+class CRectZoomCtrl : public CControllerBase
 {
 public:
-  CRectZoomCtrl( ICtrlNotify * pSubscriber );
-  ~CRectZoomCtrl();
+  CRectZoomCtrl( ICtrlNotify * pSubscriber ) : CControllerBase(pSubscriber)
+    , m_b2nd()
+  {
+  }
+  virtual ~CRectZoomCtrl()
+  {
+  }
 
   CRect GetRect()
   {
@@ -19,7 +20,7 @@ public:
 
 public:
   BEGIN_MSG_MAP(CRectZoomCtrl)
-    m_hWnd = hWnd; // SIV: small hack to get HWND without overriding
+    CHAIN_MSG_MAP(CControllerBase)
     MESSAGE_HANDLER(WM_LBUTTONDOWN, OnLButtonDown)
     MESSAGE_HANDLER(WM_LBUTTONUP, OnLButtonUp)
     MESSAGE_HANDLER(WM_MOUSEMOVE, OnMouseMove)
@@ -31,11 +32,7 @@ public:
   LRESULT OnMouseMove(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
 private:
-  HWND m_hWnd;
-  ICtrlNotify * m_pSubscriber;
   CPoint p1;
   CPoint p2;
   bool m_b2nd;  
 };
-
-typedef siv_hlpr::CSimpSPtr<CRectZoomCtrl> RectZoomCtrlPtr;
