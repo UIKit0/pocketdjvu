@@ -75,14 +75,17 @@ BEGIN
             MENUITEM "Read bookmark",               ID_NAVIGATE_READBOOKMARK, GRAYED
             MENUITEM "GoTo Page...",                ID_NAVIGATION_GOTOPAGE
         END
-        POPUP "Zoom"
+        POPUP "Zoom & Scroll"
         BEGIN
             MENUITEM "Zoom In",                     ID_ZOOM_ZOOMIN
             MENUITEM "Zoom Out",                    ID_ZOOM_ZOOMOUT
             MENUITEM "Fit Screen Width",            ID_ZOOM_FITSCREENWIDTH
             MENUITEM "Fit Screen Height",           ID_ZOOM_FITSCREENHEIGHT
             MENUITEM "Fit Page",                    ID_ZOOM_FITPAGE
+            MENUITEM SEPARATOR
             MENUITEM "Zoom by Rect",                ID_ZOOM_ZOOMBYRECT
+            MENUITEM "Scroll by tap zones",         ID_SCROLL_BY_TAP
+            MENUITEM "Move by stylus",              ID_MOVE_BY_STYLUS
         END
         MENUITEM SEPARATOR
         POPUP "Recent files"
@@ -230,7 +233,6 @@ END
 // Bitmap
 //
 
-IDR_MAINFRAME           BITMAP                  "res\\toolbar.bmp"
 IDR_MFRTB               BITMAP                  "res\\MFRTB_toolbar.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -243,7 +245,10 @@ BEGIN
     BUTTON      ID_FILE_OPEN
     BUTTON      ID_ZOOM_ZOOMIN
     BUTTON      ID_ZOOM_ZOOMOUT
+    SEPARATOR
     BUTTON      ID_ZOOM_ZOOMBYRECT
+    BUTTON      ID_MOVE_BY_STYLUS
+    BUTTON      ID_SCROLL_BY_TAP
 END
 
 

@@ -13,6 +13,7 @@
 #include "MainFrm.h"
 #include "PageLoader.h"
 #include "GotoPage.h"
+#include "ScrollByTap.h"
 
 CMainFrame::CMainFrame() :
   m_bFullScreen(false)
@@ -22,6 +23,7 @@ CMainFrame::CMainFrame() :
   , m_scSate( SC_START )
   , m_timerID()
   , m_cursorKey()
+  , m_cmdIDCntrl()
   , m_bDirty()
 {
 }
@@ -62,7 +64,7 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
   {
     if ( pItems[i] )
     {
-      pButtons[i].iBitmap = i;
+      pButtons[i].iBitmap = nIcon;
       pButtons[i].idCommand = pItems[i];
       pButtons[i].fsState = TBSTATE_ENABLED;
       pButtons[i].fsStyle = TBSTYLE_BUTTON;
@@ -79,7 +81,7 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
   UIAddToolBar( m_hWndCECommandBar );
 
   unsigned butWidth = pData->wWidth / nIcon;
-  BOOL res = -1 != ::CommandBar_AddBitmap( m_hWndCECommandBar, hinst, nResourceID, nItems, butWidth, pData->wHeight );
+  BOOL res = -1 != ::CommandBar_AddBitmap( m_hWndCECommandBar, hinst, nResourceID, nIcon, butWidth, pData->wHeight );
   res = res && ::CommandBar_AddButtons( m_hWndCECommandBar, nItems, pButtons );
 
   m_notyfyIcon.Setup( m_hWnd, WM_ICON_NOTIFICATION, IDR_MAINFRAME );
@@ -596,16 +598,7 @@ LRESULT CMainFrame::OnZoomCmd( WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/,
     break;
 
     case ID_ZOOM_ZOOMBYRECT:
-      if ( m_pZoomCtr )
-      {
-        FinishZoomCtrl();
-      }
-      else
-      {
-        m_pZoomCtr.Reset( new CRectZoomCtrl( this ) );
-        SetChainEntry( 0, m_pZoomCtr.GetPtr() );
-        UISetCheck(ID_ZOOM_ZOOMBYRECT, true);
-      }
+      OnCtrlButton< ID_ZOOM_ZOOMBYRECT, CRectZoomCtrl >();
       return 0;
     break;
 
@@ -974,7 +967,7 @@ void CMainFrame::UpdateMruMenu()
   if ( !sub0Mnu )
     return;
 
-  CMenuHandle mruMnu = sub0Mnu.GetSubMenu( 6 );
+  CMenuHandle mruMnu = sub0Mnu.GetSubMenu( 6 ); // TODO: think how avoid hardcoded constant here
   ATLASSERT( mruMnu );
   if ( !mruMnu )
     return;
@@ -1068,27 +1061,31 @@ LRESULT CMainFrame::OnNavigationGotopage( WORD /*wNotifyCode*/, WORD /*wID*/, HW
   return 0;
 }
 
-void CMainFrame::FinishZoomCtrl()
+void CMainFrame::FinishCtrl()
 {
-  if ( m_pZoomCtr )
+  if ( m_pCtrl )
   {
-    UISetCheck(ID_ZOOM_ZOOMBYRECT, false);
-    m_pZoomCtr.Reset();
+    UISetCheck(m_cmdIDCntrl, false);
+    m_pCtrl.Reset();
     RemoveChainEntry( 0 );
   }
 }
 
 void CMainFrame::FinishCtrl( void * pSourceCtrl, bool bCancel )
 {
-  if ( pSourceCtrl == m_pZoomCtr )
+  if ( pSourceCtrl != m_pCtrl || !m_pCtrl )
+    return;
+  
+  if ( !bCancel )
   {
-    if ( !bCancel )
+    CRectZoomCtrl * pZoomCtrl = dynamic_cast<CRectZoomCtrl*>( m_pCtrl.GetPtr() );
+    if ( pZoomCtrl )
     {
-      CRect r = m_pZoomCtr->GetRect();
+      CRect r = pZoomCtrl->GetRect();
       CalcZoomKandOffset( r );
     }
-    FinishZoomCtrl();
   }
+  FinishCtrl();
 }
 
 void CMainFrame::CalcZoomKandOffset( CRect & r )
@@ -1214,5 +1211,12 @@ LRESULT CMainFrame::OnFullscreenCmd( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*
 
   sub0Mnu.CheckMenuItem( ID_FULLSCREEN, MF_BYCOMMAND | (m_bFullScreen ? MF_CHECKED : MF_UNCHECKED) );
 
+  return 0;
+}
+
+LRESULT CMainFrame::OnScrollByTap( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
+{
+  bHandled = true;
+  OnCtrlButton< ID_SCROLL_BY_TAP, CScrollByTap >();
   return 0;
 }

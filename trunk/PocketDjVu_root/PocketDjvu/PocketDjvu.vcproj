@@ -473,6 +473,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ScrollByTap.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -562,6 +566,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ScrollByTap.h"
+				>
+			</File>
+			<File
 				RelativePath=".\smart_ptr.h"
 				>
 			</File>
@@ -584,10 +592,6 @@
 			</File>
 			<File
 				RelativePath=".\PocketDjvu.rc"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar.bmp"
 				>
 			</File>
 		</Filter>
