@@ -457,6 +457,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MoveByStylus.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Page.cpp"
 				>
 			</File>
@@ -547,6 +551,10 @@
 			</File>
 			<File
 				RelativePath=".\misc.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MoveByStylus.h"
 				>
 			</File>
 			<File

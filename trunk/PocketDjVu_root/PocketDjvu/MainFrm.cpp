@@ -14,6 +14,7 @@
 #include "PageLoader.h"
 #include "GotoPage.h"
 #include "ScrollByTap.h"
+#include "MoveByStylus.h"
 
 CMainFrame::CMainFrame() :
   m_bFullScreen(false)
@@ -34,7 +35,28 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
 }
 
 BOOL CMainFrame::OnIdle()
-{  
+{
+  DWORD disen = m_Pages.empty() ? UPDUI_DISABLED : UPDUI_ENABLED;
+
+  DWORD state = 0;
+  state = disen | ( UIGetState( ID_ZOOM_ZOOMBYRECT ) & ~(UPDUI_DISABLED | UPDUI_ENABLED) );
+  UISetState( ID_ZOOM_ZOOMBYRECT, state );
+
+  state = disen | ( UIGetState( ID_SCROLL_BY_TAP ) & ~(UPDUI_DISABLED | UPDUI_ENABLED) );
+  UISetState( ID_SCROLL_BY_TAP,   state );
+  
+  state = disen | ( UIGetState( ID_MOVE_BY_STYLUS ) & ~(UPDUI_DISABLED | UPDUI_ENABLED) );
+  UISetState( ID_MOVE_BY_STYLUS,  state );
+  //................
+  //UISetState( ID_NAVIGATE_ADDBOOKMARK,  disen );
+  UISetState( ID_NAVIGATION_GOTOPAGE,   disen );
+  UISetState( ID_ZOOM_ZOOMIN,           disen );
+  UISetState( ID_ZOOM_ZOOMOUT,          disen );
+  UISetState( ID_ZOOM_FITSCREENWIDTH,   disen );
+  UISetState( ID_ZOOM_FITSCREENHEIGHT,  disen );
+  UISetState( ID_ZOOM_FITPAGE,          disen );
+  //................
+
   UIUpdateToolBar();
   AppSave();
   return FALSE;
@@ -80,8 +102,7 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
 
   UIAddToolBar( m_hWndCECommandBar );
 
-  unsigned butWidth = pData->wWidth / nIcon;
-  BOOL res = -1 != ::CommandBar_AddBitmap( m_hWndCECommandBar, hinst, nResourceID, nIcon, butWidth, pData->wHeight );
+  BOOL res = -1 != ::CommandBar_AddBitmap( m_hWndCECommandBar, hinst, nResourceID, nIcon, pData->wWidth, pData->wHeight );
   res = res && ::CommandBar_AddButtons( m_hWndCECommandBar, nItems, pButtons );
 
   m_notyfyIcon.Setup( m_hWnd, WM_ICON_NOTIFICATION, IDR_MAINFRAME );
@@ -261,7 +282,6 @@ void CMainFrame::OnPageUpDn( bool bDown, bool bByPage )
     dy = -dy;
   
   PageLayout( dy );
-
   Invalidate();
 }
 
@@ -1219,4 +1239,25 @@ LRESULT CMainFrame::OnScrollByTap( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hW
   bHandled = true;
   OnCtrlButton< ID_SCROLL_BY_TAP, CScrollByTap >();
   return 0;
+}
+LRESULT CMainFrame::OnMoveByStylus( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
+{
+  bHandled = true;
+  OnCtrlButton< ID_MOVE_BY_STYLUS, CMoveByStylus >();
+  return 0;
+}
+
+CPoint CMainFrame::GetImgOrg( int pageIndex )
+{
+  ATLASSERT( !m_Pages.empty() );
+  return m_Pages[ pageIndex ]->GetRect().TopLeft();
+}
+
+void CMainFrame::MoveImage( CPoint vec, int pageIndex )
+{
+  int m = vec.x;
+  ScrollPagesHor( m );
+  m = vec.y;
+  ScrollPagesVert( m );
+  RedrawWindow();
 }

@@ -33,11 +33,19 @@ public:
     UPDATE_ELEMENT(ID_ZOOM_ZOOMBYRECT, UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
     UPDATE_ELEMENT(ID_SCROLL_BY_TAP,   UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
     UPDATE_ELEMENT(ID_MOVE_BY_STYLUS,  UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+
+    //UPDATE_ELEMENT(ID_NAVIGATE_ADDBOOKMARK,  UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+    UPDATE_ELEMENT(ID_NAVIGATION_GOTOPAGE,   UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+    UPDATE_ELEMENT(ID_ZOOM_ZOOMIN,           UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+    UPDATE_ELEMENT(ID_ZOOM_ZOOMOUT,          UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+    UPDATE_ELEMENT(ID_ZOOM_FITSCREENWIDTH,   UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+    UPDATE_ELEMENT(ID_ZOOM_FITSCREENHEIGHT,  UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+    UPDATE_ELEMENT(ID_ZOOM_FITPAGE,          UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
   END_UPDATE_UI_MAP()
 
   static UINT const WM_ICON_NOTIFICATION = WM_APP+100;
 
-  BEGIN_MSG_MAP(CMainFrame)    
+  BEGIN_MSG_MAP(CMainFrame)        
     CHAIN_MSG_MAP_DYNAMIC(0)
     MESSAGE_HANDLER(WM_CREATE, OnCreate)
     MESSAGE_HANDLER(WM_KEYDOWN, OnKeyDown)
@@ -55,6 +63,7 @@ public:
     COMMAND_ID_HANDLER(ID_NAVIGATION_GOTOPAGE, OnNavigationGotopage)
     COMMAND_ID_HANDLER(ID_FULLSCREEN, OnFullscreenCmd)
     COMMAND_ID_HANDLER(ID_SCROLL_BY_TAP, OnScrollByTap)
+    COMMAND_ID_HANDLER(ID_MOVE_BY_STYLUS, OnMoveByStylus)
     CHAIN_MSG_MAP(CDoubleBufferImpl<CMainFrame>)
     CHAIN_MSG_MAP(CUpdateUI<CMainFrame>)
     CHAIN_MSG_MAP(CFrameWindowImpl<CMainFrame>)
@@ -82,6 +91,7 @@ public:
   LRESULT OnNavigationGotopage(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
   LRESULT OnFullscreenCmd(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
   LRESULT OnScrollByTap(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+  LRESULT OnMoveByStylus(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
   LRESULT OnTimer(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
   LRESULT OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
   LRESULT OnTrayNotyfy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
@@ -95,6 +105,10 @@ public:
     m_cmdLine = lpstrCmdLine;
   }
 
+  void PageLayout( int moveY = 0 );
+  CPoint GetImgOrg( int pageIndex );
+  void MoveImage( CPoint vec, int pageIndex );
+
 private:
   #pragma region ICtrlNotify
   void FinishCtrl( void * pSourceCtrl, bool bCancel );
@@ -104,7 +118,6 @@ private:
   void OnPageUpDn( bool bDown, bool bByPage = true  );
   void OnPageLeftRight( bool toRight, bool bByPage = true );
   bool IsVisible( CRect const & rect );
-  void PageLayout( int moveY = 0 );
   void ScrollPagesVert( int & moveY );
   void ScrollPagesHor( int & moveX );
   void ClearRedundantCache();
@@ -233,6 +246,5 @@ private:
 #pragma region DjVu
   Pages m_Pages;
   GP<DjVuDocument> m_pDjVuDoc;
-#pragma endregion  
- 
+#pragma endregion
 };

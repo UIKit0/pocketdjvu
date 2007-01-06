@@ -5,8 +5,12 @@
 
 v.0.9.3
 =================
-+ - the checking was added: does file from "recent used files" list exist still.
-+ - "Scroll by tap zones" and "Move by stylus" commands where added.
+# - the checking was added: does file from "recent used files" list exist still.
+    If no it's removed from list.
++ - "Scroll by tap zones" command was added. 
+    There are 4 tap zones for scrolling and 1 central zone for context menu invocation.
++ - "Move by stylus" command was added.
+* - some menu commands and buttons are disabled without opened file.
 
 v.0.9.2
 =================

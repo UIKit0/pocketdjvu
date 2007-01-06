@@ -75,7 +75,7 @@ BEGIN
             MENUITEM "Read bookmark",               ID_NAVIGATE_READBOOKMARK, GRAYED
             MENUITEM "GoTo Page...",                ID_NAVIGATION_GOTOPAGE
         END
-        POPUP "Zoom & Scroll"
+        POPUP "Zoom && Scroll"
         BEGIN
             MENUITEM "Zoom In",                     ID_ZOOM_ZOOMIN
             MENUITEM "Zoom Out",                    ID_ZOOM_ZOOMOUT
@@ -84,8 +84,8 @@ BEGIN
             MENUITEM "Fit Page",                    ID_ZOOM_FITPAGE
             MENUITEM SEPARATOR
             MENUITEM "Zoom by Rect",                ID_ZOOM_ZOOMBYRECT
-            MENUITEM "Scroll by tap zones",         ID_SCROLL_BY_TAP
             MENUITEM "Move by stylus",              ID_MOVE_BY_STYLUS
+            MENUITEM "Scroll by tap zones",         ID_SCROLL_BY_TAP
         END
         MENUITEM SEPARATOR
         POPUP "Recent files"

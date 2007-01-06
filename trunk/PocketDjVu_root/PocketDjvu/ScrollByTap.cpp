@@ -4,7 +4,7 @@
 
 LRESULT CScrollByTap::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& bHandled )
 {
-  bHandled = true;
+  bHandled = false;
   CPoint p( lParam );
 
   CRect rc;
@@ -14,6 +14,14 @@ LRESULT CScrollByTap::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lP
     return 0;
   }
 
+  CPoint d = rc.CenterPoint() - p;
+  int dist = (int)sqrt( d.x*d.x + d.y*d.y );
+  if ( dist < min( rc.Width(), rc.Height() ) / 4 )
+  { // because bHandled = false, the context menu should be started
+    return 0;
+  }
+
+  bHandled = true;
   SetCapture( m_hWnd );
 
   CPoint c = rc.CenterPoint();
