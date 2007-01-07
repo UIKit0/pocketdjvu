@@ -12,3 +12,7 @@ const int   g_cLongScrollTimeout = 1100;
 const int   g_cShortScrollTimeout = 20;
 const int   g_cPixelsInLineScroll = 2;
 const int   g_cDobleClickTime = 700; // msec
+
+/// It's pixels for double click recognitions.
+/// On my PPC 40 ones were returned by GetSystemMetrics(SM_CXDOUBLECLK) and it's unacceptable.
+const int   g_sDxDblClck = 6; 
