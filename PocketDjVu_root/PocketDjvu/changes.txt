@@ -8,7 +8,7 @@ v.0.9.3
 # - the checking was added: does file from "recent used files" list exist still.
     If no it's removed from list.
 + - "Scroll by tap zones" command was added. 
-    There are 4 tap zones for scrolling and 1 central zone for context menu invocation.
+    There are 4 tap zones for scrolling and 1 central zone which works as usually(for context menu, etc.).
 + - "Move by stylus" command was added. The double click ends this mode.
 * - some menu commands and buttons are disabled without opened file.
 + - double click toggle fullscreen mode.
