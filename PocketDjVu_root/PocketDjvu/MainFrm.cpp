@@ -19,6 +19,7 @@
 CMainFrame::CMainFrame() :
   m_bFullScreen(false)
   , m_curClientWidth()
+  , m_1stClick()
   , m_initDir(L"\\")
   , m_appInfo( L"Software\\landi-soft.com\\PocketDjVu" )
   , m_scSate( SC_START )
@@ -37,15 +38,16 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
 BOOL CMainFrame::OnIdle()
 {
   DWORD disen = m_Pages.empty() ? UPDUI_DISABLED : UPDUI_ENABLED;
+  DWORD disenMask = ~(UPDUI_DISABLED | UPDUI_ENABLED);
 
   DWORD state = 0;
-  state = disen | ( UIGetState( ID_ZOOM_ZOOMBYRECT ) & ~(UPDUI_DISABLED | UPDUI_ENABLED) );
+  state = disen | ( UIGetState( ID_ZOOM_ZOOMBYRECT ) & disenMask );
   UISetState( ID_ZOOM_ZOOMBYRECT, state );
 
-  state = disen | ( UIGetState( ID_SCROLL_BY_TAP ) & ~(UPDUI_DISABLED | UPDUI_ENABLED) );
+  state = disen | ( UIGetState( ID_SCROLL_BY_TAP ) & disenMask );
   UISetState( ID_SCROLL_BY_TAP,   state );
   
-  state = disen | ( UIGetState( ID_MOVE_BY_STYLUS ) & ~(UPDUI_DISABLED | UPDUI_ENABLED) );
+  state = disen | ( UIGetState( ID_MOVE_BY_STYLUS ) & disenMask );
   UISetState( ID_MOVE_BY_STYLUS,  state );
   //................
   //UISetState( ID_NAVIGATE_ADDBOOKMARK,  disen );
@@ -55,6 +57,10 @@ BOOL CMainFrame::OnIdle()
   UISetState( ID_ZOOM_FITSCREENWIDTH,   disen );
   UISetState( ID_ZOOM_FITSCREENHEIGHT,  disen );
   UISetState( ID_ZOOM_FITPAGE,          disen );
+  //................
+  state = UPDUI_ENABLED;
+  state |= m_bFullScreen ? UPDUI_CHECKED : 0 ;
+  UISetState( ID_FULLSCREEN, state );
   //................
 
   UIUpdateToolBar();
@@ -775,6 +781,13 @@ void CMainFrame::AddVisibleButNotLoaded()
     {
       break;
     }
+    // place correction if the loaded page has the different size
+    CRect newR = p->GetRect();
+    r = m_Pages.front()->GetRect();
+    r.MoveToY( r.top - newR.Height() - g_cPageGap );
+    int dy = r.top - newR.top;
+    p->Scroll( 0, dy );
+
     m_Pages.push_front( p );
   }
 
@@ -1171,6 +1184,15 @@ LRESULT CMainFrame::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lPar
 {
   bHandled = true;
 
+  DWORD t = GetTickCount();
+  if ( t - m_1stClick < g_cDobleClickTime )
+  {
+    m_bFullScreen = !m_bFullScreen;
+    UpdateScreenMode();
+    return 0;
+  }
+  m_1stClick = t;
+
   SHRGINFO shrg = {0};
   shrg.cbSize     = sizeof shrg;
   shrg.hwndClient = m_hWnd;
@@ -1217,19 +1239,6 @@ LRESULT CMainFrame::OnFullscreenCmd( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*
 
   m_bFullScreen = !m_bFullScreen;
   UpdateScreenMode();
-
-  HMENU hMenu = (HMENU)::SendMessage( m_hWndCECommandBar, SHCMBM_GETMENU, 0, 0 );
-  if ( !hMenu )
-    return 0;
-
-  CMenuHandle mnu;
-  mnu.Attach( hMenu );
-  CMenuHandle sub0Mnu = mnu.GetSubMenu( 0 );
-  ATLASSERT( sub0Mnu );
-  if ( !sub0Mnu )
-    return 0;
-
-  sub0Mnu.CheckMenuItem( ID_FULLSCREEN, MF_BYCOMMAND | (m_bFullScreen ? MF_CHECKED : MF_UNCHECKED) );
 
   return 0;
 }

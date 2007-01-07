@@ -70,3 +70,13 @@ LRESULT CRectZoomCtrl::OnMouseMove( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lPa
   return 0;
 }
 
+LRESULT CRectZoomCtrl::OnKeyDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled )
+{
+  bHandled = true;
+  
+  ReleaseCapture();
+  m_pSubscriber->FinishCtrl( this, true );
+  ::InvalidateRect( m_hWnd, NULL, TRUE );
+
+  return 0;
+}

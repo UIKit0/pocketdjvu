@@ -306,8 +306,8 @@
 			/>
 			<Tool
 				Name="VCCodeSignTool"
-				AuthenticodeSignature="true"
-				Certificate="SHA-1 Hash=1049B790EDA3C369E9C206B44AF16B2657CC1555|1049B790EDA3C369E9C206B44AF16B2657CC1555"
+				AuthenticodeSignature="false"
+				Certificate="SHA-1 Hash=|"
 				ProvisionDevice="2"
 			/>
 			<Tool

@@ -9,6 +9,7 @@ class CMoveByStylus : public CControllerBase
 public:
   CMoveByStylus( CMainFrame * pSubscriber ) : CControllerBase(pSubscriber)
     , m_mainFrame( *pSubscriber )
+    , m_1stClick()
   {
     ATLASSERT( m_mainFrame );
   }
@@ -31,6 +32,7 @@ public:
   LRESULT OnMouseMove(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
 private:
+  DWORD m_1stClick;
   CMainFrame & m_mainFrame;
   CPoint m_p1;
 };
