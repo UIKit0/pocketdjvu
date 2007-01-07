@@ -6,10 +6,18 @@ LRESULT CMoveByStylus::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM l
 {
   bHandled = true;
   
+  DWORD t = GetTickCount();
+  if ( t - m_1stClick < g_cDobleClickTime )
+  {
+    m_pSubscriber->FinishCtrl( this, true );
+    return 0;
+  }
+  m_1stClick = t;
+
   m_p1.x = LOWORD(lParam); 
   m_p1.y = HIWORD(lParam);
 
-  SetCapture( m_hWnd );
+  SetCapture( m_hWnd );  
 
   return 0;
 }

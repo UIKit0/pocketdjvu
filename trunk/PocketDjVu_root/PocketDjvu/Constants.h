@@ -11,3 +11,4 @@ const int   g_cMruNumber = 7;
 const int   g_cLongScrollTimeout = 1100;
 const int   g_cShortScrollTimeout = 20;
 const int   g_cPixelsInLineScroll = 2;
+const int   g_cDobleClickTime = 700; // msec

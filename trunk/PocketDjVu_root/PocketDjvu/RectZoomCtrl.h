@@ -24,12 +24,14 @@ public:
     MESSAGE_HANDLER(WM_LBUTTONDOWN, OnLButtonDown)
     MESSAGE_HANDLER(WM_LBUTTONUP, OnLButtonUp)
     MESSAGE_HANDLER(WM_MOUSEMOVE, OnMouseMove)
+    MESSAGE_HANDLER(WM_KEYDOWN, OnKeyDown)
   END_MSG_MAP()
 
 public:
   LRESULT OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
   LRESULT OnLButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
   LRESULT OnMouseMove(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+  LRESULT OnKeyDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
 private:
   CPoint p1;
