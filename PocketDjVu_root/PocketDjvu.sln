@@ -5,11 +5,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PocketDjVu", "PocketDjvu\Po
 EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 1
-		SccProjectUniqueName0 = PocketDjvu\\PocketDjvu.vcproj
-		SccProjectName0 = \u0022$/WM/DjvuCE.root/PocketDjVu_root/PocketDjvu\u0022,\u0020ARAAAAAA
-		SccLocalPath0 = PocketDjvu
-		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		SccNumberOfProjects = 2
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = PocketDjvu\\PocketDjvu.vcproj
+		SccLocalPath1 = .
+		SccProjectFilePathRelativizedFromConnection1 = PocketDjvu\\
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Pocket PC 2003 (XScale) = Debug|Pocket PC 2003 (XScale)

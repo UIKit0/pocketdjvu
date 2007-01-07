@@ -5,10 +5,9 @@
 	Name="PocketDjVu"
 	ProjectGUID="{EBAC0589-178D-4DFA-BD0E-E7516F4DD861}"
 	RootNamespace="PocketDjvu"
-	SccProjectName="SAK"
-	SccAuxPath="SAK"
-	SccLocalPath="SAK"
-	SccProvider="SAK"
+	SccProjectName="&quot;$/WM/DjvuCE.root/PocketDjVu_root&quot;, RLAAAAAA"
+	SccLocalPath=".."
+	SccProvider="MSSCCI:Microsoft Visual SourceSafe"
 	>
 	<Platforms>
 		<Platform
