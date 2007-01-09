@@ -47,7 +47,7 @@ public:
 
   static UINT const WM_ICON_NOTIFICATION = WM_APP+100;
 
-  BEGIN_MSG_MAP(CMainFrame)        
+  BEGIN_MSG_MAP(CMainFrame)            
     CHAIN_MSG_MAP_DYNAMIC(0)
     MESSAGE_HANDLER(WM_CREATE, OnCreate)
     MESSAGE_HANDLER(WM_KEYDOWN, OnKeyDown)
@@ -66,6 +66,8 @@ public:
     COMMAND_ID_HANDLER(ID_FULLSCREEN, OnFullscreenCmd)
     COMMAND_ID_HANDLER(ID_SCROLL_BY_TAP, OnScrollByTap)
     COMMAND_ID_HANDLER(ID_MOVE_BY_STYLUS, OnMoveByStylus)
+    COMMAND_ID_HANDLER(ID_NAVIGATE_ADDBOOKMARK, OnAddBookmark)
+    COMMAND_ID_HANDLER(ID_NAVIGATE_READBOOKMARK, OnReadBookmark)
     CHAIN_MSG_MAP(CDoubleBufferImpl<CMainFrame>)
     CHAIN_MSG_MAP(CUpdateUI<CMainFrame>)
     CHAIN_MSG_MAP(CFrameWindowImpl<CMainFrame>)
@@ -97,6 +99,8 @@ public:
   LRESULT OnTimer(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
   LRESULT OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
   LRESULT OnTrayNotyfy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+  LRESULT OnAddBookmark(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+  LRESULT OnReadBookmark(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
   void DoPaint(CDCHandle dc);
   void AppSave();

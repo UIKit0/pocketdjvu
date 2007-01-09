@@ -71,8 +71,8 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "Navigation"
         BEGIN
-            MENUITEM "Add bookmark",                ID_NAVIGATE_ADDBOOKMARK, GRAYED
-            MENUITEM "Read bookmark",               ID_NAVIGATE_READBOOKMARK, GRAYED
+            MENUITEM "Add bookmark",                ID_NAVIGATE_ADDBOOKMARK
+            MENUITEM "Read bookmark",               ID_NAVIGATE_READBOOKMARK
             MENUITEM "GoTo Page...",                ID_NAVIGATION_GOTOPAGE
         END
         POPUP "Zoom && Scroll"
@@ -137,6 +137,20 @@ BEGIN
     PUSHBUTTON      "Ok",IDOK,73,7,31,15
 END
 
+IDD_BOOKMARK DIALOG  0, 0, 188, 111
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE 0x80000000L
+CAPTION "Bookmarks"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "Add:",IDC_STATIC_ADD,7,7,17,8
+    EDITTEXT        IDC_BOOKMARK_NAME,28,5,135,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "+",IDC_BTNADD,168,5,13,12
+    LTEXT           "......................................",IDC_CUR_BOOKMARK,19,21,144,8
+    PUSHBUTTON      "-",IDC_BTNDEL,168,20,13,12
+    CONTROL         "",IDC_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_EDITLABELS | TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,7,36,174,54
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -160,6 +174,16 @@ BEGIN
         RIGHTMARGIN, 104
         TOPMARGIN, 7
         BOTTOMMARGIN, 22
+    END
+
+    IDD_BOOKMARK, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 181
+        VERTGUIDE, 28
+        VERTGUIDE, 163
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 104
     END
 END
 #endif    // APSTUDIO_INVOKED
