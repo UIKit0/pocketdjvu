@@ -3,6 +3,10 @@
 *  - modified
 #  - fixed
 
+v.0.9.4.....
+=================
++ - Bookmark dialog...
+
 v.0.9.3
 =================
 # - the checking was added: does file from "recent used files" list exist still.

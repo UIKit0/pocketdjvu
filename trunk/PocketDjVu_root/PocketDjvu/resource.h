@@ -8,14 +8,22 @@
 #define IDD_GOTO_PAGE                   102
 #define IDR_MAINFRAME                   128
 #define IDR_MFRTB                       202
+#define IDD_BOOKMARK                    204
 #define IDC_PAGES                       1000
 #define IDC_EDIT1                       1002
 #define IDC_PG_NUM                      1002
+#define IDC_BOOKMARK_NAME               1002
 #define IDC_SPIN1                       1003
 #define IDC_SIP1                        1007
 #define IDC_STATIC_CR                   1008
 #define IDC_STATIC_LIC                  1009
 #define IDC_STATIC_VER                  1010
+#define IDC_BTNADD                      1011
+#define IDC_CUR_BOOKMARK                1012
+#define IDC_BTNDEL                      1013
+#define IDC_TREE                        1014
+#define IDC_STATIC_ADD                  1015
+#define IDC_CUR_BOOKMARK2               1016
 #define ID_FILE_NEW_WINDOW              32771
 #define ID_TOOLS_OPTIONS                32772
 #define ID_NAVIGATE_ADDBOOKMARK         32775
@@ -39,9 +47,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        204
+#define _APS_NEXT_RESOURCE_VALUE        205
 #define _APS_NEXT_COMMAND_VALUE         32794
-#define _APS_NEXT_CONTROL_VALUE         1011
-#define _APS_NEXT_SYMED_VALUE           101
+#define _APS_NEXT_CONTROL_VALUE         1016
+#define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

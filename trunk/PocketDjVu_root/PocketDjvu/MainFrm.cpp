@@ -15,6 +15,7 @@
 #include "GotoPage.h"
 #include "ScrollByTap.h"
 #include "MoveByStylus.h"
+#include "BookmarkDlg.h"
 
 CMainFrame::CMainFrame() :
   m_bFullScreen(false)
@@ -451,8 +452,9 @@ bool CMainFrame::OpenFile( LPCWSTR fullFileName, int pageIndex )
   return true;
 }
 
-LRESULT CMainFrame::OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+LRESULT CMainFrame::OnAppAbout( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
 {
+  bHandled = true;
   CFullScrnOnOff fs( *this );
   CAboutDlg dlg;
   dlg.DoModal();
@@ -1269,4 +1271,22 @@ void CMainFrame::MoveImage( CPoint vec, int pageIndex )
   m = vec.y;
   ScrollPagesVert( m );
   RedrawWindow();
+}
+
+LRESULT CMainFrame::OnAddBookmark( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
+{
+  bHandled = true;
+  CFullScrnOnOff fs( *this );
+  CBookmarkDlg dlg( true );
+  dlg.DoModal();
+  return 0;
+}
+
+LRESULT CMainFrame::OnReadBookmark( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
+{
+  bHandled = true;
+  CFullScrnOnOff fs( *this );
+  CBookmarkDlg dlg;
+  dlg.DoModal();
+  return 0;
 }
