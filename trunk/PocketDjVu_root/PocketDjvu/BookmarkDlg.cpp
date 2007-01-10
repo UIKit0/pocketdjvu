@@ -24,3 +24,10 @@ LRESULT CBookmarkDlg::OnClickedOK( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOO
   EndDialog( wID );
   return 0;
 }
+
+LRESULT CBookmarkDlg::OnWininiChange( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+{
+  bHandled = true;
+  DoSipInfo();
+  return 0;
+}
