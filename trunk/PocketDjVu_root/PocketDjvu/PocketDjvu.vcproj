@@ -587,6 +587,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SIPState.h"
+				>
+			</File>
+			<File
 				RelativePath=".\smart_ptr.h"
 				>
 			</File>
