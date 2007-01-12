@@ -1,5 +1,7 @@
 #pragma once
 
+#include "SIPState.h"
+
 class CGoToPage :
   public CDialogImpl<CGoToPage>,
   public CWinDataExchange<CGoToPage>
@@ -7,7 +9,7 @@ class CGoToPage :
 public:
 	enum { IDD = IDD_GOTO_PAGE };
 
-  CGoToPage( int maxPg, int curPg ) : m_maxPg(maxPg), m_curPg(curPg), m_sipinfo()
+  CGoToPage( int maxPg, int curPg ) : m_maxPg(maxPg), m_curPg(curPg)
   {
   }
 
@@ -37,7 +39,6 @@ public:
 private:
   int m_maxPg;
   int m_curPg;
-  SIPINFO m_sipinfo;
-
   CUpDownCtrl m_UpDn;
+  CSIPState m_SIPstate;
 };

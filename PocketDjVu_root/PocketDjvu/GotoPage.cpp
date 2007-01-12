@@ -5,12 +5,11 @@
 
 LRESULT CGoToPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-  m_sipinfo.cbSize = sizeof m_sipinfo;
-  BOOL res = SHSipInfo( SPI_GETSIPINFO, 0, &m_sipinfo, 0 );
-  if ( res )
+  BOOL res = FALSE;
+  if ( m_SIPstate.IsValid() )
   {
-    CRect r = m_sipinfo.rcVisibleDesktop;
-    r.bottom = m_sipinfo.rcSipRect.top;
+    CRect r = m_SIPstate.rcVisibleDesktop;
+    r.bottom = m_SIPstate.rcSipRect.top;
     CPoint v1 = r.CenterPoint();
     res = GetWindowRect( &r );
     if ( res )
@@ -39,7 +38,6 @@ LRESULT CGoToPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPara
 
 LRESULT CGoToPage::OnCloseCmd(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-  SHSipInfo( SPI_SETSIPINFO, 0, &m_sipinfo, 0 );
   DoDataExchange( TRUE );
 	EndDialog(wID);
 	return 0;

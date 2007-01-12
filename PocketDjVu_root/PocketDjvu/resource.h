@@ -13,6 +13,7 @@
 #define IDC_EDIT1                       1002
 #define IDC_PG_NUM                      1002
 #define IDC_BOOKMARK_NAME               1002
+#define IDC_INFO                        1002
 #define IDC_SPIN1                       1003
 #define IDC_SIP1                        1007
 #define IDC_STATIC_CR                   1008

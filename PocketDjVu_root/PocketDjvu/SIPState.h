@@ -1,9 +1,9 @@
 #pragma once
 
-class CSIPState : protected SIPINFO
+class CSIPState : public SIPINFO
 {
 public:
-  CSIPState()
+  CSIPState() throw()
   {
       ZeroMemory( this, sizeof SIPINFO );
       cbSize = sizeof SIPINFO;
@@ -11,7 +11,7 @@ public:
       m_bValid = SHSipInfo( SPI_GETSIPINFO, 0, this, 0 );
   }
 
-  ~CSIPState()
+  ~CSIPState() throw()
   {
     if( IsValid() )
     {

@@ -115,16 +115,17 @@ IDR_MAINFRAME           ICON                    "res\\PocketDjvu.ico"
 // Dialog
 //
 
-IDD_ABOUTBOX DIALOG  0, 0, 111, 87
+IDD_ABOUTBOX DIALOG  0, 0, 111, 121
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION
 EXSTYLE 0x80000000L
 CAPTION "About"
 FONT 8, "MS Sans Serif"
 BEGIN
-    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,20,20
-    LTEXT           "PocketDjVu v.",IDC_STATIC_VER,34,14,70,8,SS_NOPREFIX
-    LTEXT           "Copyright © 2007 Igor.Solovyov@gmail.com",IDC_STATIC_CR,7,30,97,16
-    LTEXT           "This program is licensed under GNU GPL version 2, or above",IDC_STATIC_LIC,7,54,97,26
+    ICON            IDR_MAINFRAME,IDC_STATIC,2,2,21,20
+    LTEXT           "PocketDjVu v.",IDC_STATIC_VER,39,8,70,8,SS_NOPREFIX
+    LTEXT           "Copyright © 2007 Igor.Solovyov@gmail.com",IDC_STATIC_CR,2,25,107,16
+    LTEXT           "This program is licensed under GNU GPL version 2, or above",IDC_STATIC_LIC,2,45,107,18
+    EDITTEXT        IDC_INFO,2,64,107,55,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_CLIENTEDGE
 END
 
 IDD_GOTO_PAGE DIALOG  0, 0, 111, 29
@@ -161,10 +162,10 @@ GUIDELINES DESIGNINFO
 BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 104
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 80
+        LEFTMARGIN, 2
+        RIGHTMARGIN, 109
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 119
     END
 
     IDD_GOTO_PAGE, DIALOG
