@@ -11,11 +11,11 @@
 #undef _INC_NEW // MS bug: the same macro guards the <new> h-file which is included indirectly already.
 #include <new.h>
 
-CAppModule _Module;
+WTL::CAppModule _Module;
 
 int Run( LPTSTR lpstrCmdLine = NULL, int nCmdShow = SW_SHOWNORMAL )
 {
-	CMessageLoop theLoop;
+  WTL::CMessageLoop theLoop;
 	_Module.AddMessageLoop(&theLoop);
 
 	CMainFrame wndMain;
@@ -72,7 +72,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
 	// Adding the ICC_DATE_CLASSES flag is required to initialize the 
 	// date time picker and month calendar controls.
 	// Add additional flags to support additoinal controls not mentioned above.
-	AtlInitCommonControls( ICC_BAR_CLASSES 
+  WTL::AtlInitCommonControls( ICC_BAR_CLASSES 
 						 | ICC_COOL_CLASSES
 						 | ICC_PROGRESS_CLASS
 						 | ICC_TOOLTIP_CLASSES

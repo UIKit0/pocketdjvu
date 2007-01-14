@@ -21,9 +21,9 @@ bool CPage::LoadBmpSync()
   return true;
 }
 
-void CPage::Draw( CDCHandle dc )
+void CPage::Draw( WTL::CDCHandle dc )
 {
-  CDC bmpDC;
+  WTL::CDC bmpDC;
   bmpDC.CreateCompatibleDC( dc );
 
   if ( m_Bmp )

@@ -3,8 +3,8 @@
 #include "SIPState.h"
 
 class CGoToPage :
-  public CDialogImpl<CGoToPage>,
-  public CWinDataExchange<CGoToPage>
+  public ATL::CDialogImpl<CGoToPage>,
+  public WTL::CWinDataExchange<CGoToPage>
 {
 public:
 	enum { IDD = IDD_GOTO_PAGE };
@@ -39,6 +39,6 @@ public:
 private:
   int m_maxPg;
   int m_curPg;
-  CUpDownCtrl m_UpDn;
+  WTL::CUpDownCtrl m_UpDn;
   CSIPState m_SIPstate;
 };

@@ -1,5 +1,6 @@
 #pragma once
 
+static wchar_t const * APP_REG_PATH = L"Software\\landi-soft.com\\PocketDjVu";
 const float g_cEps = 1.e-5;
 const int   g_cPageGap = 4;
 const float g_cZoomK = 0.125f;

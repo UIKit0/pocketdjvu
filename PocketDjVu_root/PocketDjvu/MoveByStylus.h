@@ -34,5 +34,5 @@ public:
 private:
   DWORD m_1stClick;
   CMainFrame & m_mainFrame;
-  CPoint m_p1;
+  WTL::CPoint m_p1;
 };

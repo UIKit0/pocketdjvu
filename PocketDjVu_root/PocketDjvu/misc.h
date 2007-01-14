@@ -1,3 +1,3 @@
 #pragma once
 
-CString GetModuleVersionStr( HMODULE hModule );
+WTL::CString GetModuleVersionStr( HMODULE hModule );

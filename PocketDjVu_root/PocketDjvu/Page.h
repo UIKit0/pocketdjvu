@@ -9,7 +9,7 @@ class CPage : public IPage
 public:
   CPage( HWND hWnd,
          GP<DjVuDocument> pDjVuDoc,
-         CRect const & rect,
+         WTL::CRect const & rect,
          bool bWidthMostPrioritized,
          int pageIndex ) : 
     m_hWnd(hWnd)
@@ -23,7 +23,7 @@ public:
     m_rc.NormalizeRect();
   }
 
-  virtual CBitmap const & GetBmp() const
+  virtual WTL::CBitmap const & GetBmp() const
   {
     return m_Bmp;
   }
@@ -33,7 +33,7 @@ public:
     return m_pageIndex;
   }
 
-  virtual CRect const & GetRect() const
+  virtual WTL::CRect const & GetRect() const
   {
     return m_rc;
   }
@@ -60,7 +60,7 @@ public:
     return LoadBmpSync();
   }
 
-  virtual void Draw( CDCHandle dc );
+  virtual void Draw( WTL::CDCHandle dc );
   
 private:
   CPage & operator =( CPage const & );
@@ -69,8 +69,8 @@ private:
 private:
   HWND m_hWnd;
   GP<DjVuDocument> m_pDjVuDoc;
-  CBitmap m_Bmp;
-  CRect   m_rc;
+  WTL::CBitmap m_Bmp;
+  WTL::CRect   m_rc;
   int m_ImgWidth;
   int m_ImgHeight;
   int m_pageIndex;

@@ -8,13 +8,13 @@ LRESULT CGoToPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPara
   BOOL res = FALSE;
   if ( m_SIPstate.IsValid() )
   {
-    CRect r = m_SIPstate.rcVisibleDesktop;
+    WTL::CRect r = m_SIPstate.rcVisibleDesktop;
     r.bottom = m_SIPstate.rcSipRect.top;
-    CPoint v1 = r.CenterPoint();
+    WTL::CPoint v1 = r.CenterPoint();
     res = GetWindowRect( &r );
     if ( res )
     {
-      CPoint v2 = r.CenterPoint();
+      WTL::CPoint v2 = r.CenterPoint();
       v1 -= v2;
       ::SetWindowPos( m_hWnd, NULL, r.left + v1.x, r.top + v1.y, -1, -1,
 			              SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE );
