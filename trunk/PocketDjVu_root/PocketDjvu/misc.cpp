@@ -4,7 +4,7 @@
 
 #include "./misc.h"
 
-CString GetModuleVersionStr( HMODULE hModule )
+WTL::CString GetModuleVersionStr( HMODULE hModule )
 {
   wchar_t fname[ MAX_PATH ];
   DWORD len = ::GetModuleFileName( hModule, fname, sizeof(fname)/sizeof(fname[0]) );
@@ -28,13 +28,13 @@ CString GetModuleVersionStr( HMODULE hModule )
   
   VS_FIXEDFILEINFO * pInf = 0;
   UINT lInf = 0;
-  CString sVer;
+  WTL::CString sVer;
   
   res = ::VerQueryValue( &buf[0], L"\\", (LPVOID*)&pInf, &lInf );
   if ( !res )
     return L"";
   
-  CString s;
+  WTL::CString s;
   s.Format( L"%d", int(pInf->dwProductVersionMS >> 16) );
   sVer += s + L".";
 

@@ -17,7 +17,7 @@ LRESULT CRectZoomCtrl::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM l
   return 0;
 }
 
-static void NormalizeRect( CRect & r )
+static void NormalizeRect( WTL::CRect & r )
 {
   if ( r.right > r.left )
   {
@@ -36,11 +36,11 @@ LRESULT CRectZoomCtrl::OnLButtonUp( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*l
   ReleaseCapture();
 
   m_b2nd = false;
-  CSize sz0( 0, 0 );
-  CRect curR( p1, p2 );
+  WTL::CSize sz0( 0, 0 );
+  WTL::CRect curR( p1, p2 );
   NormalizeRect( curR );
 
-  CDC cdc( ::GetWindowDC( m_hWnd ) );
+  WTL::CDC cdc( ::GetWindowDC( m_hWnd ) );
   cdc.DrawDragRect( curR, sz0, 0, sz0 );
 
   m_pSubscriber->FinishCtrl( this, false );
@@ -49,7 +49,7 @@ LRESULT CRectZoomCtrl::OnLButtonUp( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*l
 
 LRESULT CRectZoomCtrl::OnMouseMove( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& bHandled )
 {
-  CRect prR( p1, p2 );
+  WTL::CRect prR( p1, p2 );
   NormalizeRect( prR );
   RECT * pPrevRect = 0;
   if ( m_b2nd )
@@ -59,11 +59,11 @@ LRESULT CRectZoomCtrl::OnMouseMove( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lPa
   p2.x = LOWORD(lParam);
   p2.y = HIWORD(lParam);
 
-  CRect curR( p1, p2 );
+  WTL::CRect curR( p1, p2 );
   NormalizeRect( curR );
 
-  CDC cdc( ::GetWindowDC( m_hWnd ) );
-  CSize sz0( 0, 0 );
+  WTL::CDC cdc( ::GetWindowDC( m_hWnd ) );
+  WTL::CSize sz0( 0, 0 );
   cdc.DrawDragRect( curR, sz0, pPrevRect, sz0 );
 
   m_b2nd = true;

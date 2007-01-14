@@ -10,20 +10,22 @@
 
 //-----------------------------------------------------------------------------
 class CMainFrame : 
-  public CFrameWindowImpl<CMainFrame>
-  , public CUpdateUI<CMainFrame>
-  , public CMessageFilter
-  , public CIdleHandler
-  , public CDoubleBufferImpl<CMainFrame>
-  , public CAppWindowBase<CMainFrame>
-  , public CDynamicChain
+  public WTL::CFrameWindowImpl<CMainFrame>
+  , public WTL::CUpdateUI<CMainFrame>
+  , public WTL::CMessageFilter
+  , public WTL::CIdleHandler
+  , public WTL::CDoubleBufferImpl<CMainFrame>
+  , public WTL::CAppWindowBase<CMainFrame>
+  , public ATL::CDynamicChain
   , public ICtrlNotify
 {  
   typedef std::deque< PagePtr > Pages;
 
 public:
+#ifndef SIV_WTL_NAMESPACE
+#   error "Check the namespace in the macro SIV_WTL_NAMESPACE in file <...wtl\include\atlframe.h>"
+#endif
   DECLARE_FRAME_WND_CLASS(NULL, IDR_MAINFRAME)
-
   CMainFrame();
 
   virtual BOOL PreTranslateMessage(MSG* pMsg);
@@ -102,7 +104,7 @@ public:
   LRESULT OnAddBookmark(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
   LRESULT OnReadBookmark(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
-  void DoPaint(CDCHandle dc);
+  void DoPaint( WTL::CDCHandle dc );
   void AppSave();
   void LoadSettings();
   bool AppNewInstance( LPCTSTR lpstrCmdLine );
@@ -112,8 +114,8 @@ public:
   }
 
   void PageLayout( int moveY = 0 );
-  CPoint GetImgOrg( int pageIndex );
-  void MoveImage( CPoint vec, int pageIndex );
+  WTL::CPoint GetImgOrg( int pageIndex );
+  void MoveImage( WTL::CPoint vec, int pageIndex );
 
 private:
   #pragma region ICtrlNotify
@@ -123,7 +125,7 @@ private:
   void UpdateScreenMode();
   void OnPageUpDn( bool bDown, bool bByPage = true  );
   void OnPageLeftRight( bool toRight, bool bByPage = true );
-  bool IsVisible( CRect const & rect );
+  bool IsVisible( WTL::CRect const & rect );
   void ScrollPagesVert( int & moveY );
   void ScrollPagesHor( int & moveX );
   void ClearRedundantCache();
@@ -131,14 +133,14 @@ private:
   bool OpenFile( LPCWSTR fullFileName, int pageIndex=0 );
   int Get1stVisiblePage();
   PagePtr GetCurrentPage( int * pIndex = 0 );  
-  void SetCurFileInMru( CString const & fullFileName, int pageIndex );
-  int GetPageIndFromMru( CString const & fileFullPath );
+  void SetCurFileInMru( WTL::CString const & fullFileName, int pageIndex );
+  int GetPageIndFromMru( WTL::CString const & fileFullPath );
   void UpdateMruMenu();
   void RunTimerLong();
   void RunTimerShort();
   void StopTimer();
   void FinishCtrl();
-  void CalcZoomKandOffset( CRect & r );
+  void CalcZoomKandOffset( WTL::CRect & r );
 
   template <int ID, typename TCtrl>
   void OnCtrlButton()
@@ -195,11 +197,11 @@ private:
 #pragma region GUI
   bool m_bFullScreen;
   int m_curClientWidth;
-  CString m_initDir;
-  CString m_cmdLine;
+  WTL::CString m_initDir;
+  WTL::CString m_cmdLine;
   DWORD m_1stClick;
 
-  CAppInfoBase m_appInfo;
+  WTL::CAppInfoBase m_appInfo;
   
   // MRU
   struct CMru
@@ -211,7 +213,7 @@ private:
       m_pageNum = 0;
     }
 
-    CString m_curFillFileName;
+    WTL::CString m_curFillFileName;
     int m_pageNum;
   };
   CMru m_mru[ g_cMruNumber ];

@@ -13,9 +13,9 @@ public:
   {
   }
 
-  CRect GetRect()
+  WTL::CRect GetRect()
   {
-    return CRect( p1, p2 );
+    return WTL::CRect( p1, p2 );
   }
 
 public:
@@ -34,7 +34,7 @@ public:
   LRESULT OnKeyDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
 private:
-  CPoint p1;
-  CPoint p2;
+  WTL::CPoint p1;
+  WTL::CPoint p2;
   bool m_b2nd;  
 };

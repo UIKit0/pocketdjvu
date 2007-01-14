@@ -115,17 +115,17 @@ IDR_MAINFRAME           ICON                    "res\\PocketDjvu.ico"
 // Dialog
 //
 
-IDD_ABOUTBOX DIALOG  0, 0, 111, 121
+IDD_ABOUTBOX DIALOG  0, 0, 146, 122
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION
 EXSTYLE 0x80000000L
 CAPTION "About"
 FONT 8, "MS Sans Serif"
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,2,2,21,20
-    LTEXT           "PocketDjVu v.",IDC_STATIC_VER,39,8,70,8,SS_NOPREFIX
-    LTEXT           "Copyright © 2007 Igor.Solovyov@gmail.com",IDC_STATIC_CR,2,25,107,16
-    LTEXT           "This program is licensed under GNU GPL version 2, or above",IDC_STATIC_LIC,2,45,107,18
-    EDITTEXT        IDC_INFO,2,64,107,55,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_CLIENTEDGE
+    LTEXT           "PocketDjVu v.",IDC_STATIC_VER,35,7,70,8,SS_NOPREFIX
+    LTEXT           "Copyright © 2007 Igor.Solovyov@gmail.com",IDC_STATIC_CR,2,25,142,16
+    LTEXT           "This program is licensed under GNU GPL version 2, or above",IDC_STATIC_LIC,2,41,142,18
+    EDITTEXT        IDC_INFO,2,68,142,38,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_STATICEDGE
 END
 
 IDD_GOTO_PAGE DIALOG  0, 0, 111, 29
@@ -148,7 +148,7 @@ BEGIN
     EDITTEXT        IDC_BOOKMARK_NAME,22,2,135,12,ES_AUTOHSCROLL
     PUSHBUTTON      "+",IDC_BTNADD,159,2,13,12
     PUSHBUTTON      "-",IDC_BTNDEL,173,2,13,12
-    CONTROL         "",IDC_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_EDITLABELS | TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,2,17,184,48
+    CONTROL         "",IDC_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,2,17,184,48
 END
 
 
@@ -163,9 +163,9 @@ BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
         LEFTMARGIN, 2
-        RIGHTMARGIN, 109
+        RIGHTMARGIN, 144
         TOPMARGIN, 2
-        BOTTOMMARGIN, 119
+        BOTTOMMARGIN, 120
     END
 
     IDD_GOTO_PAGE, DIALOG
@@ -365,4 +365,14 @@ END
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
 

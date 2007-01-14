@@ -110,9 +110,9 @@ void CPageLoader::CalcDimensions( int imgWidth,
 
 bool CPageLoader::ConstructDIBbyPixmap( int width, int height, GPixmap & pixm )
 {
-  CBitmap bmp;
+  WTL::CBitmap bmp;
 
-  CClientDC dc( m_hWnd );
+  WTL::CClientDC dc( m_hWnd );
   void * pvBits = 0;
   BITMAPINFO bmpInfo = {0};
   bmpInfo.bmiHeader.biSize              = sizeof BITMAPINFOHEADER;
@@ -152,8 +152,8 @@ bool CPageLoader::ConstructDIBbyPixmap( int width, int height, GPixmap & pixm )
 
 bool CPageLoader::ConstructDIBbyBitmap( int width, int height, GBitmap & bitmap )
 {
-  CBitmap bmp;
-  CClientDC dc( m_hWnd );
+  WTL::CBitmap bmp;
+  WTL::CClientDC dc( m_hWnd );
   void * pvBits = 0;
   BITMAPINFO * pBmpInfo = (BITMAPINFO*)_alloca( sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD)*256 );
   pBmpInfo->bmiHeader.biSize              = sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD)*256;

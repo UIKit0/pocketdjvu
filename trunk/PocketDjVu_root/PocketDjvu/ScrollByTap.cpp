@@ -5,16 +5,16 @@
 LRESULT CScrollByTap::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& bHandled )
 {
   bHandled = false;
-  CPoint p( lParam );
+  WTL::CPoint p( lParam );
 
-  CRect rc;
+  WTL::CRect rc;
   if ( !::GetClientRect( m_hWnd, &rc ) )
   {
     m_pSubscriber->FinishCtrl( this, true );
     return 0;
   }
 
-  CPoint d = rc.CenterPoint() - p;
+  WTL::CPoint d = rc.CenterPoint() - p;
   int dist = (int)sqrt( d.x*d.x + d.y*d.y );
   if ( dist < min( rc.Width(), rc.Height() ) / 4 )
   { // because bHandled = false, the context menu should be started
@@ -24,7 +24,7 @@ LRESULT CScrollByTap::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lP
   bHandled = true;
   SetCapture( m_hWnd );
 
-  CPoint c = rc.CenterPoint();
+  WTL::CPoint c = rc.CenterPoint();
   float x = float(p.x - c.x) * 2 / rc.Width();
   float y = float(p.y - c.y) * 2 / rc.Height();
   float r = (float)sqrt( x*x + y*y );

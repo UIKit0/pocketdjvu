@@ -38,8 +38,8 @@ LRESULT CMoveByStylus::OnMouseMove( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lPa
 {
   bHandled = true;
 
-  CPoint p2( lParam );
-  CPoint v = p2 - m_p1;
+  WTL::CPoint p2( lParam );
+  WTL::CPoint v = p2 - m_p1;
   m_mainFrame.MoveImage( v, 0 );
   m_p1 = p2;
   

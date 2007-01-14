@@ -13,7 +13,7 @@
 #include <atlbase.h>
 #include <atlapp.h>
 
-extern CAppModule _Module;
+extern WTL::CAppModule _Module;
 
 #include <atlwin.h>
 

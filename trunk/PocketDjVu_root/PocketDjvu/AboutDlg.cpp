@@ -17,14 +17,39 @@ LRESULT CAboutDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
   CWindow verWnd = GetDlgItem(IDC_STATIC_VER);
   if ( verWnd.IsWindow() )
   {
-    CString s;
+    WTL::CString s;
     unsigned const maxL = 128;
     verWnd.GetWindowText( s.GetBuffer(maxL), maxL );
     s.ReleaseBuffer();
-    CString verStr = GetModuleVersionStr( 0 );
+    WTL::CString verStr = GetModuleVersionStr( 0 );
     s += verStr;
     verWnd.SetWindowText( s );
   }
 
+  //
+  MEMORYSTATUS ms = {0};
+  ms.dwLength = sizeof ms;
+  GlobalMemoryStatus( &ms );
+  CWindow siWnd = GetDlgItem(IDC_INFO);
+  if ( siWnd.IsWindow() )
+  {
+    WTL::CString s;
+    PROCESSOR_ARCHITECTURE_ARM;
+    s.Format( L"TotalPhys : %d\r\nAvailPhys : %d\r\nTotalVirtual : %d\r\nAvailVirtual : %d\r\n",
+              int(ms.dwTotalPhys),
+              int(ms.dwAvailPhys),
+              int(ms.dwTotalVirtual),
+              int(ms.dwAvailVirtual)
+            );
+    siWnd.SetWindowText( s );
+  }
+
   return TRUE;
+}
+
+LRESULT CAboutDlg::OnWininiChange( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+{
+  bHandled = true;
+  DoSipInfo();
+  return 0;
 }

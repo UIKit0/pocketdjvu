@@ -22,7 +22,7 @@ CMainFrame::CMainFrame() :
   , m_curClientWidth()
   , m_1stClick()
   , m_initDir(L"\\")
-  , m_appInfo( L"Software\\landi-soft.com\\PocketDjVu" )
+  , m_appInfo( APP_REG_PATH )
   , m_scSate( SC_START )
   , m_timerID()
   , m_cursorKey()
@@ -115,12 +115,12 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
   m_notyfyIcon.Setup( m_hWnd, WM_ICON_NOTIFICATION, IDR_MAINFRAME );
   res = m_notyfyIcon.Install();
 
-  CRect r;
+  WTL::CRect r;
   GetClientRect( &r );
   m_curClientWidth = r.Width();
 
   // register object for message filtering and idle updates
-  CMessageLoop* pLoop = _Module.GetMessageLoop();
+  WTL::CMessageLoop* pLoop = _Module.GetMessageLoop();
   ATLASSERT(pLoop != NULL);
   pLoop->AddMessageFilter(this);
   pLoop->AddIdleHandler(this);
@@ -255,9 +255,9 @@ LRESULT CMainFrame::OnTimer( UINT /*uMsg*/, WPARAM wParamIsTimerID, LPARAM /*lPa
   return 0;
 }
 
-bool CMainFrame::IsVisible( CRect const & rect )
+bool CMainFrame::IsVisible( WTL::CRect const & rect )
 {
-  CRect rc;
+  WTL::CRect rc;
   GetClientRect( &rc );
 
   if ( (rc.top   <= rect.top    && rect.top    <= rc.bottom)   ||
@@ -274,7 +274,7 @@ void CMainFrame::OnPageUpDn( bool bDown, bool bByPage )
   if ( !m_pDjVuDoc )
     return;
 
-  CRect rc;
+  WTL::CRect rc;
   GetClientRect( &rc );
   int dy = 0;
   if ( bByPage )
@@ -297,7 +297,7 @@ void CMainFrame::OnPageLeftRight( bool toRight, bool bByPage )
   if ( !m_pDjVuDoc )
     return;
 
-  CRect clientRect;
+  WTL::CRect clientRect;
   if ( !GetClientRect( &clientRect ) )
     return;
   
@@ -332,9 +332,9 @@ void CMainFrame::AppSave()
       if ( m_mru[ i ].m_curFillFileName.IsEmpty() )
         continue;
       ++j;
-      CString file;
+      WTL::CString file;
       file.Format( L"MRU_file_%d", j );
-      CString page;
+      WTL::CString page;
       page.Format( L"MRU_page_%d", j );
 
       m_appInfo.Save( m_mru[ i ].m_curFillFileName, (LPCWSTR)file );
@@ -393,9 +393,9 @@ bool CMainFrame::AppNewInstance( LPCTSTR lpstrCmdLine )
 
 bool CMainFrame::OpenFile( LPCWSTR fullFileName, int pageIndex )
 {
-  CWaitCursor wc;
+  WTL::CWaitCursor wc;
   // TODO: check why DjVuLibre doesn't like Cyrillic in the file names.
-  CString fileName( L"file://localhost" );
+  WTL::CString fileName( L"file://localhost" );
   fileName += fullFileName;
   fileName.Replace( '\\', '/' );
 
@@ -418,7 +418,7 @@ bool CMainFrame::OpenFile( LPCWSTR fullFileName, int pageIndex )
     pageIndex = 0;
   }  
 
-  CRect clientRect;
+  WTL::CRect clientRect;
   GetClientRect( &clientRect );
   PagePtr pPage( new CPage( m_hWnd, pDjVuDoc, clientRect, true, pageIndex ) );
   if ( !pPage->LoadBmpSync() )
@@ -443,7 +443,7 @@ bool CMainFrame::OpenFile( LPCWSTR fullFileName, int pageIndex )
                    fName,sizeof(fName)/sizeof(fName[0]),
                    fExt,sizeof(fExt)/sizeof(fExt[0]) );
     m_initDir = fDir;
-    CString head( fName );
+    WTL::CString head( fName );
     head += fExt;
     SetWindowText( head );
   }
@@ -478,10 +478,10 @@ void CMainFrame::UpdateScreenMode()
     if ( m_hWndCECommandBar )
       ::ShowWindow( m_hWndCECommandBar, SW_SHOW );    
 
-    CRect rtDesktop( 0, 52, 200, 148 );
+    WTL::CRect rtDesktop( 0, 52, 200, 148 );
     SystemParametersInfo( SPI_GETWORKAREA, 0, &rtDesktop, NULL );
 
-    CRect cmdBarRect;
+    WTL::CRect cmdBarRect;
     ::GetWindowRect( m_hWndCECommandBar, &cmdBarRect );
 
     rtDesktop.bottom = cmdBarRect.top;
@@ -510,10 +510,9 @@ void CMainFrame::UpdateScreenMode()
   }
 }
 
-void CMainFrame::DoPaint( CDCHandle dc )
+void CMainFrame::DoPaint( WTL::CDCHandle dc )
 {
-  using namespace WTL;
-  CRect rect;
+  WTL::CRect rect;
   GetClientRect( &rect );
 
   dc.FillRect( rect, (HBRUSH)GetStockObject(DKGRAY_BRUSH) );
@@ -546,7 +545,7 @@ LRESULT CMainFrame::OnSettingChange( UINT /*uMsg*/, WPARAM wParam, LPARAM /*lPar
   if ( !m_pDjVuDoc || m_Pages.empty() || SETTINGCHANGE_RESET != wParam )
     return 0;
 
-  CRect cr;
+  WTL::CRect cr;
   GetClientRect( &cr );
   int width = cr.Width();
 
@@ -554,7 +553,7 @@ LRESULT CMainFrame::OnSettingChange( UINT /*uMsg*/, WPARAM wParam, LPARAM /*lPar
   {
     PagePtr pg = GetCurrentPage();
     m_Pages.clear();
-    CRect r = pg->GetRect();
+    WTL::CRect r = pg->GetRect();
     double k = double(width) / m_curClientWidth;
     r.left   = Round( k * r.left );
     r.top    = Round( k * r.top );
@@ -565,7 +564,7 @@ LRESULT CMainFrame::OnSettingChange( UINT /*uMsg*/, WPARAM wParam, LPARAM /*lPar
    
     Invalidate();
     pg.Reset( new CPage( m_hWnd, m_pDjVuDoc, r, true, pg->GetPageIndex() ) );
-    CWaitCursor wc;
+    WTL::CWaitCursor wc;
     if ( !pg->LoadBmpSync() )
     {
       // TODO: restore previous state, because we have here all pages are deleted
@@ -585,7 +584,7 @@ LRESULT CMainFrame::OnZoomCmd( WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/,
   if ( !m_pDjVuDoc )
     return 0;
 
-  CRect r;
+  WTL::CRect r;
   if ( !GetClientRect( r ) )
     return 0;
 
@@ -607,7 +606,7 @@ LRESULT CMainFrame::OnZoomCmd( WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/,
         if ( !pg )
           return 0;
         r = pg->GetRect();
-        CPoint c = r.CenterPoint();
+        WTL::CPoint c = r.CenterPoint();
         r.top    = c.y - g_cMinZoomRect/2;
         r.bottom = c.y + g_cMinZoomRect/2;
       }
@@ -619,7 +618,7 @@ LRESULT CMainFrame::OnZoomCmd( WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/,
         if ( !pg )
           return 0;
         r = pg->GetRect();
-        CPoint c = r.CenterPoint();
+        WTL::CPoint c = r.CenterPoint();
         r.left  = c.x - g_cMinZoomRect/2;
         r.right = c.x + g_cMinZoomRect/2;
       }
@@ -657,7 +656,7 @@ void CMainFrame::ScrollPagesVert( int & moveY )
     PagePtr & pg = *m_Pages.begin();
     if ( !pg->GetPageIndex() )
     {
-      CRect r = pg->GetRect();
+      WTL::CRect r = pg->GetRect();
       r.top += moveY;
       if (  r.top>0 )
       {
@@ -671,9 +670,9 @@ void CMainFrame::ScrollPagesVert( int & moveY )
     PagePtr & pg = *m_Pages.rbegin();
     if ( lastInex == pg->GetPageIndex() )
     {
-      CRect cr;
+      WTL::CRect cr;
       GetClientRect( &cr );
-      CRect r = pg->GetRect();
+      WTL::CRect r = pg->GetRect();
       r.bottom += moveY;
       if ( r.bottom<cr.bottom )
       {
@@ -698,7 +697,7 @@ void CMainFrame::ScrollPagesHor( int & moveX )
   if ( !moveX )
     return;
 
-  CRect r = (*m_Pages.begin())->GetRect();
+  WTL::CRect r = (*m_Pages.begin())->GetRect();
   if ( moveX < 0 )
   {
     r.right += moveX;
@@ -707,7 +706,7 @@ void CMainFrame::ScrollPagesHor( int & moveX )
   }
   else
   {
-    CRect cr;
+    WTL::CRect cr;
     GetClientRect( &cr );
     r.left += moveX;
     if ( r.left >= cr.right )
@@ -765,8 +764,8 @@ void CMainFrame::AddVisibleButNotLoaded()
   if ( m_Pages.empty() )
     return;
 
-  CRect r;
-  CWaitCursor wc;
+  WTL::CRect r;
+  WTL::CWaitCursor wc;
   while ( true )
   {
     int index = m_Pages.front()->GetPageIndex() - 1;
@@ -784,7 +783,7 @@ void CMainFrame::AddVisibleButNotLoaded()
       break;
     }
     // place correction if the loaded page has the different size
-    CRect newR = p->GetRect();
+    WTL::CRect newR = p->GetRect();
     r = m_Pages.front()->GetRect();
     r.MoveToY( r.top - newR.Height() - g_cPageGap );
     int dy = r.top - newR.top;
@@ -857,9 +856,9 @@ int CMainFrame::Get1stVisiblePage()
 
 PagePtr CMainFrame::GetCurrentPage( int * pIndex /*= 0*/ )
 {
-  CRect clientRec;
+  WTL::CRect clientRec;
   GetClientRect( &clientRec );
-  CPoint clientCenter = clientRec.CenterPoint();
+  WTL::CPoint clientCenter = clientRec.CenterPoint();
   
   PagePtr p1stVis;
   PagePtr p1st;
@@ -869,7 +868,7 @@ PagePtr CMainFrame::GetCurrentPage( int * pIndex /*= 0*/ )
   int j=0;
   for ( Pages::iterator i=m_Pages.begin(); i!=m_Pages.end(); ++i, ++j )
   {
-    CRect pgRect = (*i)->GetRect();
+    WTL::CRect pgRect = (*i)->GetRect();
     if ( pgRect.top     <= clientCenter.y && 
          clientCenter.y <= pgRect.bottom )
     {
@@ -911,12 +910,12 @@ void CMainFrame::LoadSettings()
     m_mru[ i ].m_curFillFileName = L"";
     m_mru[ i ].m_pageNum = 0;
 
-    CString file;
+    WTL::CString file;
     file.Format( L"MRU_file_%d", i );
-    CString page;
+    WTL::CString page;
     page.Format( L"MRU_page_%d", i );
 
-    CString path;
+    WTL::CString path;
     DWORD pg;
     if ( !m_appInfo.Restore( path, (LPCWSTR)file ) &&
          !m_appInfo.m_Key.QueryDWORDValue( page, pg ) &&
@@ -953,7 +952,7 @@ void CMainFrame::LoadSettings()
   }
 }
 
-void CMainFrame::SetCurFileInMru( CString const & fullFileName, int pageIndex )
+void CMainFrame::SetCurFileInMru( WTL::CString const & fullFileName, int pageIndex )
 {
   for ( int i=0; i<g_cMruNumber; ++i )
   {
@@ -977,7 +976,7 @@ void CMainFrame::SetCurFileInMru( CString const & fullFileName, int pageIndex )
   m_mru[ 0 ].m_pageNum = pageIndex;
 }
 
-int CMainFrame::GetPageIndFromMru( CString const & fileFullPath )
+int CMainFrame::GetPageIndFromMru( WTL::CString const & fileFullPath )
 {
   for ( int i=0; i<g_cMruNumber; ++i )
   {
@@ -995,20 +994,20 @@ void CMainFrame::UpdateMruMenu()
   if ( !hMenu )
     return;
 
-  CMenuHandle mnu;
+  WTL::CMenuHandle mnu;
   mnu.Attach( hMenu );
-  CMenuHandle sub0Mnu = mnu.GetSubMenu( 0 );
+  WTL::CMenuHandle sub0Mnu = mnu.GetSubMenu( 0 );
   ATLASSERT( sub0Mnu );
   if ( !sub0Mnu )
     return;
 
-  CMenuHandle mruMnu = sub0Mnu.GetSubMenu( 6 ); // TODO: think how avoid hardcoded constant here
+  WTL::CMenuHandle mruMnu = sub0Mnu.GetSubMenu( 6 ); // TODO: think how avoid hardcoded constant here
   ATLASSERT( mruMnu );
   if ( !mruMnu )
     return;
 
 #pragma region Cleanup
-  int mCnt = ::GetMenuItemCount( mruMnu );
+  int mCnt = ATL::GetMenuItemCount( mruMnu );
   while( mCnt-- )
   {
     mruMnu.RemoveMenu( mCnt, MF_BYPOSITION );
@@ -1074,14 +1073,14 @@ LRESULT CMainFrame::OnNavigationGotopage( WORD /*wNotifyCode*/, WORD /*wID*/, HW
   }
   --pg;
 
-  CRect clientRect;
+  WTL::CRect clientRect;
   if ( !GetClientRect( &clientRect ) )
   {
     return 0;
   }
   
   Invalidate();
-  CWaitCursor wc;
+  WTL::CWaitCursor wc;
   
   m_Pages.clear();
   PagePtr pPage( new CPage( m_hWnd, m_pDjVuDoc, clientRect, true, pg ) );
@@ -1116,21 +1115,21 @@ void CMainFrame::FinishCtrl( void * pSourceCtrl, bool bCancel )
     CRectZoomCtrl * pZoomCtrl = dynamic_cast<CRectZoomCtrl*>( m_pCtrl.GetPtr() );
     if ( pZoomCtrl )
     {
-      CRect r = pZoomCtrl->GetRect();
+      WTL::CRect r = pZoomCtrl->GetRect();
       CalcZoomKandOffset( r );
     }
   }
   FinishCtrl();
 }
 
-void CMainFrame::CalcZoomKandOffset( CRect & r )
+void CMainFrame::CalcZoomKandOffset( WTL::CRect & r )
 {
   r.NormalizeRect();
 
   if ( r.Width() < g_cMinZoomRect && r.Height() < g_cMinZoomRect )
     return;
   
-  CRect cr;
+  WTL::CRect cr;
   if ( !GetClientRect( &cr ) )
     return;
 
@@ -1143,15 +1142,15 @@ void CMainFrame::CalcZoomKandOffset( CRect & r )
   if ( zoomK < g_cZoomMinK )
     zoomK = g_cZoomMinK;
     
-  CPoint clientCenter = cr.CenterPoint();
-  CPoint newWinCenter = r.CenterPoint();
+  WTL::CPoint clientCenter = cr.CenterPoint();
+  WTL::CPoint newWinCenter = r.CenterPoint();
 
   PagePtr pCurPg = GetCurrentPage();
   m_Pages.clear();
 
   int index = pCurPg->GetPageIndex();
-  CRect pR = pCurPg->GetRect();
-  CPoint newImgCenter = newWinCenter - pR.TopLeft();
+  WTL::CRect pR = pCurPg->GetRect();
+  WTL::CPoint newImgCenter = newWinCenter - pR.TopLeft();
 
   pR.right  = Round(zoomK * pR.Width() );
   pR.bottom = Round(zoomK * pR.Height());
@@ -1161,14 +1160,14 @@ void CMainFrame::CalcZoomKandOffset( CRect & r )
   newImgCenter.x   = Round(zoomK * newImgCenter.x);
   newImgCenter.y   = Round(zoomK * newImgCenter.y);
 
-  CPoint v = clientCenter - newImgCenter;
+  WTL::CPoint v = clientCenter - newImgCenter;
 
   pR.left   += v.x;
   pR.right  += v.x;
   pR.top    += v.y;
   pR.bottom += v.y;
  
-  CWaitCursor wc;
+  WTL::CWaitCursor wc;
   Invalidate();
   pCurPg.Reset( new CPage( m_hWnd, m_pDjVuDoc, pR, true, index ) );
   if ( !pCurPg->LoadBmpSync() )
@@ -1209,9 +1208,9 @@ LRESULT CMainFrame::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lPar
   if ( !hMenu )
     return 0;
 
-  CMenuHandle mnu;
+  WTL::CMenuHandle mnu;
   mnu.Attach( hMenu );
-  CMenuHandle sub0Mnu = mnu.GetSubMenu( 0 );
+  WTL::CMenuHandle sub0Mnu = mnu.GetSubMenu( 0 );
   ATLASSERT( sub0Mnu );
   if ( !sub0Mnu )
     return 0;
@@ -1258,13 +1257,13 @@ LRESULT CMainFrame::OnMoveByStylus( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
   return 0;
 }
 
-CPoint CMainFrame::GetImgOrg( int pageIndex )
+WTL::CPoint CMainFrame::GetImgOrg( int pageIndex )
 {
   ATLASSERT( !m_Pages.empty() );
   return m_Pages[ pageIndex ]->GetRect().TopLeft();
 }
 
-void CMainFrame::MoveImage( CPoint vec, int pageIndex )
+void CMainFrame::MoveImage( WTL::CPoint vec, int pageIndex )
 {
   int m = vec.x;
   ScrollPagesHor( m );
@@ -1276,8 +1275,12 @@ void CMainFrame::MoveImage( CPoint vec, int pageIndex )
 LRESULT CMainFrame::OnAddBookmark( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
 {
   bHandled = true;
-  CFullScrnOnOff fs( *this );
-  CBookmarkDlg dlg( true );
+  if ( !m_pDjVuDoc )
+    return 0;
+
+  CFullScrnOnOff fs( *this );  
+  int i = Get1stVisiblePage();
+  CBookmarkDlg dlg( m_mru[0].m_curFillFileName, i, m_Pages[i]->GetRect() /*TODO: , m_bPortrait */ );
   dlg.DoModal();
   return 0;
 }

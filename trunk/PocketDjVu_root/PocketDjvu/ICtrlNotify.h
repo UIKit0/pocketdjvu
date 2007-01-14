@@ -11,7 +11,7 @@ struct __declspec(novtable) ICtrlNotify
 //-----------------------------------------------------------------------------
 class CControllerBase :
   public siv_hlpr::CRefCntr<>
-  , public CMessageMap
+  , public ATL::CMessageMap
 {
 public:
   CControllerBase( ICtrlNotify * pSubscriber ) : m_pSubscriber(pSubscriber)
