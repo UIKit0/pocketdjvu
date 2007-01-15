@@ -1279,8 +1279,17 @@ LRESULT CMainFrame::OnAddBookmark( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hW
     return 0;
 
   CFullScrnOnOff fs( *this );  
-  int i = Get1stVisiblePage();
-  CBookmarkDlg dlg( m_mru[0].m_curFillFileName, i, m_Pages[i]->GetRect() /*TODO: , m_bPortrait */ );
+  int visPgInd = 0;
+  WTL::CRect r;
+  for ( Pages::iterator i=m_Pages.begin(); i!=m_Pages.end(); ++i )
+  {
+    if ( IsVisible( (*i)->GetRect() ) )
+    {
+      visPgInd = (*i)->GetPageIndex();
+      r = (*i)->GetRect();
+    }
+  }
+  CBookmarkDlg dlg( m_mru[0].m_curFillFileName, visPgInd, r /*TODO: , m_bPortrait */ );
   dlg.DoModal();
   return 0;
 }

@@ -24,10 +24,15 @@ CBookmarkDlg::CBookmarkDlg( wchar_t const * szFullPathName
   , m_pageRect(pageRect)
   , m_bPortrait(bPortrait)
 {
-  FILETIME t;
-  GetCurrentFT( &t );
-  //time_t t = time(&t);
-  //m_sBookmarkName.Format( L"Page %d, %S", m_pageIndex, _wctime(&t) );
+  WTL::CString sTime, sDate;
+  SYSTEMTIME st;
+  GetLocalTime( &st );
+  int l = GetTimeFormat( NULL, TIME_NOSECONDS, &st, NULL, 0, 0 );
+  if ( l )
+  {    
+    l = GetTimeFormat( NULL, 0, &st, NULL, sTime.GetBufferSetLength(l), l );
+  }
+  m_sBookmarkName = sTime + L"-" + sDate;
 }
 
 CBookmarkDlg::~CBookmarkDlg()
