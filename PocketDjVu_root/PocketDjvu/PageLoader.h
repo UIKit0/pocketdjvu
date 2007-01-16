@@ -19,7 +19,9 @@ public:
                int pageIndex,
                int width,
                int height,
-               bool bWidthMostPrioritized );
+               bool bWidthMostPrioritized,
+               int rotation = 0 // CCW: 90degree * rotation
+             );
   ~CPageLoader();
 
   bool LoadBmp();
@@ -72,4 +74,6 @@ private:
   int m_ImgHeight;
   bool m_bWidthMostPrioritized;
   WTL::CBitmap m_Bmp;
+  /// CCW: 90degree * m_rotation
+  int m_rotation;
 };

@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#include <algorithm>
+
 #include "../libdjvu/GBitmap.h"
 #include "../libdjvu/DjVuImage.h"
 
@@ -10,7 +12,8 @@ CPageLoader::CPageLoader( HWND hWnd,
                           int pageIndex,
                           int width,
                           int height,
-                          bool bWidthMostPrioritized
+                          bool bWidthMostPrioritized,
+                          int rotation
                         )
   : m_hWnd(hWnd)
   , m_pDjVuDoc(pDjVuDoc)
@@ -20,6 +23,7 @@ CPageLoader::CPageLoader( HWND hWnd,
   , m_Height(height)
   , m_ImgWidth()
   , m_ImgHeight()
+  , m_rotation(rotation)
 {
 }
 
@@ -44,14 +48,22 @@ bool CPageLoader::LoadBmpImp()
   {
     using namespace DJVU;
     GP<DjVuImage> pImage = m_pDjVuDoc->get_page( m_pageIndex );
+    
+    pImage->set_rotate( m_rotation );
+
     if ( !pImage->wait_for_complete_decode() )
       return false;
 
     GP<DjVuInfo> pInfo = pImage->get_info();
     m_ImgWidth  = pInfo->width;
-    m_ImgHeight = pInfo->height;  
+    m_ImgHeight = pInfo->height;
     if ( !m_ImgWidth || !m_ImgHeight )
       return false;
+
+    if ( m_rotation & 1 )
+    {
+      std::swap( m_ImgWidth, m_ImgHeight );
+    }
 
     CalcDimensions( m_ImgWidth, m_ImgHeight, m_Width, m_Height );
 
