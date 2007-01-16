@@ -5,34 +5,31 @@
 
 #include "BookmarkDlg.h"
 
-CBookmarkDlg::CBookmarkDlg() : 
-  m_bAddBookmark(false)
-  , m_pageIndex()
-  , m_bPortrait(false)
-{
-  m_rootReg.Create( HKEY_CURRENT_USER, APP_REG_PATH );
-  ATLASSERT( m_rootReg.m_hKey );
-}
-
 CBookmarkDlg::CBookmarkDlg( wchar_t const * szFullPathName
                             , int pageIndex
                             , WTL::CRect const & pageRect
                             , bool bPortrait ) :
-  m_bAddBookmark(true)
-  , m_szFullPathName(szFullPathName)
+  m_szFullPathName(szFullPathName)
   , m_pageIndex(pageIndex)
   , m_pageRect(pageRect)
   , m_bPortrait(bPortrait)
 {
-  WTL::CString sTime, sDate;
-  SYSTEMTIME st;
-  GetLocalTime( &st );
-  int l = GetTimeFormat( NULL, TIME_NOSECONDS, &st, NULL, 0, 0 );
-  if ( l )
-  {    
-    l = GetTimeFormat( NULL, 0, &st, NULL, sTime.GetBufferSetLength(l), l );
+  m_rootReg.Create( HKEY_CURRENT_USER, APP_REG_PATH );
+  ATLASSERT( m_rootReg.m_hKey );
+
+  if ( !m_szFullPathName.IsEmpty() )
+  {
+    WTL::CString sTime, sDate;
+    SYSTEMTIME st;
+    GetLocalTime( &st );
+    int l = GetTimeFormat( NULL, 0, &st, NULL, NULL, 0 );
+    if ( l )
+    {    
+      l = GetTimeFormat( NULL, 0, &st, NULL, sTime.GetBufferSetLength(l), l );
+      sTime.ReleaseBuffer();
+    }
+    m_sBookmarkName = sTime + L" - " + sDate;
   }
-  m_sBookmarkName = sTime + L"-" + sDate;
 }
 
 CBookmarkDlg::~CBookmarkDlg()
@@ -46,6 +43,20 @@ LRESULT CBookmarkDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
 
   DoDataExchange();
   
+  if ( m_szFullPathName.IsEmpty() )
+  {
+    ATL::CWindow wnd = GetDlgItem( IDC_BOOKMARK_NAME );
+    if( wnd.IsWindow() )
+    {
+      wnd.EnableWindow( FALSE );
+    }
+    wnd = GetDlgItem( IDC_BTNADD );
+    if( wnd.IsWindow() )
+    {
+      wnd.EnableWindow( FALSE );
+    }
+  }
+
   LoadFromRegistry();
   FindOrCreateCurrentFileBranch();
     
@@ -58,7 +69,7 @@ void CBookmarkDlg::LoadFromRegistry()
 
 void CBookmarkDlg::FindOrCreateCurrentFileBranch()
 {
-  if ( !m_bAddBookmark )
+  if ( m_szFullPathName.IsEmpty() )
     return;
 
   WTL::CTreeItem rootItem = m_tree.GetRootItem();

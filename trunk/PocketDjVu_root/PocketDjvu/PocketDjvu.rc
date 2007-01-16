@@ -71,8 +71,7 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "Navigation"
         BEGIN
-            MENUITEM "Add bookmark",                ID_NAVIGATE_ADDBOOKMARK
-            MENUITEM "Read bookmark",               ID_NAVIGATE_READBOOKMARK
+            MENUITEM "Bookmarks...",                ID_NAVIGATE_BOOKMARK
             MENUITEM "GoTo Page...",                ID_NAVIGATION_GOTOPAGE
         END
         POPUP "Zoom && Scroll"
@@ -365,14 +364,4 @@ END
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
-
-
-#ifndef APSTUDIO_INVOKED
-/////////////////////////////////////////////////////////////////////////////
-//
-// Generated from the TEXTINCLUDE 3 resource.
-//
-
-/////////////////////////////////////////////////////////////////////////////
-#endif    // not APSTUDIO_INVOKED
 
