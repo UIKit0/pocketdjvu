@@ -324,7 +324,8 @@ void CMainFrame::AppSave()
   if ( m_bDirty && m_pDjVuDoc )
   {
     m_bDirty = false;
-    m_mru[ 0 ].m_pageNum = Get1stVisiblePage();
+    PagePtr p1sVis = Get1stVisiblePage();
+    m_mru[ 0 ].m_pageNum = p1sVis ? p1sVis->GetPageIndex() : 0;
 
     int j=-1;
     for ( int i=0; i<g_cMruNumber; ++i )
@@ -842,16 +843,16 @@ void CMainFrame::PageLayout( int moveY /*= 0*/ )
     CachePrev();
 }
 
-int CMainFrame::Get1stVisiblePage()
+PagePtr CMainFrame::Get1stVisiblePage()
 {
   for ( Pages::iterator i=m_Pages.begin(); i!=m_Pages.end(); ++i )
   {
     if ( IsVisible( (*i)->GetRect() ) )
     {
-      return (*i)->GetPageIndex();
+      return *i;
     }
   }
-  return 0;
+  return PagePtr();
 }
 
 PagePtr CMainFrame::GetCurrentPage( int * pIndex /*= 0*/ )
@@ -1059,7 +1060,8 @@ LRESULT CMainFrame::OnNavigationGotopage( WORD /*wNotifyCode*/, WORD /*wID*/, HW
 
   CFullScrnOnOff fullScrOnOff( *this );
 
-  int visPg = 1+Get1stVisiblePage();
+  PagePtr p1stVis = Get1stVisiblePage();
+  int visPg = 1 + (p1stVis ? p1stVis->GetPageIndex() : 0 );
   CGoToPage gotoPg( m_pDjVuDoc->get_pages_num(), visPg );
   if ( IDCANCEL == gotoPg.DoModal( m_hWnd ) )
   {
@@ -1272,33 +1274,25 @@ void CMainFrame::MoveImage( WTL::CPoint vec, int pageIndex )
   RedrawWindow();
 }
 
-LRESULT CMainFrame::OnAddBookmark( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
+LRESULT CMainFrame::OnBookmark( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
 {
   bHandled = true;
-  if ( !m_pDjVuDoc )
-    return 0;
-
+  
   CFullScrnOnOff fs( *this );  
   int visPgInd = 0;
   WTL::CRect r;
-  for ( Pages::iterator i=m_Pages.begin(); i!=m_Pages.end(); ++i )
+
+  if ( m_pDjVuDoc )
   {
-    if ( IsVisible( (*i)->GetRect() ) )
+    PagePtr p1stVis = Get1stVisiblePage();
+    if ( p1stVis )
     {
-      visPgInd = (*i)->GetPageIndex();
-      r = (*i)->GetRect();
+      visPgInd = p1stVis->GetPageIndex();
+      r = p1stVis->GetRect();
     }
   }
-  CBookmarkDlg dlg( m_mru[0].m_curFillFileName, visPgInd, r /*TODO: , m_bPortrait */ );
-  dlg.DoModal();
-  return 0;
-}
-
-LRESULT CMainFrame::OnReadBookmark( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
-{
-  bHandled = true;
-  CFullScrnOnOff fs( *this );
-  CBookmarkDlg dlg;
+  CBookmarkDlg dlg( m_pDjVuDoc ? m_mru[0].m_curFillFileName : (wchar_t const * )0,
+                    visPgInd, r /*TODO: , m_bPortrait */ );
   dlg.DoModal();
   return 0;
 }

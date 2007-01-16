@@ -11,10 +11,6 @@ class CBookmarkDlg :
 public:
   enum { IDD = IDD_BOOKMARK };
 
-  // Constructor for choosing existent bookmarks only.
-  CBookmarkDlg();
-
-  // Constructor for management bookmarks only.
 	CBookmarkDlg( wchar_t const * szFullPathName
                 , int pageIndex
                 , WTL::CRect const & pageRect
@@ -58,8 +54,6 @@ private:
 
 // DATA:
 private:
-  bool m_bAddBookmark;
-  
   WTL::CString m_szFullPathName;
   int m_pageIndex;
   WTL::CRect m_pageRect;
