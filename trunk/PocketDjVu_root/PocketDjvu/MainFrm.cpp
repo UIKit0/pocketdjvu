@@ -395,17 +395,16 @@ bool CMainFrame::AppNewInstance( LPCTSTR lpstrCmdLine )
 bool CMainFrame::OpenFile( LPCWSTR fullFileName, int pageIndex )
 {
   WTL::CWaitCursor wc;
-  // TODO: check why DjVuLibre doesn't like Cyrillic in the file names.
   WTL::CString fileName( L"file://localhost" );
   fileName += fullFileName;
   fileName.Replace( '\\', '/' );
 
-  int strL = WideCharToMultiByte( CP_ACP, 0, fileName, fileName.GetLength(), 0, 0, 0, 0 );
-  char * ansiUrl = (char*)_alloca( strL+1 );
-  memset( ansiUrl, 0, strL+1 );
-  WideCharToMultiByte( CP_ACP, 0, fileName, fileName.GetLength(), ansiUrl, strL, 0, 0 );
+  int strL = WideCharToMultiByte( CP_UTF8, 0, fileName, fileName.GetLength(), 0, 0, 0, 0 );
+  char * utf8iUrl = (char*)_alloca( strL+1 );
+  memset( utf8iUrl, 0, strL+1 );
+  WideCharToMultiByte( CP_UTF8, 0, fileName, fileName.GetLength(), utf8iUrl, strL, 0, 0 );
 
-  GNativeString nativeUrl( ansiUrl );
+  GNativeString nativeUrl( utf8iUrl );
   GURL url( nativeUrl );
   GP<DjVuDocument> pDjVuDoc = DjVuDocument::create( url );
   if ( !pDjVuDoc || !pDjVuDoc->wait_for_complete_init() )
