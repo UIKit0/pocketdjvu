@@ -11,6 +11,13 @@
 #define _WIN32_WCE_AYGSHELL 1
 
 #include <atlbase.h>
+#include <atlstr.h>   // SIV:
+#define _WTL_NO_CSTRING
+namespace WTL
+{
+  typedef ::ATL::CString CString;
+}
+
 #include <atlapp.h>
 
 extern WTL::CAppModule _Module;

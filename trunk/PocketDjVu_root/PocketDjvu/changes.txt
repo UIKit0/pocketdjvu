@@ -5,6 +5,7 @@
 
 v.0.9.4.....
 =================
+# - Not English characters in the file names are now supported.
 + - Bookmark dialog...
 
 v.0.9.3
