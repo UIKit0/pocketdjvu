@@ -28,6 +28,13 @@ CBookmarkDlg::CBookmarkDlg( wchar_t const * szFullPathName
       l = GetTimeFormat( NULL, 0, &st, NULL, sTime.GetBufferSetLength(l), l );
       sTime.ReleaseBuffer();
     }
+
+    l = GetDateFormat( NULL, DATE_SHORTDATE, &st, NULL, NULL, 0 );
+    if ( l )
+    {
+      l = GetDateFormat( NULL, DATE_SHORTDATE, &st, NULL, sDate.GetBufferSetLength(l), l );
+      sDate.ReleaseBuffer();
+    }
     m_sBookmarkName = sTime + L" - " + sDate;
   }
 }
@@ -101,9 +108,82 @@ LRESULT CBookmarkDlg::OnClickedOK( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOO
   return 0;
 }
 
+LRESULT CBookmarkDlg::OnBtnAdd( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled )
+{
+  if ( m_currentFileItem.IsNull() )
+    return 0;
+
+  DoDataExchange( TRUE, IDC_BOOKMARK_NAME );
+
+  WTL::CTreeItem ti = m_currentFileItem.AddTail( m_sBookmarkName, 0 );
+  m_currentFileItem.SortChildren( FALSE );
+  m_currentFileItem.Expand();
+  ti.Select();
+  m_tree.EnsureVisible( ti );
+
+  bHandled = true;
+  return 0;
+}
+
+LRESULT CBookmarkDlg::OnBtnDel( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled )
+{
+  bHandled = true;
+  WTL::CTreeItem ti = m_tree.GetSelectedItem();
+  if ( ti.IsNull() )
+    return 0;
+
+  WTL::CTreeItem parent = ti.GetParent();
+  if ( parent.IsNull() )
+    return 0;
+  
+  WTL::CTreeItem act = ti.GetNextSibling();
+  if ( act.IsNull() )
+  {
+    act = ti.GetPrevSibling();
+    if ( act.IsNull() )
+    {
+      act = parent;
+    }
+  }
+
+  ti.Delete();
+
+  if ( parent != m_currentFileItem && !parent.HasChildren() )
+  {
+    act = parent.GetNextSibling();
+    if ( act.IsNull() )
+    {
+      act = parent.GetPrevSibling();
+    }
+    parent.Delete();
+  }
+  
+  if ( !act.IsNull() )
+  {
+    act.Select();
+    m_tree.EnsureVisible( act );
+  }
+
+  return 0;
+}
+
 LRESULT CBookmarkDlg::OnWininiChange( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
   bHandled = true;
   DoSipInfo();
+  return 0;
+}
+
+LRESULT CBookmarkDlg::OnTvnSelchangedTree( int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& bHandled )
+{
+  WTL::CTreeItem it( reinterpret_cast<LPNMTREEVIEW>(pNMHDR)->itemNew.hItem, &m_tree );
+
+  if ( !it.GetParent().IsNull() )
+  {
+    it.GetText( m_sBookmarkName );
+    DoDataExchange( FALSE, IDC_BOOKMARK_NAME );
+  }
+
+  bHandled = true;
   return 0;
 }

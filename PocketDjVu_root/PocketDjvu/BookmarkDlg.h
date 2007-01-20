@@ -36,6 +36,9 @@ BEGIN_MSG_MAP(CBookmarkDlg)
   MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)	
   MESSAGE_HANDLER(WM_WININICHANGE, OnWininiChange)
   COMMAND_ID_HANDLER(IDOK, OnClickedOK)
+  COMMAND_ID_HANDLER(IDC_BTNADD, OnBtnAdd)
+  COMMAND_ID_HANDLER(IDC_BTNDEL, OnBtnDel)
+  NOTIFY_HANDLER(IDC_TREE, TVN_SELCHANGED, OnTvnSelchangedTree)
   CHAIN_MSG_MAP(Base)
 END_MSG_MAP()
 
@@ -47,6 +50,9 @@ END_MSG_MAP()
   LRESULT OnClickedOK( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled );
   LRESULT OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled );
   LRESULT OnWininiChange( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled );
+  LRESULT OnBtnAdd( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled );
+  LRESULT OnBtnDel( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled );
+  LRESULT OnTvnSelchangedTree(int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& /*bHandled*/);
 
 private:
   void LoadFromRegistry();
@@ -67,5 +73,3 @@ private:
 
   WTL::CTreeItem m_currentFileItem;
 };
-
-
