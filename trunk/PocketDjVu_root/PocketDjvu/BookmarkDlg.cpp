@@ -5,16 +5,13 @@
 
 #include "BookmarkDlg.h"
 
-CBookmarkDlg::CBookmarkDlg( wchar_t const * szFullPathName
-                            , int pageIndex
-                            , WTL::CRect const & pageRect
-                            , bool bPortrait ) :
+CBookmarkDlg::CBookmarkDlg( wchar_t const * szFullPathName, CBookmarkInfo const & bookmarkInfo ) :
   m_szFullPathName(szFullPathName)
-  , m_pageIndex(pageIndex)
-  , m_pageRect(pageRect)
-  , m_bPortrait(bPortrait)
+  , m_bookmarkInfo(bookmarkInfo)
 {
-  m_rootReg.Create( HKEY_CURRENT_USER, APP_REG_PATH );
+  WTL::CString regPath( APP_REG_PATH );
+  regPath += L"\\Bookmarks";
+  m_rootReg.Create( HKEY_CURRENT_USER, regPath );
   ATLASSERT( m_rootReg.m_hKey );
 
   if ( !m_szFullPathName.IsEmpty() )
@@ -37,6 +34,24 @@ CBookmarkDlg::CBookmarkDlg( wchar_t const * szFullPathName
     }
     m_sBookmarkName = sTime + L" - " + sDate;
   }
+}
+
+BOOL CBookmarkDlg::CreateMenuBar( UINT nToolBarId )
+{
+  SHMENUBARINFO mbi = { 0 };
+  mbi.cbSize      = sizeof(mbi);
+  mbi.hwndParent  = m_hWnd;
+  mbi.dwFlags     = SHCMBF_HMENU;
+  mbi.nToolBarId  = nToolBarId;
+  mbi.hInstRes    = ModuleHelper::GetResourceInstance();
+
+  BOOL bRet = ::SHCreateMenuBar( &mbi );
+  if( bRet )
+  {
+    HWND m_hWndMnuBar = mbi.hwndMB;
+  }
+
+  return bRet;
 }
 
 CBookmarkDlg::~CBookmarkDlg()
@@ -66,6 +81,8 @@ LRESULT CBookmarkDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
 
   LoadFromRegistry();
   FindOrCreateCurrentFileBranch();
+
+  CreateMenuBar( IDR_MENU_OKCANCEL );
     
   return 1;  // Let the system set the focus
 }
@@ -83,6 +100,7 @@ void CBookmarkDlg::FindOrCreateCurrentFileBranch()
   if ( rootItem.IsNull() )
   {
     m_currentFileItem = m_tree.InsertItem( m_szFullPathName, 0, 0 );
+    m_currentFileItem.SetState( TVIS_BOLD, TVIS_BOLD );
     m_currentFileItem.Select();
     m_currentFileItem.Expand();
     return;
@@ -94,6 +112,7 @@ void CBookmarkDlg::FindOrCreateCurrentFileBranch()
     if ( rootItem.GetText( str, MAX_PATH ) && m_szFullPathName == str )
     {
       m_currentFileItem = rootItem;
+      m_currentFileItem.SetState( TVIS_BOLD, TVIS_BOLD );
       return;
     }
   }

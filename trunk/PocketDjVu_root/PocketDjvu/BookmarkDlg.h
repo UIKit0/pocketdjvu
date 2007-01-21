@@ -2,7 +2,9 @@
 
 #include "resource.h"
 #include "SIPState.h"
+#include "BookmarkInfo.h"
 
+//-----------------------------------------------------------------------------
 class CBookmarkDlg :
   public WTL::CStdDialogResizeImpl<CBookmarkDlg>,
   public WTL::CWinDataExchange<CBookmarkDlg>
@@ -11,10 +13,7 @@ class CBookmarkDlg :
 public:
   enum { IDD = IDD_BOOKMARK };
 
-	CBookmarkDlg( wchar_t const * szFullPathName
-                , int pageIndex
-                , WTL::CRect const & pageRect
-                , /*TODO: reserved*/bool bPortrait = true );
+	CBookmarkDlg( wchar_t const * szFullPathName, CBookmarkInfo const & bookmarkInfo );
 
 	~CBookmarkDlg();
 
@@ -57,17 +56,16 @@ END_MSG_MAP()
 private:
   void LoadFromRegistry();
   void FindOrCreateCurrentFileBranch();
+  BOOL CreateMenuBar( UINT nToolBarId );
 
 // DATA:
 private:
-  WTL::CString m_szFullPathName;
-  int m_pageIndex;
-  WTL::CRect m_pageRect;
-  bool m_bPortrait;
-
   CSIPState m_sip;
   ATL::CRegKey m_rootReg;
 
+  WTL::CString m_szFullPathName;
+  CBookmarkInfo m_bookmarkInfo;
+  
   WTL::CTreeViewCtrlEx m_tree;
   WTL::CString m_sBookmarkName;
 

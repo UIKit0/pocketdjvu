@@ -535,6 +535,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\BookmarkInfo.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CNofyIcon.h"
 				>
 			</File>

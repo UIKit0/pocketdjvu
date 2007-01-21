@@ -6,6 +6,7 @@
 v.0.9.4.....
 =================
 # - Not English characters in the file names are now supported.
++ - The hyperlink ho the PocketDjVu homepage was added to About dialog box.
 + - Bookmark dialog...
 
 v.0.9.3

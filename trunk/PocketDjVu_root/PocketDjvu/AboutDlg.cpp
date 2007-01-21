@@ -44,6 +44,11 @@ LRESULT CAboutDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
     siWnd.SetWindowText( s );
   }
 
+  m_homePageLink.SubclassWindow( GetDlgItem(IDC_HOMEPAGE) );
+  ATL::CString link;
+  m_homePageLink.GetWindowText( link );
+  m_homePageLink.SetHyperLink( link );
+
   return TRUE;
 }
 
