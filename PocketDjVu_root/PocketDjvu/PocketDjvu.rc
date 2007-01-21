@@ -13,6 +13,30 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
+// Russian resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+#ifdef _WIN32
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU_OKCANCEL MENU 
+BEGIN
+    MENUITEM "OK",                          IDOK
+    MENUITEM "Cancel",                      IDCANCEL
+END
+
+#endif    // Russian resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
 // English (U.S.) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
@@ -122,9 +146,10 @@ FONT 8, "MS Sans Serif"
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,2,2,21,20
     LTEXT           "PocketDjVu v.",IDC_STATIC_VER,35,7,70,8,SS_NOPREFIX
-    LTEXT           "Copyright © 2007 Igor.Solovyov@gmail.com",IDC_STATIC_CR,2,25,142,16
-    LTEXT           "This program is licensed under GNU GPL version 2, or above",IDC_STATIC_LIC,2,41,142,18
-    EDITTEXT        IDC_INFO,2,68,142,38,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_STATICEDGE
+    LTEXT           "Copyright © 2007 Igor.Solovyov@gmail.com",IDC_STATIC_CR,2,25,142,8
+    LTEXT           "This program is licensed under GNU GPL version 2, or above",IDC_STATIC_LIC,2,48,142,18
+    EDITTEXT        IDC_INFO,2,69,142,37,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | WS_VSCROLL,WS_EX_STATICEDGE
+    LTEXT           "http://Igor.Solovyov.googlepages.com",IDC_HOMEPAGE,2,37,142,8
 END
 
 IDD_GOTO_PAGE DIALOG  0, 0, 111, 29
@@ -165,6 +190,7 @@ BEGIN
         RIGHTMARGIN, 144
         TOPMARGIN, 2
         BOTTOMMARGIN, 120
+        HORZGUIDE, 66
     END
 
     IDD_GOTO_PAGE, DIALOG
@@ -215,8 +241,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,9,3,3
- PRODUCTVERSION 0,9,3,3
+ FILEVERSION 0,9,4,0
+ PRODUCTVERSION 0,9,4,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x21L
@@ -231,15 +257,15 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "CompanyName", "SIV"
+            VALUE "CompanyName", "Igor Solovyov"
             VALUE "FileDescription", "PocketDjvu Module"
-            VALUE "FileVersion", "0, 9, 3, 3"
+            VALUE "FileVersion", "0, 9, 4, 0"
             VALUE "InternalName", "PocketDjvu"
             VALUE "LegalCopyright", "Copyright © 2007, Igor Solovyov"
             VALUE "OriginalFilename", "PocketDjvu.exe"
             VALUE "ProductName", "PocketDjvu Module"
-            VALUE "ProductVersion", "0, 9, 3, 3"
-            VALUE "SpecialBuild", "003"
+            VALUE "ProductVersion", "0, 9, 4, 0"
+            VALUE "SpecialBuild", "004"
         END
     END
     BLOCK "VarFileInfo"
@@ -364,4 +390,14 @@ END
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
 

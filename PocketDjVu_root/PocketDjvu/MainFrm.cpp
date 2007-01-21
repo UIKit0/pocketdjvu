@@ -1290,8 +1290,9 @@ LRESULT CMainFrame::OnBookmark( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
       r = p1stVis->GetRect();
     }
   }
-  CBookmarkDlg dlg( m_pDjVuDoc ? m_mru[0].m_curFillFileName : (wchar_t const * )0,
-                    visPgInd, r /*TODO: , m_bPortrait */ );
+
+  CBookmarkInfo bi( visPgInd, r /*TODO: , m_bPortrait */ );
+  CBookmarkDlg dlg( m_pDjVuDoc ? m_mru[0].m_curFillFileName : (wchar_t const * )0, bi );
   dlg.DoModal();
   return 0;
 }
