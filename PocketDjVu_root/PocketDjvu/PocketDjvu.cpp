@@ -8,9 +8,6 @@
 #include "aboutdlg.h"
 #include "MainFrm.h"
 
-#undef _INC_NEW // MS bug: the same macro guards the <new> h-file which is included indirectly already.
-#include <new.h>
-
 WTL::CAppModule _Module;
 
 int Run( LPTSTR lpstrCmdLine = NULL, int nCmdShow = SW_SHOWNORMAL )
