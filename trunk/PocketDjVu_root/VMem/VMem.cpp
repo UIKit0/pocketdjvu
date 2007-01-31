@@ -2,6 +2,43 @@
 
 #include "./malloc.h"
 
+extern "C"
+{
+  // Prototypes from dlmalloc.
+  typedef void* mspace;
+  size_t destroy_mspace(mspace msp);
+  mspace create_mspace_with_base(void* base, size_t capacity, int locked);
+  void*  mspace_malloc(mspace msp, size_t bytes);
+  void   mspace_free(mspace msp, void* mem);
+  void*  mspace_realloc(mspace msp, void* mem, size_t newsize);
+  void*  mspace_calloc(mspace msp, size_t n_elements, size_t elem_size);
+  void*  mspace_memalign(mspace msp, size_t alignment, size_t bytes);
+};
+
+namespace siv
+{
+
+  void     vm_free( void * pMem )
+  {
+    delete[] (char*)pMem;
+  }
+
+  void *   vm_malloc( size_t bytes )
+  {
+    return new char[bytes];
+  }
+
+  void *   vm_realloc( void * pMem, size_t bytes )
+  {
+    return (void*)0;
+  }
+
+  void *   vm_calloc( size_t n_elements, size_t elem_size )
+  {
+    return new char[n_elements * elem_size];
+  }
+} // namespace siv
+
 #if 0
 wchar_t const * fileName = L"\\SD Card\\file.map";
 
