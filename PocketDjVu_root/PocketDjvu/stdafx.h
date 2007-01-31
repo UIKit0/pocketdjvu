@@ -37,3 +37,4 @@ extern WTL::CAppModule _Module;
 #include <atlscrl.h>  // SIV:
 #include <atlwince.h> // SIV:
 #include <atlddx.h>   // SIV:
+#include <atlsync.h>   // SIV:
