@@ -71,9 +71,20 @@ BOOL CMainFrame::OnIdle()
 
 LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-  CreateSimpleCEMenuBar( IDR_MAINFRAME, SHCMBF_HMENU );
-
   HINSTANCE hinst = ATL::_AtlBaseModule.GetModuleInstance();
+
+  SHMENUBARINFO mbi = { 0 };
+  mbi.cbSize      = sizeof(mbi);
+  mbi.hwndParent  = m_hWnd;
+  mbi.dwFlags     = SHCMBF_HMENU | (g_cGUItoolBarUseWinCapBkgrnd ? SHCMBF_COLORBK : 0);
+  mbi.nToolBarId  = IDR_MAINFRAME;
+  mbi.hInstRes    = hinst;
+  mbi.clrBk       = GetSysColor( COLOR_ACTIVECAPTION );
+
+  BOOL bRet = ::SHCreateMenuBar( &mbi );
+  ATLASSERT( bRet );
+  
+  m_hWndCECommandBar = mbi.hwndMB;
 
 #pragma region Toolbar
   UINT nResourceID = IDR_MFRTB;

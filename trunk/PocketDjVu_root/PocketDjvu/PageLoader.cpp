@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #include <algorithm>
+#include <stdexcept>
 
 #include "../libdjvu/GBitmap.h"
 #include "../libdjvu/DjVuImage.h"
