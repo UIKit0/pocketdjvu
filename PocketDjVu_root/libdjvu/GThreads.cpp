@@ -1155,7 +1155,7 @@ GThread::cotask::~cotask()
   gstack.resize(0);
 #ifndef NO_LIBGCC_HOOKS
   if (ehctx)
-    free(ehctx);
+    _djvu_free(ehctx);
   ehctx = 0;
 #endif
 }

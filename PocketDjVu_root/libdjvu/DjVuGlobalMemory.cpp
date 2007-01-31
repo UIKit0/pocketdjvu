@@ -247,7 +247,7 @@ void *
 _djvu_malloc(size_t siz)
 {
   DEBUG_MSG("_djvu_malloc: siz="<<siz<<"\n");
-  return _djvu_malloc_handler?(*_djvu_malloc_handler)(siz?siz:1):malloc(siz?siz:1);
+  return _djvu_malloc_handler?(*_djvu_malloc_handler)(siz?siz:1):_djvu_malloc(siz?siz:1);
 }
 
 void *
@@ -266,7 +266,7 @@ _djvu_calloc(size_t siz, size_t items)
     }
   }else
   { 
-    ptr = calloc(siz?siz:1, items?items:1);
+    ptr = _djvu_free(siz?siz:1, items?items:1);
   }
   return ptr;    
 }
@@ -281,7 +281,7 @@ _djvu_realloc(void* ptr, size_t siz)
     newptr = (*_djvu_realloc_handler)(ptr, siz);
   }else
   {
-    newptr = realloc(ptr, siz?siz:1);
+    newptr = _djvu_realloc(ptr, siz?siz:1);
   }
   return newptr;
 }
@@ -297,7 +297,7 @@ _djvu_free(void *ptr)
       (*_djvu_free_handler)(ptr);
     }else
     {
-      free(ptr);
+      _djvu_free(ptr);
     }
   }
 }

@@ -287,7 +287,7 @@ DjVmNav::isValidBookmark()
   //is not a bookmark since A suppose to have 4 decendents, it only get one.
   int bookmark_totalnum=getBookMarkCount();
   GP<DjVuBookMark> gpBookMark;
-  int* count_array=(int*)malloc(sizeof(int)*bookmark_totalnum);
+  int* count_array=(int*)_djvu_malloc(sizeof(int)*bookmark_totalnum);
   for(int i=0;i<bookmark_totalnum;i++)
     {
       getBookMark(gpBookMark, i);
@@ -295,7 +295,7 @@ DjVmNav::isValidBookmark()
     }
   int index=0;
   int trees=0;
-  int* treeSizes=(int*)malloc(sizeof(int)*bookmark_totalnum);
+  int* treeSizes=(int*)_djvu_malloc(sizeof(int)*bookmark_totalnum);
   while(index<bookmark_totalnum)
     {
       int treeSize=get_tree(index,count_array,bookmark_totalnum);
@@ -307,8 +307,8 @@ DjVmNav::isValidBookmark()
       else //not a tree
         break;
     }
-  free(count_array);
-  free(treeSizes);
+  _djvu_free(count_array);
+  _djvu_free(treeSizes);
   return true;
 }
 

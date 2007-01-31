@@ -20,22 +20,22 @@ namespace siv
 
   void     vm_free( void * pMem )
   {
-    delete[] (char*)pMem;
+    free(pMem);
   }
 
   void *   vm_malloc( size_t bytes )
   {
-    return new char[bytes];
+    return malloc(bytes);
   }
 
   void *   vm_realloc( void * pMem, size_t bytes )
   {
-    return (void*)0;
+    return realloc( pMem, bytes );
   }
 
   void *   vm_calloc( size_t n_elements, size_t elem_size )
   {
-    return new char[n_elements * elem_size];
+    return calloc( n_elements, elem_size );
   }
 } // namespace siv
 
