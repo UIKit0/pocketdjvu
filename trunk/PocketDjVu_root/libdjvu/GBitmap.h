@@ -460,7 +460,7 @@ protected:
   unsigned short grays;
   unsigned char  *bytes;
   unsigned char  *bytes_data;
-  GPBuffer<unsigned char> gbytes_data;
+  GPBufferVM<unsigned char> gbytes_data;
   unsigned char  *rle;
   GPBuffer<unsigned char> grle;
   unsigned char  **rlerows;

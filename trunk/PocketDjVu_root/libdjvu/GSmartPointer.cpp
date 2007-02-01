@@ -246,6 +246,67 @@ GPBufferBase::set(const size_t t,const char c)
     memset(ptr,c,num*t);
 }
 
+//----------- VM ---------------
+void
+GPBufferBaseVM::replace(void *nptr,const size_t n)
+{
+  resize(0,0);
+  ptr=nptr;
+  num=n;
+}
+
+GPBufferBaseVM::GPBufferBaseVM(void *&xptr,const size_t n,const size_t t) 
+  : ptr(xptr), num(n)
+{
+  if (n)
+    xptr = ::siv::vm_malloc(n*t);
+  else
+    xptr = 0;
+}
+
+GPBufferBaseVM::~GPBufferBaseVM()
+{
+  ::siv::vm_free(ptr);
+}
+
+void 
+GPBufferBaseVM::swap(GPBufferBaseVM &other)
+{
+  void * const temp_ptr=ptr;
+  ptr=other.ptr;
+  other.ptr=temp_ptr;
+  const size_t temp_num=num;
+  num=other.num;
+  other.num=temp_num;
+}
+
+void
+GPBufferBaseVM::resize(const size_t n, const size_t t)
+{
+  if(!n && !ptr)
+    {
+      num=0;
+    }
+  else
+    {
+      const size_t s=ptr?(((num<n)?num:n)*t):0;
+      void *nptr;
+      GPBufferBaseVM gnptr(nptr, n, t);
+      if(s)
+        {
+          memcpy(nptr, ptr, s);
+        }
+      swap(gnptr);
+    }
+}
+
+void
+GPBufferBaseVM::set(const size_t t,const char c)
+{
+  if(num)
+    memset(ptr,c,num*t);
+}
+
 
 #ifdef HAVE_NAMESPACES
 }

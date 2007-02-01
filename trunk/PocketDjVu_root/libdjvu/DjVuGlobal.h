@@ -211,31 +211,10 @@ operator delete [] (void *addr) delete_throw_spec
 #else
 
 #include "../VMem/malloc.h"
-# define _djvu_free(ptr) ::siv::vm_free((ptr))
-# define _djvu_malloc(siz) ::siv::vm_malloc((siz))
-# define _djvu_realloc(ptr,siz) ::siv::vm_realloc((ptr),(siz))
-# define _djvu_calloc(siz,items) ::siv::vm_calloc((siz),(items))
-
-// TODO: make this definition visible from the DjVu library only...
-inline void *operator new (size_t sz)
-{
-  return ::siv::vm_malloc( sz );
-}
-
-inline void *operator new[] (size_t sz)
-{
-  return ::siv::vm_malloc( sz );
-}
-
-inline void operator delete (void *p)
-{
-  ::siv::vm_free( p );
-}
-
-inline void operator delete[] (void * p)
-{
-  ::siv::vm_free( p );
-}
+# define _djvu_free(ptr) free((ptr))
+# define _djvu_malloc(siz) malloc((siz))
+# define _djvu_realloc(ptr,siz) realloc((ptr),(siz))
+# define _djvu_calloc(siz,items) calloc((siz),(items))
 
 #endif /* NEED_DJVU_MEMORY */
 
@@ -420,5 +399,3 @@ DJVUEXTERNCAPI(const char *djvu_programname(const char *programname));
 #endif
 
 #endif /* _DJVUGLOBAL_H_ */
-
-

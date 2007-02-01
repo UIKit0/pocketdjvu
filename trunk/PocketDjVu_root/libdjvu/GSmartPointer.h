@@ -471,6 +471,21 @@ private:
   size_t num;
 };
 
+class GPBufferBaseVM
+{
+public:
+  GPBufferBaseVM(void *&,const size_t n,const size_t t);
+  void swap(GPBufferBaseVM &p);
+  void resize(const size_t n,const size_t t);
+  void replace(void *nptr,const size_t n);
+  void set(const size_t t,const char c);
+  ~GPBufferBaseVM();
+  operator int(void) const { return ptr ? num : 0; }
+private:
+  void *&ptr;
+  size_t num;
+};
+
 template<class TYPE>
 class GPBuffer : public GPBufferBase
 {
@@ -482,6 +497,16 @@ public:
   inline operator int(void) const {return GPBufferBase::operator int();}
 };
 
+template<class TYPE>
+class GPBufferVM : public GPBufferBaseVM
+{
+public:
+  GPBufferVM(TYPE *&xptr,const size_t n=0) : GPBufferBaseVM((void *&)xptr,n,sizeof(TYPE)) {}
+  inline void resize(const size_t n) {GPBufferBaseVM::resize(n,sizeof(TYPE));}
+  inline void clear(void) {GPBufferBaseVM::set(sizeof(TYPE),0);}
+  inline void set(const char c) {GPBufferBaseVM::set(sizeof(TYPE),c);}
+  inline operator int(void) const {return GPBufferBaseVM::operator int();}
+};
 
 
 #ifdef HAVE_NAMESPACES

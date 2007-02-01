@@ -133,6 +133,16 @@ struct GPixel
   /// GPixel::RED is initialized to #rgb:255/0/0#.
   static const GPixel RED;
   //@}
+
+  void *operator new[] (size_t sz)
+  {
+    return ::siv::vm_malloc( sz );
+  }
+
+  void operator delete[] (void * p)
+  {
+    ::siv::vm_free( p );
+  }
 };
 
 
