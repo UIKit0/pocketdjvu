@@ -608,6 +608,14 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest"
 			>
 			<File
+				RelativePath=".\res\16x16_true.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\32x32_true.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\MFRTB_toolbar.bmp"
 				>
 			</File>

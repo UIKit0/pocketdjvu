@@ -451,23 +451,32 @@ DEFAULT_MMAP_THRESHOLD       default: 256K
 #   define DEBUG
 #endif
 
-#define LACKS_FCNTL_H
+#define LACKS_FCNTL_H 1
 #define USE_LOCKS 1
 #define ONLY_MSPACES 1
 #define USE_DL_PREFIX 1
+#define FOOTERS 1
 
 inline static size_t time(int)
 {
   return GetTickCount();
 }
 
+// Useful macro for creating your own software exception codes ((C)J. Richter )
+#define MAKESOFTWAREEXCEPTION(Severity, Facility, Exception) \
+    ((DWORD) ( \
+    /* Severity code    */  (Severity      ) |      \
+    /* MS(0) or Cust(1) */  (1        << 29) |      \
+    /* Reserved(0)      */  (0        << 28) |      \
+    /* Facility code    */  (Facility  << 16) |     \
+    /* Exception code   */  (Exception <<  0)))
+
 inline void SivAbort()
 {
 #ifdef DEBUG
   DebugBreak();
 #endif
-  // TODO: use well defined user exception code
-  RaiseException( 5, 0, 0, NULL );
+  RaiseException( MAKESOFTWAREEXCEPTION(11,FACILITY_NULL,5), EXCEPTION_NONCONTINUABLE_EXCEPTION, 0, NULL );
 }
 #define ABORT SivAbort()
 // SIV: }}}

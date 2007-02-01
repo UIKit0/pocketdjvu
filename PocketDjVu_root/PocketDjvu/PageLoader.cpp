@@ -165,6 +165,9 @@ bool CPageLoader::ConstructDIBbyPixmap( int width, int height, GPixmap & pixm )
 
 bool CPageLoader::ConstructDIBbyBitmap( int width, int height, GBitmap & bitmap )
 {
+  // TODO: allocate the image in the Virtual Memory (i.e. in the mapped file) and 
+  //       use SetDIBitsToDevice for drawing instead of BitBlt function
+
   WTL::CBitmap bmp;
   WTL::CClientDC dc( m_hWnd );
   void * pvBits = 0;
@@ -175,7 +178,7 @@ bool CPageLoader::ConstructDIBbyBitmap( int width, int height, GBitmap & bitmap 
   pBmpInfo->bmiHeader.biPlanes            = 1;
   pBmpInfo->bmiHeader.biBitCount          = 8;
   pBmpInfo->bmiHeader.biCompression       = BI_RGB;
-  pBmpInfo->bmiHeader.biSizeImage         = 0;
+  pBmpInfo->bmiHeader.biSizeImage         = 0; //<!!!!! TODO: important for SetDIBitsToDevice
   pBmpInfo->bmiHeader.biXPelsPerMeter     = 3600;
   pBmpInfo->bmiHeader.biYPelsPerMeter     = 3600;
   pBmpInfo->bmiHeader.biClrUsed           = 256;
