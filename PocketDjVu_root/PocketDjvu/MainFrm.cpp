@@ -242,8 +242,8 @@ LRESULT CMainFrame::OnTimer( UINT /*uMsg*/, WPARAM wParamIsTimerID, LPARAM /*lPa
   bHandled = true;
 
   ASSERT( SC_L_TIMER == m_scSate || SC_SH_TIMER == m_scSate );
+  StopTimer();
   m_scSate = SC_SH_TIMER;
-  RunTimerShort();
 
   switch ( m_cursorKey )
   {
@@ -262,6 +262,8 @@ LRESULT CMainFrame::OnTimer( UINT /*uMsg*/, WPARAM wParamIsTimerID, LPARAM /*lPa
       OnPageLeftRight( false, false );
     break;
   }
+
+  RunTimerShort();
 
   return 0;
 }
@@ -659,7 +661,7 @@ LRESULT CMainFrame::OnZoomCmd( WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/,
 
 void CMainFrame::ScrollPagesVert( int & moveY )
 {
-  if ( !moveY )
+  if ( !moveY || m_Pages.empty() )
     return;
 
   if ( moveY>0 )
@@ -705,7 +707,7 @@ void CMainFrame::ScrollPagesVert( int & moveY )
 
 void CMainFrame::ScrollPagesHor( int & moveX )
 {
-  if ( !moveX )
+  if ( !moveX || m_Pages.empty() )
     return;
 
   WTL::CRect r = (*m_Pages.begin())->GetRect();
