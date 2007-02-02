@@ -10,6 +10,9 @@
 #define IDR_MFRTB                       202
 #define IDD_BOOKMARK                    204
 #define IDR_MENU_OKCANCEL               205
+#define IDB_TB_VGA                      206
+#define IDB_BITMAP1                     207
+#define IDB_TB_QVGA                     207
 #define IDC_PAGES                       1000
 #define IDC_EDIT1                       1002
 #define IDC_PG_NUM                      1002
@@ -53,7 +56,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        206
+#define _APS_NEXT_RESOURCE_VALUE        208
 #define _APS_NEXT_COMMAND_VALUE         32797
 #define _APS_NEXT_CONTROL_VALUE         1017
 #define _APS_NEXT_SYMED_VALUE           104

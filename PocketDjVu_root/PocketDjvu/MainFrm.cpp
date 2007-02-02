@@ -120,7 +120,10 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
 
   UIAddToolBar( m_hWndCECommandBar );
 
-  BOOL res = -1 != ::CommandBar_AddBitmap( m_hWndCECommandBar, hinst, nResourceID, nIcon, pData->wWidth, pData->wHeight );
+  bool bVGA = max( GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN) ) > 320;
+  nResourceID = bVGA ? IDB_TB_VGA : IDB_TB_QVGA;
+  
+  BOOL res = -1 != ::CommandBar_AddBitmap( m_hWndCECommandBar, hinst, nResourceID, nIcon, 0, 0 );
   res = res && ::CommandBar_AddButtons( m_hWndCECommandBar, nItems, pButtons );
 
   m_notyfyIcon.Setup( m_hWnd, WM_ICON_NOTIFICATION, IDR_MAINFRAME );
