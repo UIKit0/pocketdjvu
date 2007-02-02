@@ -263,6 +263,8 @@ END
 //
 
 IDR_MFRTB               BITMAP                  "res\\MFRTB_toolbar.bmp"
+IDB_TB_VGA              BITMAP                  "res\\32x32_true.bmp"
+IDB_TB_QVGA             BITMAP                  "res\\16x16_true.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
