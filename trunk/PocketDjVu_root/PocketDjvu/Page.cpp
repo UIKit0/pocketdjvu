@@ -14,7 +14,7 @@ bool CPage::LoadBmpSync()
   if ( !bmpLdr.LoadBmp() )
     return false;
 
-  bmpLdr.StoleBmp( m_Bmp, m_rc );
+  bmpLdr.StoleBmp( m_pBmp, m_rc );
   m_ImgWidth  = bmpLdr.GetImgWidth();
   m_ImgHeight = bmpLdr.GetImgHeight();
 
@@ -23,13 +23,18 @@ bool CPage::LoadBmpSync()
 
 void CPage::Draw( WTL::CDCHandle dc )
 {
-  WTL::CDC bmpDC;
-  bmpDC.CreateCompatibleDC( dc );
-
-  if ( m_Bmp )
+  if ( !m_pBmp )
   {
-    HBITMAP origBmp = bmpDC.SelectBitmap( m_Bmp );
-    dc.BitBlt( m_rc.left, m_rc.top, m_rc.Width(), m_rc.Height(), bmpDC, 0, 0, SRCCOPY );
-    bmpDC.SelectBitmap( origBmp );
+    return;
   }
+  void * pvBits =(char*)m_pBmp + sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD)*m_pBmp->bmiHeader.biClrUsed;
+  int lines = dc.SetDIBitsToDevice(
+                m_rc.left, m_rc.top,
+                m_rc.Width(), m_rc.Height(), 
+                0, 0, 
+                0, m_pBmp->bmiHeader.biHeight,
+                pvBits,
+                m_pBmp,
+                DIB_RGB_COLORS
+              );
 }
