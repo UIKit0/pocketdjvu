@@ -27,12 +27,13 @@ public:
   bool LoadBmp();
   bool LoadBmpImp();
 
-  void StoleBmp( WTL::CBitmap & destBmp, WTL::CRect & rc ) // throw()
+  void StoleBmp( BITMAPINFO *& destpBmp, WTL::CRect & rc ) // throw()
   {
     rc.right  = rc.left + m_Width;
     rc.bottom = rc.top  + m_Height;
 
-    destBmp = m_Bmp.Detach();
+    destpBmp = m_pBmp;
+    m_pBmp = 0;
   }
 
   int GetWidth() const
@@ -73,7 +74,7 @@ private:
   int m_ImgWidth;
   int m_ImgHeight;
   bool m_bWidthMostPrioritized;
-  WTL::CBitmap m_Bmp;
+  BITMAPINFO * m_pBmp;
   /// CCW: 90degree * m_rotation
   int m_rotation;
 };

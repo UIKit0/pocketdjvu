@@ -24,12 +24,17 @@ CPageLoader::CPageLoader( HWND hWnd,
   , m_Height(height)
   , m_ImgWidth()
   , m_ImgHeight()
+  , m_pBmp()
   , m_rotation(rotation)
 {
 }
 
 CPageLoader::~CPageLoader()
 {
+  if ( m_pBmp )
+  {
+    siv::vm_free( m_pBmp );
+  }
 }
 
 bool CPageLoader::LoadBmp()
@@ -123,91 +128,84 @@ void CPageLoader::CalcDimensions( int imgWidth,
 
 bool CPageLoader::ConstructDIBbyPixmap( int width, int height, GPixmap & pixm )
 {
-  WTL::CBitmap bmp;
+  // TODO: Do the same as was done in the ConstructDIBbyBitmap method!!!
 
-  WTL::CClientDC dc( m_hWnd );
-  void * pvBits = 0;
-  BITMAPINFO bmpInfo = {0};
-  bmpInfo.bmiHeader.biSize              = sizeof BITMAPINFOHEADER;
-  bmpInfo.bmiHeader.biWidth             = width;
-  bmpInfo.bmiHeader.biHeight            = height;
-  bmpInfo.bmiHeader.biPlanes            = 1;
-  bmpInfo.bmiHeader.biBitCount          = 24;
-  bmpInfo.bmiHeader.biCompression       = BI_RGB;
-  bmpInfo.bmiHeader.biSizeImage         = 0;
-  bmpInfo.bmiHeader.biXPelsPerMeter     = 3600;
-  bmpInfo.bmiHeader.biYPelsPerMeter     = 3600;
-  bmpInfo.bmiHeader.biClrUsed           = 0;
-  bmpInfo.bmiHeader.biClrImportant      = 0;
+  //WTL::CBitmap bmp;
 
-  bmp.CreateDIBSection( dc.m_hDC, &bmpInfo, DIB_RGB_COLORS, &pvBits, 0, 0 );
-  if ( !bmp )
-    return false;
+  //WTL::CClientDC dc( m_hWnd );
+  //void * pvBits = 0;
+  //BITMAPINFO bmpInfo = {0};
+  //bmpInfo.bmiHeader.biSize              = sizeof BITMAPINFOHEADER;
+  //bmpInfo.bmiHeader.biWidth             = width;
+  //bmpInfo.bmiHeader.biHeight            = height;
+  //bmpInfo.bmiHeader.biPlanes            = 1;
+  //bmpInfo.bmiHeader.biBitCount          = 24;
+  //bmpInfo.bmiHeader.biCompression       = BI_RGB;
+  //bmpInfo.bmiHeader.biSizeImage         = 0;
+  //bmpInfo.bmiHeader.biXPelsPerMeter     = 3600;
+  //bmpInfo.bmiHeader.biYPelsPerMeter     = 3600;
+  //bmpInfo.bmiHeader.biClrUsed           = 0;
+  //bmpInfo.bmiHeader.biClrImportant      = 0;
 
-  int const ct_ass = 1/int(sizeof(GPixel)==3);
-  ATLASSERT( pixm.columns() == width );
-  ATLASSERT( pixm.rows() == height );
-  
-  //memcpy( pvBits, pixm[0] , width*height*3 );
-  unsigned char * pPix = (unsigned char*)pvBits;
-  int bytesInRow = ((width*3+3)>>2)<<2;
-  for ( int i=0; i<height; ++i )
-  {
-    GPixel * pRow = pixm[i];
-    memcpy( pPix, pRow, width*3 );
-    pPix += bytesInRow;
-  }
+  //bmp.CreateDIBSection( dc.m_hDC, &bmpInfo, DIB_RGB_COLORS, &pvBits, 0, 0 );
+  //if ( !bmp )
+  //  return false;
 
-  m_Bmp = bmp.Detach();
+  //int const ct_ass = 1/int(sizeof(GPixel)==3);
+  //ATLASSERT( pixm.columns() == width );
+  //ATLASSERT( pixm.rows() == height );
+  //
+  ////memcpy( pvBits, pixm[0] , width*height*3 );
+  //unsigned char * pPix = (unsigned char*)pvBits;
+  //int bytesInRow = ((width*3+3)>>2)<<2;
+  //for ( int i=0; i<height; ++i )
+  //{
+  //  GPixel * pRow = pixm[i];
+  //  memcpy( pPix, pRow, width*3 );
+  //  pPix += bytesInRow;
+  //}
+
+  //m_Bmp = bmp.Detach();
 
   return true;
 }
 
 bool CPageLoader::ConstructDIBbyBitmap( int width, int height, GBitmap & bitmap )
 {
-  // TODO: allocate the image in the Virtual Memory (i.e. in the mapped file) and 
-  //       use SetDIBitsToDevice for drawing instead of BitBlt function
-
-  WTL::CBitmap bmp;
-  WTL::CClientDC dc( m_hWnd );
-  void * pvBits = 0;
-  BITMAPINFO * pBmpInfo = (BITMAPINFO*)_alloca( sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD)*256 );
-  pBmpInfo->bmiHeader.biSize              = sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD)*256;
-  pBmpInfo->bmiHeader.biWidth             = width;
-  pBmpInfo->bmiHeader.biHeight            = height;
-  pBmpInfo->bmiHeader.biPlanes            = 1;
-  pBmpInfo->bmiHeader.biBitCount          = 8;
-  pBmpInfo->bmiHeader.biCompression       = BI_RGB;
-  pBmpInfo->bmiHeader.biSizeImage         = 0; //<!!!!! TODO: important for SetDIBitsToDevice
-  pBmpInfo->bmiHeader.biXPelsPerMeter     = 3600;
-  pBmpInfo->bmiHeader.biYPelsPerMeter     = 3600;
-  pBmpInfo->bmiHeader.biClrUsed           = 256;
-  pBmpInfo->bmiHeader.biClrImportant      = 0;
-  for ( int i=0; i<256; ++i )
-  {
-    pBmpInfo->bmiColors[i].rgbBlue      = 255 - i;
-    pBmpInfo->bmiColors[i].rgbGreen     = 255 - i;
-    pBmpInfo->bmiColors[i].rgbRed       = 255 - i;
-    pBmpInfo->bmiColors[i].rgbReserved  = 0;
-  }
-
-  bmp.CreateDIBSection( dc.m_hDC, pBmpInfo, DIB_RGB_COLORS, &pvBits, 0, 0 );
-  if ( !bmp )
-    return false;
-
   ATLASSERT( bitmap.columns() == width );
   ATLASSERT( bitmap.rows() == height );
   
-  unsigned char * pPix = (unsigned char*)pvBits;
+  unsigned const HEADER_SIZE = sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD)*256;
   int bytesInRow = ((width+3)>>2)<<2;
+  unsigned bitmapSize = HEADER_SIZE + bytesInRow*height;
+
+  m_pBmp = (BITMAPINFO *)siv::vm_malloc( bitmapSize );
+
+  m_pBmp->bmiHeader.biSize              = sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD)*256;
+  m_pBmp->bmiHeader.biWidth             = width;
+  m_pBmp->bmiHeader.biHeight            = height;
+  m_pBmp->bmiHeader.biPlanes            = 1;
+  m_pBmp->bmiHeader.biBitCount          = 8;
+  m_pBmp->bmiHeader.biCompression       = BI_RGB;
+  m_pBmp->bmiHeader.biSizeImage         = 0;
+  m_pBmp->bmiHeader.biXPelsPerMeter     = 3600;
+  m_pBmp->bmiHeader.biYPelsPerMeter     = 3600;
+  m_pBmp->bmiHeader.biClrUsed           = 256;
+  m_pBmp->bmiHeader.biClrImportant      = 0;
+  for ( int i=0; i<256; ++i )
+  {
+    m_pBmp->bmiColors[i].rgbBlue      = 255 - i;
+    m_pBmp->bmiColors[i].rgbGreen     = 255 - i;
+    m_pBmp->bmiColors[i].rgbRed       = 255 - i;
+    m_pBmp->bmiColors[i].rgbReserved  = 0;
+  }
+
+  unsigned char * pPix = (unsigned char*)m_pBmp + HEADER_SIZE;
   for ( int i=0; i<height; ++i )
   {
     unsigned char * pRow = bitmap[i];
     memcpy( pPix, pRow, width );
     pPix += bytesInRow;
   }
-
-  m_Bmp = bmp.Detach();
-
   return true;
 }

@@ -14,6 +14,7 @@ public:
          int pageIndex ) : 
     m_hWnd(hWnd)
     , m_pDjVuDoc(pDjVuDoc)
+    , m_pBmp()
     , m_bWidthMostPrioritized(bWidthMostPrioritized)
     , m_rc(rect)
     , m_ImgWidth()
@@ -22,10 +23,13 @@ public:
   {
     m_rc.NormalizeRect();
   }
-
-  virtual WTL::CBitmap const & GetBmp() const
+    
+  virtual ~CPage()
   {
-    return m_Bmp;
+    if ( m_pBmp )
+    {
+      siv::vm_free( m_pBmp );
+    }
   }
 
   virtual int GetPageIndex() const
@@ -69,7 +73,7 @@ private:
 private:
   HWND m_hWnd;
   GP<DjVuDocument> m_pDjVuDoc;
-  WTL::CBitmap m_Bmp;
+  BITMAPINFO * m_pBmp;
   WTL::CRect   m_rc;
   int m_ImgWidth;
   int m_ImgHeight;

@@ -735,7 +735,6 @@ void CMainFrame::ScrollPagesHor( int & moveX )
 
 void CMainFrame::ClearRedundantCache()
 {
-  int const cacheMax = 2;
   int i1 = -1;
   int i2 = -1;
   
@@ -759,12 +758,12 @@ void CMainFrame::ClearRedundantCache()
     }
   }
 
-  for ( c = m_Pages.size()-1; c-i2 > cacheMax; --c )
+  for ( c = m_Pages.size()-1; c-i2 > g_cCacheMax; --c )
   {
     m_Pages.pop_back();
   }
 
-  for ( c = 0; i1-c > cacheMax; ++c )
+  for ( c = 0; i1-c > g_cCacheMax; ++c )
   {
     m_Pages.pop_front();
   }
