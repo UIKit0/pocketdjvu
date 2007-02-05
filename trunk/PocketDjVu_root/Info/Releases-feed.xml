@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>PocketDjVu updates notification.</title>
+        <description>If you want to keep up to date PocketDjVu installed on your handheld PC you could subscribe on this feed.</description>
+        <link>http://Igor.Solovyov.googlepages.com</link>
+        <lastBuildDate>Mon, 5 Feb 2007 11:23:16 +0200</lastBuildDate>
+        <pubDate>Mon, 5 Feb 2007 11:23:16 +0200</pubDate>
+        <generator>Hands made :-) (see http://blogs.law.harvard.edu/tech/rss)</generator>
+      
+        <image>
+            <url>http://igor.solovyov.googlepages.com/capture001.png/capture001-medium.jpg</url>
+            <title>PocketDjVu</title>
+            <link>http://Igor.Solovyov.googlepages.com</link>
+            <description>RSS specifications, everything you need to know about rss.</description>          
+        </image>
+      
+        
+      <item>
+        <title>The PocketDjVu 0.9.3.3 is released.</title>
+        <link>http://code.google.com/p/pocketdjvu/downloads/list</link>
+        <guid isPermaLink="false">{423731C9-F7AF-4624-B7BA-8675E076D42A}</guid>
+        <pubDate>Mon, 8 Jan 2007 13:00:00 +0200</pubDate>
+        <description>
+          The changes made in the 0.9.3.3 version you can find
+          <![CDATA[
+          <a href="http://pocketdjvu.googlecode.com/svn/tags/PocketDjVu_root_v.0.9.3.3/PocketDjvu/changes.txt">here</a>
+          ]]>
+        </description>
+      </item>
+
+      <item>
+        <title>PocketDjVu RSS feed is launched.</title>
+        <link>http://Igor.Solovyov.googlepages.com</link>
+        <guid isPermaLink="false">{D4C211F0-0897-45cc-B3BB-9985B2647D92}</guid>
+        <pubDate>Mon, 8 Jan 2007 00:00:00 +0200</pubDate>
+
+        <description>
+          From now you can be informed about latest PockatDjVu releases with help of thiss RSS feed.
+          <![CDATA[
+            ]]>
+        </description>
+      </item>
+
+    </channel>
+</rss>
