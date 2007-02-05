@@ -2746,10 +2746,18 @@
 				</FileConfiguration>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\changes.txt"
+		<Filter
+			Name="Info"
 			>
-		</File>
+			<File
+				RelativePath="..\Info\changes.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\Info\Releases-feed.xml"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 		<Global
