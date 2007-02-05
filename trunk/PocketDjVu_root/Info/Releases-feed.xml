@@ -6,13 +6,13 @@
         <link>http://Igor.Solovyov.googlepages.com</link>
         <lastBuildDate>Mon, 5 Feb 2007 11:23:16 +0200</lastBuildDate>
         <pubDate>Mon, 5 Feb 2007 11:23:16 +0200</pubDate>
-        <generator>Hands made :-) (see http://blogs.law.harvard.edu/tech/rss)</generator>
+        <generator>Hand made :-) (see http://blogs.law.harvard.edu/tech/rss)</generator>
       
         <image>
             <url>http://igor.solovyov.googlepages.com/capture001.png/capture001-medium.jpg</url>
             <title>PocketDjVu</title>
             <link>http://Igor.Solovyov.googlepages.com</link>
-            <description>RSS specifications, everything you need to know about rss.</description>          
+            <description>PocketDjVu updates notification.</description>          
         </image>
       
         
@@ -22,7 +22,7 @@
         <guid isPermaLink="false">{423731C9-F7AF-4624-B7BA-8675E076D42A}</guid>
         <pubDate>Mon, 8 Jan 2007 13:00:00 +0200</pubDate>
         <description>
-          The changes made in the 0.9.3.3 version you can find
+          The changes made in 0.9.3.3 version you can find
           <![CDATA[
           <a href="http://pocketdjvu.googlecode.com/svn/tags/PocketDjVu_root_v.0.9.3.3/PocketDjvu/changes.txt">here</a>
           ]]>

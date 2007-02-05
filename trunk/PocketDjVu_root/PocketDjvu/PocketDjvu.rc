@@ -294,7 +294,7 @@ BEGIN
     IDS_DISMISS             "Dismiss"
     IDS_DISMISS_LINK        "<br><a href=""cmd:%d"">Dismiss</a>."
     IDS_WARNING             "Warning"
-    IDS_ZOOM_TOO_MUCH       "The trying zoom factor is too much for so small RAM amont."
+    IDS_ZOOM_TOO_MUCH       "Zoom factor chosen is too large for so small RAM."
 END
 
 STRINGTABLE 
@@ -378,4 +378,14 @@ END
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
 
