@@ -291,6 +291,10 @@ END
 STRINGTABLE 
 BEGIN
     IDR_MAINFRAME           "PocketDjvu"
+    IDS_DISMISS             "Dismiss"
+    IDS_DISMISS_LINK        "<br><a href=""cmd:%d"">Dismiss</a>."
+    IDS_WARNING             "Warning"
+    IDS_ZOOM_TOO_MUCH       "The trying zoom factor is too much for so small RAM amont."
 END
 
 STRINGTABLE 

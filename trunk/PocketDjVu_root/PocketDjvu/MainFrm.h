@@ -69,6 +69,7 @@ public:
     COMMAND_ID_HANDLER(ID_SCROLL_BY_TAP, OnScrollByTap)
     COMMAND_ID_HANDLER(ID_MOVE_BY_STYLUS, OnMoveByStylus)
     COMMAND_ID_HANDLER(ID_NAVIGATE_BOOKMARK, OnBookmark)
+    COMMAND_ID_HANDLER(ID_NOFIFY_1, OnNofify_1)    
     CHAIN_MSG_MAP(CDoubleBufferImpl<CMainFrame>)
     CHAIN_MSG_MAP(CUpdateUI<CMainFrame>)
     CHAIN_MSG_MAP(CFrameWindowImpl<CMainFrame>)
@@ -101,6 +102,7 @@ public:
   LRESULT OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
   LRESULT OnTrayNotyfy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
   LRESULT OnBookmark(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+  LRESULT OnNofify_1(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
   void DoPaint( WTL::CDCHandle dc );
   void AppSave();
@@ -139,6 +141,7 @@ private:
   void StopTimer();
   void FinishCtrl();
   void CalcZoomKandOffset( WTL::CRect & r );
+  void ShowZoomWarning();
 
   template <int ID, typename TCtrl>
   void OnCtrlButton()

@@ -6,11 +6,15 @@
 v.0.9.4.....
 =================
 # - Not English characters in the file names are now supported.
+# - The "gray background" problem (i.e. no enought RAM for too large zoom factor) was fixed.
++ - The notification show possibility is created (e.g. for too large zoom factor).
 + - The hyperlink ho the PocketDjVu homepage was added to About dialog box.
-+ - Bookmark dialog (in progress)...
 + - Significantly reduced the amount of needed RAM for loading and drawing of page images.
++ - The new toolbar icons were added.
++ - The RSS feed was created (http://pocketdjvu.googlecode.com/svn/trunk/PocketDjVu_root/Info/Releases-feed.xml).
+
 + - Virtual Memory (VM) manager was created and used (in progress)...
-+ - new toolbar icons (in progress)...
++ - Bookmark dialog (in progress)...
 
 v.0.9.3
 =================
