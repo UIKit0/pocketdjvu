@@ -185,7 +185,7 @@ GPBase::assign (const GPBase &sptr)
 
 // ------ GPBUFFERBASE
 
-
+/********
 void
 GPBufferBase::replace(void *nptr,const size_t n)
 {
@@ -245,7 +245,7 @@ GPBufferBase::set(const size_t t,const char c)
   if(num)
     memset(ptr,c,num*t);
 }
-
+*************/
 //----------- VM ---------------
 void
 GPBufferBaseVM::replace(void *nptr,const size_t n)
@@ -284,20 +284,20 @@ void
 GPBufferBaseVM::resize(const size_t n, const size_t t)
 {
   if(!n && !ptr)
-    {
-      num=0;
-    }
+  {
+    num=0;
+  }
   else
+  {
+    const size_t s=ptr?(((num<n)?num:n)*t):0;
+    void *nptr; //TODO: for case num<n don't copy but call realloc!
+    GPBufferBaseVM gnptr(nptr, n, t);
+    if(s)
     {
-      const size_t s=ptr?(((num<n)?num:n)*t):0;
-      void *nptr;
-      GPBufferBaseVM gnptr(nptr, n, t);
-      if(s)
-        {
-          memcpy(nptr, ptr, s);
-        }
-      swap(gnptr);
+      memcpy(nptr, ptr, s);
     }
+    swap(gnptr);
+  }
 }
 
 void

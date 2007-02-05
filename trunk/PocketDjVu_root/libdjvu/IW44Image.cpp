@@ -676,7 +676,7 @@ IW44Image::Map::image(signed char *img8, int rowsize, int pixsep, int fast)
 {
   // Allocate reconstruction buffer
   short *data16;
-  GPBuffer<short> gdata16(data16,bw*bh);
+  GPBufferVM<short> gdata16(data16,bw*bh); // <- SIV: VM was added
   // Copy coefficients
   int i;
   short *p = data16;
@@ -779,7 +779,7 @@ IW44Image::Map::image(int subsample, const GRect &rect,
   int dataw = work.xmax - work.xmin;     // Note: cannot use inline width() or height()
   int datah = work.ymax - work.ymin;     // because Intel C++ compiler optimizes it wrong !
   short *data;
-  GPBuffer<short> gdata(data,dataw*datah);
+  GPBufferVM<short> gdata(data,dataw*datah); // <- SIV: VM was added
   // Fill working rectangle
   // -- loop over liftblocks rows
   short *ldata = data;

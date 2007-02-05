@@ -19,22 +19,35 @@ extern "C"
 namespace siv
 {
 
+  //static wchar_t const * g_cSwapFileName = L"\\swap.map";
   static wchar_t const * g_cSwapFileName = L"\\SD Card\\file.map";
   //static wchar_t const * g_cSwapFileName = L"\\Storage Card\\file.map";
   //---------------------------------------------------------------------------
   class CMemInit
   {
   private:
-    explicit CMemInit( wchar_t const * szSwapFileName, unsigned sizeMB = 128 ) :
+    explicit CMemInit( wchar_t const * szSwapFileName, unsigned sizeMB = 88/*128*/ ) :
       m_baseAddr()
       , m_size(sizeMB*1024*1024)
       , m_err()
       , m_msp()
     {
-      // TODO: check if exist and not create in such case
+      DWORD dwCreateDisposition = CREATE_ALWAYS;
+      WIN32_FILE_ATTRIBUTE_DATA fad = {0};
+      BOOL res = GetFileAttributesEx( szSwapFileName, GetFileExInfoStandard, &fad );
+      if ( res )
+      {
+        if ( fad.nFileSizeLow >= m_size )
+        {
+          dwCreateDisposition = OPEN_EXISTING;
+        }
+      }
+
       HANDLE hF = CreateFile( szSwapFileName, GENERIC_READ|GENERIC_WRITE,
-                            FILE_SHARE_READ,
-                            NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL );
+                              FILE_SHARE_READ,
+                              NULL, dwCreateDisposition,
+                              FILE_ATTRIBUTE_NORMAL |FILE_FLAG_NO_BUFFERING|FILE_FLAG_RANDOM_ACCESS,
+                              NULL );
       if ( INVALID_HANDLE_VALUE == hF )
       {
         m_err = GetLastError();
