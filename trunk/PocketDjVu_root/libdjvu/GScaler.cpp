@@ -690,8 +690,6 @@ GPixmapScaler::scale( const GRect &provided_input, const GPixmap &input,
       }
     }
 
-  Вот эти оставь виртуальными, а остальные верни взад ;-)
-
   // Free temporaries
   gp1.resize(0,sizeof(GPixel));
   gp2.resize(0,sizeof(GPixel));

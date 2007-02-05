@@ -473,13 +473,12 @@ inline static size_t time(int)
     /* Reserved(0)      */  (0        << 28) |      \
     /* Facility code    */  (Facility  << 16) |     \
     /* Exception code   */  (Exception <<  0)))
-#define ABORT SivAbort()
 
 inline void SivAbort()
 {
   RaiseException( MAKESOFTWAREEXCEPTION(11,FACILITY_NULL,5), EXCEPTION_NONCONTINUABLE_EXCEPTION, 0, NULL );
 }
-
+#define ABORT SivAbort()
 // SIV: }}}
 
 #   define WIN32_LEAN_AND_MEAN
@@ -2196,9 +2195,9 @@ static int has_segment_link(mstate m, msegmentptr ss) {
 
 /* Ensure locks are initialized */
 #define GLOBALLY_INITIALIZE() (mparams.page_size == 0 && init_mparams())
+
 #define PREACTION(M)  ((GLOBALLY_INITIALIZE() || use_lock(M))? ACQUIRE_LOCK(&(M)->mutex) : 0)
 #define POSTACTION(M) { if (use_lock(M)) RELEASE_LOCK(&(M)->mutex); }
-
 #else /* USE_LOCKS */
 
 #ifndef PREACTION

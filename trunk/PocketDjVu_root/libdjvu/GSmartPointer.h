@@ -456,20 +456,20 @@ GP<TYPE>::operator! () const
    What does it do that a GArray does not do ? 
    What about the objects construction and destruction ? */
 
-//class GPBufferBase
-//{
-//public:
-//  GPBufferBase(void *&,const size_t n,const size_t t);
-//  void swap(GPBufferBase &p);
-//  void resize(const size_t n,const size_t t);
-//  void replace(void *nptr,const size_t n);
-//  void set(const size_t t,const char c);
-//  ~GPBufferBase();
-//  operator int(void) const { return ptr ? num : 0; }
-//private:
-//  void *&ptr;
-//  size_t num;
-//};
+class GPBufferBase
+{
+public:
+  GPBufferBase(void *&,const size_t n,const size_t t);
+  void swap(GPBufferBase &p);
+  void resize(const size_t n,const size_t t);
+  void replace(void *nptr,const size_t n);
+  void set(const size_t t,const char c);
+  ~GPBufferBase();
+  operator int(void) const { return ptr ? num : 0; }
+private:
+  void *&ptr;
+  size_t num;
+};
 
 class GPBufferBaseVM
 {
@@ -485,8 +485,6 @@ private:
   void *&ptr;
   size_t num;
 };
-
-typedef GPBufferBaseVM GPBufferBase; //temporary...
 
 template<class TYPE>
 class GPBuffer : public GPBufferBase
