@@ -26,7 +26,7 @@ namespace siv
   class CMemInit
   {
   private:
-    explicit CMemInit( wchar_t const * szSwapFileName, unsigned sizeMB = 88/*128*/ ) :
+    explicit CMemInit( wchar_t const * szSwapFileName, unsigned sizeMB = 64/*128*/ ) :
       m_baseAddr()
       , m_size(sizeMB*1024*1024)
       , m_err()
