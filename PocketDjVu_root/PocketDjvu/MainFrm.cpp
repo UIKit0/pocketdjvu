@@ -16,6 +16,7 @@
 #include "ScrollByTap.h"
 #include "MoveByStylus.h"
 #include "BookmarkDlg.h"
+#include "./misc.h"
 
 CMainFrame::CMainFrame() :
   m_bFullScreen(false)
@@ -479,8 +480,8 @@ LRESULT CMainFrame::OnAppAbout( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 
 LRESULT CMainFrame::OnToolsOptions(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-  // TODO: implement options dialog
-  MessageBox( L"OnToolsOptions", L"TODO..." );
+  // TODO:
+  ShowNotification( m_hWnd, L"Not implemented", L"This feature is not implemented yet.<br>Be patient, please." );
 
   return 0;
 }
@@ -567,9 +568,9 @@ LRESULT CMainFrame::OnSettingChange( UINT /*uMsg*/, WPARAM wParam, LPARAM /*lPar
 
   if ( m_curClientWidth != width )
   {
-    PagePtr pg = GetCurrentPage();
+    PagePtr pCurPg = GetCurrentPage();
     m_Pages.clear();
-    WTL::CRect r = pg->GetRect();
+    WTL::CRect r = pCurPg->GetRect();
     double k = double(width) / m_curClientWidth;
     r.left   = Round( k * r.left );
     r.top    = Round( k * r.top );
@@ -579,19 +580,28 @@ LRESULT CMainFrame::OnSettingChange( UINT /*uMsg*/, WPARAM wParam, LPARAM /*lPar
     m_curClientWidth = width;
    
     Invalidate();
-    pg.Reset( new CPage( m_hWnd, m_pDjVuDoc, r, true, pg->GetPageIndex() ) );
+    PagePtr pNewPage( new CPage( m_hWnd, m_pDjVuDoc, r, true, pCurPg->GetPageIndex() ) );
     WTL::CWaitCursor wc;
-    if ( !pg->LoadBmpSync() )
+    if ( !pNewPage->LoadBmpSync() )
     {
-      // TODO: restore previous state, because we have here all pages are deleted
-      return 0;
+      pNewPage = pCurPg;
+      ShowZoomWarning();
     }
-    m_Pages.push_back( pg );
+    m_Pages.push_back( pNewPage );
     m_bDirty = true;
     PageLayout();
   }
 
   return 0;
+}
+
+void CMainFrame::ShowZoomWarning()
+{
+  WTL::CString szWarning;
+  szWarning.LoadString( IDS_WARNING );
+  WTL::CString szZoomTooMuch;
+  szWarning.LoadString( IDS_ZOOM_TOO_MUCH );
+  ShowNotification( m_hWnd, szWarning, szZoomTooMuch );
 }
 
 LRESULT CMainFrame::OnZoomCmd( WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& bHandled )
@@ -1185,14 +1195,14 @@ void CMainFrame::CalcZoomKandOffset( WTL::CRect & r )
  
   WTL::CWaitCursor wc;
   Invalidate();
-  pCurPg.Reset( new CPage( m_hWnd, m_pDjVuDoc, pR, true, index ) );
-  if ( !pCurPg->LoadBmpSync() )
+  PagePtr pNewPage( new CPage( m_hWnd, m_pDjVuDoc, pR, true, index ) );
+  if ( !pNewPage->LoadBmpSync() )
   {
-    // TODO: restore previous mode, because here we have all pages are deleted
-    return;
+    pNewPage = pCurPg;
+    ShowZoomWarning();
   }
  
-  m_Pages.push_back( pCurPg );
+  m_Pages.push_back( pNewPage );
   m_bDirty = true;
   PageLayout();
 }
@@ -1309,5 +1319,14 @@ LRESULT CMainFrame::OnBookmark( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
   CBookmarkInfo bi( visPgInd, r /*TODO: , m_bPortrait */ );
   CBookmarkDlg dlg( m_pDjVuDoc ? m_mru[0].m_curFillFileName : (wchar_t const * )0, bi );
   dlg.DoModal();
+  return 0;
+}
+
+LRESULT CMainFrame::OnNofify_1( WORD /*wNotifyCode*/,WORD /*wID*/,HWND /*hWndCtl*/,BOOL& bHandled )
+{
+  bHandled = true;
+
+  NotificationRemove();
+
   return 0;
 }

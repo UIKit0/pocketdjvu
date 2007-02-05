@@ -7,11 +7,16 @@
 #define IDD_ABOUTBOX                    100
 #define IDD_GOTO_PAGE                   102
 #define IDR_MAINFRAME                   128
+#define IDS_DISMISS                     129
+#define IDS_STRING208                   130
+#define IDS_DISMISS_LINK                130
+#define IDS_WARNING                     131
+#define IDS_STRING132                   132
+#define IDS_ZOOM_TOO_MUCH               132
 #define IDR_MFRTB                       202
 #define IDD_BOOKMARK                    204
 #define IDR_MENU_OKCANCEL               205
 #define IDB_TB_VGA                      206
-#define IDB_BITMAP1                     207
 #define IDB_TB_QVGA                     207
 #define IDC_PAGES                       1000
 #define IDC_EDIT1                       1002
@@ -49,14 +54,14 @@
 #define ID_SCROLL_BY_TAP                32792
 #define ID_ZOOMSCROLL_MOVEBYSTYLUS      32793
 #define ID_NAVIGATE_BOOKMARK            32794
-#define ID_OK                           32795
-#define ID_CANCEL                       32796
+#define ID_NOFIFY_1                     32795
+#define ID_NOFIFY_2                     32796
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        208
+#define _APS_NEXT_RESOURCE_VALUE        209
 #define _APS_NEXT_COMMAND_VALUE         32797
 #define _APS_NEXT_CONTROL_VALUE         1017
 #define _APS_NEXT_SYMED_VALUE           104
