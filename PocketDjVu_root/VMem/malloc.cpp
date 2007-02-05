@@ -448,14 +448,17 @@ DEFAULT_MMAP_THRESHOLD       default: 256K
 #ifdef WIN32
 // {{{ SIV:
 #if defined _DEBUG && !defined DEBUG
-#   define DEBUG
+#   define DEBUG 1
 #endif
 
 #define LACKS_FCNTL_H 1
+// TODO: v- if 1 set then the troubles were observed in the free (i.e. deadlock) by unknown reason.
+// Investigate why!
 #define USE_LOCKS 1
 #define ONLY_MSPACES 1
 #define USE_DL_PREFIX 1
-#define FOOTERS 1
+#define FOOTERS 0
+//#define INSECURE 1
 
 inline static size_t time(int)
 {
@@ -470,15 +473,13 @@ inline static size_t time(int)
     /* Reserved(0)      */  (0        << 28) |      \
     /* Facility code    */  (Facility  << 16) |     \
     /* Exception code   */  (Exception <<  0)))
+#define ABORT SivAbort()
 
 inline void SivAbort()
 {
-#ifdef DEBUG
-  DebugBreak();
-#endif
   RaiseException( MAKESOFTWAREEXCEPTION(11,FACILITY_NULL,5), EXCEPTION_NONCONTINUABLE_EXCEPTION, 0, NULL );
 }
-#define ABORT SivAbort()
+
 // SIV: }}}
 
 #   define WIN32_LEAN_AND_MEAN
@@ -1462,14 +1463,31 @@ static MLOCK_T magic_init_mutex = PTHREAD_MUTEX_INITIALIZER;
 #else /* WIN32 */
 
 // SIV: {{{
+#if 1 // <- SIV:
 #define MLOCK_T CRITICAL_SECTION
 
-#define INITIAL_LOCK(l)      InitializeCriticalSection(l)
-#define ACQUIRE_LOCK(l)      (EnterCriticalSection(l),0)
-#define RELEASE_LOCK(l)      LeaveCriticalSection(l)
+//#define INITIAL_LOCK(l)      InitializeCriticalSection(l)
+//#define ACQUIRE_LOCK(l)      (EnterCriticalSection(l),0)
+//#define RELEASE_LOCK(l)      LeaveCriticalSection(l)
+
+static inline void INITIAL_LOCK( LPCRITICAL_SECTION l )
+{
+  InitializeCriticalSection( l );
+}
+
+static inline int ACQUIRE_LOCK( LPCRITICAL_SECTION l )
+{
+  EnterCriticalSection( l );
+  return 0;
+}
+
+static inline void RELEASE_LOCK( LPCRITICAL_SECTION l )
+{
+  LeaveCriticalSection( l );
+}
 
 // SIV: }}}
-#if 0 // <- SIV:
+#else // <- SIV:
 /*
    Because lock-protected regions have bounded times, and there
    are no recursive lock calls, we can use simple spinlocks.
@@ -1501,7 +1519,8 @@ static void win32_release_lock (MLOCK_T *sl) {
 #if HAVE_MORECORE
 static MLOCK_T morecore_mutex;
 #endif /* HAVE_MORECORE */
-static MLOCK_T magic_init_mutex;
+// SIV: it's redundant for pocket DjVu. And also here we have the lack of InitCriticalSection call.
+//static MLOCK_T magic_init_mutex;
 #endif /* WIN32 */
 
 #define USE_LOCK_BIT               (2U)
@@ -2177,9 +2196,9 @@ static int has_segment_link(mstate m, msegmentptr ss) {
 
 /* Ensure locks are initialized */
 #define GLOBALLY_INITIALIZE() (mparams.page_size == 0 && init_mparams())
-
 #define PREACTION(M)  ((GLOBALLY_INITIALIZE() || use_lock(M))? ACQUIRE_LOCK(&(M)->mutex) : 0)
 #define POSTACTION(M) { if (use_lock(M)) RELEASE_LOCK(&(M)->mutex); }
+
 #else /* USE_LOCKS */
 
 #ifndef PREACTION
@@ -2527,14 +2546,16 @@ static int init_mparams(void) {
 #else /* (FOOTERS && !INSECURE) */
     s = (size_t)0x58585858U;
 #endif /* (FOOTERS && !INSECURE) */
-    ACQUIRE_MAGIC_INIT_LOCK();
+    // SIV: it's redundant for pocket DjVu. And also here we have the lack of InitCriticalSection call.
+    // ACQUIRE_MAGIC_INIT_LOCK();
     if (mparams.magic == 0) {
       mparams.magic = s;
       /* Set up lock for main malloc area */
       INITIAL_LOCK(&gm->mutex);
       gm->mflags = mparams.default_mflags;
     }
-    RELEASE_MAGIC_INIT_LOCK();
+    // SIV: see above
+    //RELEASE_MAGIC_INIT_LOCK();
 
 #ifndef WIN32
     mparams.page_size = malloc_getpagesize;
