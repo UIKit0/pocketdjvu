@@ -221,13 +221,13 @@ protected:
   unsigned char *get_line(int, const GRect &, const GRect &, const GBitmap &);
   // Temporaries
   unsigned char *lbuffer;
-  GPBuffer<unsigned char> glbuffer;
+  GPBufferVM<unsigned char> glbuffer;
   unsigned char *conv;
   GPBuffer<unsigned char> gconv;
   unsigned char *p1;
-  GPBuffer<unsigned char> gp1;
+  GPBufferVM<unsigned char> gp1;
   unsigned char *p2;
-  GPBuffer<unsigned char> gp2;
+  GPBufferVM<unsigned char> gp2;
   int l1;
   int l2;
 };
@@ -292,11 +292,11 @@ protected:
   GPixel *get_line(int, const GRect &, const GRect &, const GPixmap &);
   // Temporaries
   GPixel *lbuffer;
-  GPBufferBase glbuffer;
+  GPBufferBaseVM glbuffer;
   GPixel *p1;
-  GPBufferBase gp1;
+  GPBufferBaseVM gp1;
   GPixel *p2;
-  GPBufferBase gp2;
+  GPBufferBaseVM gp2;
   int    l1;
   int    l2;
 };

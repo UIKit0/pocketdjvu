@@ -185,7 +185,6 @@ GPBase::assign (const GPBase &sptr)
 
 // ------ GPBUFFERBASE
 
-/********
 void
 GPBufferBase::replace(void *nptr,const size_t n)
 {
@@ -245,7 +244,7 @@ GPBufferBase::set(const size_t t,const char c)
   if(num)
     memset(ptr,c,num*t);
 }
-*************/
+
 //----------- VM ---------------
 void
 GPBufferBaseVM::replace(void *nptr,const size_t n)
