@@ -24,8 +24,7 @@ namespace siv
 {
 
   static WTL::CString g_SwapFileName( L"\\SD Card\\file.swp" );
-  //static WTL::CString g_SwapFileName( L"\\Storage Card\\file.map" );
-  static unsigned g_SizeMB = 64;
+  static DWORD g_SizeMB = 64;
   //---------------------------------------------------------------------------
   class CMemInit
   {
@@ -122,11 +121,32 @@ namespace siv
     //.........................................................................
     static bool ReadRegValues()
     {
-      // TODO: Implement it!
-      // APP_REG_PATH
-      // g_SwapFileName
-      // g_SizeMB
-      return false;
+      ATL::CRegKey rk;
+      WTL::CString path( APP_REG_PATH );
+      path += L"\\VM\\";
+
+      bool res = ERROR_SUCCESS == rk.Open( HKEY_CURRENT_USER, path );
+      if ( !res )
+      {
+        return false;
+      }
+
+      g_SizeMB = 0;
+      res = (ERROR_SUCCESS == rk.QueryDWORDValue( L"SizeMB", g_SizeMB )) && g_SizeMB;
+      if ( !res || g_SizeMB < g_cSwapLowLimitMB || g_cSwapUpperLimitMB < g_SizeMB )
+      {
+        return false;
+      }
+
+      
+      ULONG nChars = MAX_PATH;
+      res = 
+        ERROR_SUCCESS == rk.QueryStringValue( L"SwapFileName", 
+                                              g_SwapFileName.GetBufferSetLength(nChars),
+                                              &nChars );
+      g_SwapFileName.ReleaseBuffer();
+
+      return res;
     }
 
   public:
@@ -174,12 +194,6 @@ namespace siv
     {
       return m_msp;
     }
-    //.........................................................................
-    void Enable( bool bEnable )
-    {
-      ::ATL::CCritSecLock lock( m_cs );
-      m_bEnable = bEnable;
-    }
 
   // DATA:
   private:
@@ -188,14 +202,12 @@ namespace siv
     DWORD  m_err;
     mspace m_msp;
 
-    static bool volatile            m_bEnable;
     static bool volatile            m_bInited;
     static ::ATL::CCriticalSection  m_cs;
     static CMemInit *               m_instance;
     static char                     m_space[];
   };
 
-  __declspec(selectany) bool volatile           CMemInit::m_bEnable = true;
   __declspec(selectany) bool volatile           CMemInit::m_bInited = false;
   __declspec(selectany) ::ATL::CCriticalSection CMemInit::m_cs;
   __declspec(selectany) CMemInit *              CMemInit::m_instance = 0;
@@ -210,6 +222,7 @@ namespace siv
       free( pMem );
       return;
     }
+    ATL::CCritSecLock lock( pmi->GetCS() );
     mspace_free( *pmi, pMem );
   }
 
