@@ -13,6 +13,7 @@
 #define IDS_WARNING                     131
 #define IDS_STRING132                   132
 #define IDS_ZOOM_TOO_MUCH               132
+#define IDS_CAN_NOT_CREATE_MMFILE       133
 #define IDR_MFRTB                       202
 #define IDD_BOOKMARK                    204
 #define IDR_MENU_OKCANCEL               205

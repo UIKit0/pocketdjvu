@@ -439,7 +439,10 @@ bool CMainFrame::OpenFile( LPCWSTR fullFileName, int pageIndex )
   GetClientRect( &clientRect );
   PagePtr pPage( new CPage( m_hWnd, pDjVuDoc, clientRect, true, pageIndex ) );
   if ( !pPage->LoadBmpSync() )
+  {
+    // TODO: show something reasonable (like ShowZoomWarning();)
     return false;
+  }
 
 #pragma region Commit    
   m_Pages.clear();
@@ -539,6 +542,11 @@ void CMainFrame::DoPaint( WTL::CDCHandle dc )
 
   for ( Pages::iterator i=m_Pages.begin(); i!=m_Pages.end(); ++i )
   {
+    // this checking reduces accesses to bitmaps potentially stored in the swap file.
+    if ( !IsVisible( (*i)->GetRect() ) )
+    {
+      continue;
+    }
     (*i)->Draw( dc );
   }
 }
@@ -584,8 +592,9 @@ LRESULT CMainFrame::OnSettingChange( UINT /*uMsg*/, WPARAM wParam, LPARAM /*lPar
     WTL::CWaitCursor wc;
     if ( !pNewPage->LoadBmpSync() )
     {
-      pNewPage = pCurPg;
+      m_Pages.push_back( pCurPg );
       ShowZoomWarning();
+      return 0;
     }
     m_Pages.push_back( pNewPage );
     m_bDirty = true;
@@ -599,8 +608,10 @@ void CMainFrame::ShowZoomWarning()
 {
   WTL::CString szWarning;
   szWarning.LoadString( IDS_WARNING );
+
   WTL::CString szZoomTooMuch;
-  szWarning.LoadString( IDS_ZOOM_TOO_MUCH );
+  szZoomTooMuch.LoadString( IDS_ZOOM_TOO_MUCH );
+
   ShowNotification( m_hWnd, szWarning, szZoomTooMuch );
 }
 
@@ -789,6 +800,7 @@ void CMainFrame::AddVisibleButNotLoaded()
   if ( m_Pages.empty() )
     return;
 
+  bool bShowWarn = false;
   WTL::CRect r;
   WTL::CWaitCursor wc;
   while ( true )
@@ -805,6 +817,7 @@ void CMainFrame::AddVisibleButNotLoaded()
     PagePtr p( new CPage( m_hWnd, m_pDjVuDoc, r, true, index ) );
     if ( !p->LoadBmpSync() )
     {
+      bShowWarn = true;
       break;
     }
     // place correction if the loaded page has the different size
@@ -832,9 +845,15 @@ void CMainFrame::AddVisibleButNotLoaded()
     PagePtr p( new CPage( m_hWnd, m_pDjVuDoc, r, true, index ) );
     if ( !p->LoadBmpSync() )
     {
+      bShowWarn = true;
       break;
     }
     m_Pages.push_back( p );
+  }
+
+  if ( bShowWarn )
+  {
+    ShowZoomWarning();
   }
 }
 
@@ -1111,7 +1130,11 @@ LRESULT CMainFrame::OnNavigationGotopage( WORD /*wNotifyCode*/, WORD /*wID*/, HW
   m_Pages.clear();
   PagePtr pPage( new CPage( m_hWnd, m_pDjVuDoc, clientRect, true, pg ) );
   if ( !pPage->LoadBmpSync() )
+  {
+    m_Pages.push_back( p1stVis );
+    ShowZoomWarning();
     return 0;
+  }
   
   m_Pages.push_back( pPage );
   m_mru[0].m_pageNum = pg;
@@ -1198,8 +1221,9 @@ void CMainFrame::CalcZoomKandOffset( WTL::CRect & r )
   PagePtr pNewPage( new CPage( m_hWnd, m_pDjVuDoc, pR, true, index ) );
   if ( !pNewPage->LoadBmpSync() )
   {
-    pNewPage = pCurPg;
+    m_Pages.push_back( pCurPg );
     ShowZoomWarning();
+    return;
   }
  
   m_Pages.push_back( pNewPage );

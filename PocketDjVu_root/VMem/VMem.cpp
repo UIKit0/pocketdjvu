@@ -1,7 +1,11 @@
 #include "../PocketDjvu/stdafx.h"
 
-#include "./malloc.h"
 #include <exception>
+#include "./malloc.h"
+
+#include "../PocketDjvu/misc.h"
+#include "../PocketDjvu/constants.h"
+#include "../PocketDjvu/resource.h"
 
 extern "C"
 {
@@ -19,16 +23,17 @@ extern "C"
 namespace siv
 {
 
-  //static wchar_t const * g_cSwapFileName = L"\\swap.map";
-  static wchar_t const * g_cSwapFileName = L"\\SD Card\\file.map";
-  //static wchar_t const * g_cSwapFileName = L"\\Storage Card\\file.map";
+  static WTL::CString g_SwapFileName( L"\\SD Card\\file.swp" );
+  //static WTL::CString g_SwapFileName( L"\\Storage Card\\file.map" );
+  static unsigned g_SizeMB = 64;
   //---------------------------------------------------------------------------
   class CMemInit
   {
   private:
-    explicit CMemInit( wchar_t const * szSwapFileName, unsigned sizeMB = 64/*128*/ ) :
+    //.........................................................................
+    explicit CMemInit( wchar_t const * szSwapFileName ) :
       m_baseAddr()
-      , m_size(sizeMB*1024*1024)
+      , m_size(g_SizeMB*1024*1024)
       , m_err()
       , m_msp()
     {
@@ -37,10 +42,7 @@ namespace siv
       BOOL res = GetFileAttributesEx( szSwapFileName, GetFileExInfoStandard, &fad );
       if ( res )
       {
-        if ( fad.nFileSizeLow >= m_size )
-        {
-          dwCreateDisposition = OPEN_EXISTING;
-        }
+        dwCreateDisposition = OPEN_EXISTING;        
       }
 
       HANDLE hF = CreateFile( szSwapFileName, GENERIC_READ|GENERIC_WRITE,
@@ -52,6 +54,20 @@ namespace siv
       {
         m_err = GetLastError();
         return;
+      }
+
+      if ( OPEN_EXISTING == dwCreateDisposition )
+      {
+        SetFilePointer( hF, m_size, NULL, FILE_BEGIN );
+        if( NO_ERROR == GetLastError() )
+        {
+          if ( !SetEndOfFile( hF ) )
+          {
+            m_err = GetLastError();
+            CloseHandle( hF );
+            return;
+          }
+        }
       }
 
       HANDLE hFM = CreateFileMapping( hF, NULL, PAGE_READWRITE, 0, m_size, NULL );
@@ -73,12 +89,12 @@ namespace siv
       
       m_msp = create_mspace_with_base( m_baseAddr, m_size, true );
     }
-
+    //.........................................................................
     ~CMemInit()
     {
       Destroy();
     }
-
+    //.........................................................................
     void Destroy()
     {
       if ( m_baseAddr )
@@ -93,8 +109,28 @@ namespace siv
       }
       m_bInited = false;
     }
+    //.........................................................................
+    static void ShowWarning()
+    {
+      WTL::CString szWarning;
+      szWarning.LoadString( IDS_WARNING );
+
+      WTL::CString szText;
+      szText.LoadString( IDS_CAN_NOT_CREATE_MMFILE );
+      ShowNotification( 0, szWarning, szText );
+    }
+    //.........................................................................
+    static bool ReadRegValues()
+    {
+      // TODO: Implement it!
+      // APP_REG_PATH
+      // g_SwapFileName
+      // g_SizeMB
+      return false;
+    }
 
   public:
+    //.........................................................................
     static CMemInit * GetInstance()
     {
       if ( !m_bInited )
@@ -102,34 +138,43 @@ namespace siv
         ATL::CCritSecLock lock( m_cs );
         if ( !m_bInited )
         {
-          m_instance = ::new( m_space ) CMemInit( g_cSwapFileName );
-          if ( !m_instance->IsValid() )
-          {
-            m_instance->~CMemInit();
-            m_instance = 0;
-            // TODO: Show the critical error message here.
-          }
           m_bInited = true;
+          if ( ReadRegValues() )
+          {
+            m_instance = ::new( m_space ) CMemInit( g_SwapFileName );
+            if ( !m_instance->IsValid() )
+            {
+              m_instance->~CMemInit();
+              m_instance = 0;
+              
+              ShowWarning();
+            }
+          }          
         }
       }
       return m_instance;
     }
-
+    //.........................................................................
+    ATL::CCriticalSection & GetCS()
+    {
+      return m_cs;
+    }
+    //.........................................................................
     bool IsValid()
     {
       return !!m_msp;
     }
-
+    //.........................................................................
     DWORD GetLastError()
     {
       return m_err;
     }
-
+    //.........................................................................
     operator mspace()
     {
       return m_msp;
     }
-
+    //.........................................................................
     void Enable( bool bEnable )
     {
       ::ATL::CCritSecLock lock( m_cs );
@@ -178,6 +223,7 @@ namespace siv
     }
     else
     {
+      ATL::CCritSecLock lock( pmi->GetCS() );
       p = mspace_malloc( *pmi, bytes );
     }
 
@@ -198,6 +244,7 @@ namespace siv
     }
     else
     {
+      ATL::CCritSecLock lock( pmi->GetCS() );
       p = mspace_realloc( *pmi, pMem, bytes );
     }
 
@@ -218,6 +265,7 @@ namespace siv
     }
     else
     {
+      ATL::CCritSecLock lock( pmi->GetCS() );
       p = mspace_calloc( *pmi, n_elements, elem_size );
     }
 
