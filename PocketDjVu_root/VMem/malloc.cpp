@@ -480,7 +480,7 @@ inline void SivAbort()
 
 #   define WIN32_LEAN_AND_MEAN
 #   include <windows.h>
-#   define HAVE_MMAP 0 // SIV: was 1
+#   define HAVE_MMAP 0
 #   define HAVE_MORECORE 0
 #   define LACKS_UNISTD_H
 #   define LACKS_SYS_PARAM_H

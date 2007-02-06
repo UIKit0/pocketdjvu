@@ -43,7 +43,7 @@ BOOL CBookmarkDlg::CreateMenuBar( UINT nToolBarId )
   mbi.hwndParent  = m_hWnd;
   mbi.dwFlags     = SHCMBF_HMENU;
   mbi.nToolBarId  = nToolBarId;
-  mbi.hInstRes    = ATL::_AtlBaseModule.GetModuleInstance(); //GetModuleHandle( NULL );
+  mbi.hInstRes    = ATL::_AtlBaseModule.GetModuleInstance();
 
   BOOL bRet = ::SHCreateMenuBar( &mbi );
   //if( bRet )
