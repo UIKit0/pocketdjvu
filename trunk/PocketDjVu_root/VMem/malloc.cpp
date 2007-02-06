@@ -452,13 +452,10 @@ DEFAULT_MMAP_THRESHOLD       default: 256K
 #endif
 
 #define LACKS_FCNTL_H 1
-// TODO: v- if 1 set then the troubles were observed in the free (i.e. deadlock) by unknown reason.
-// Investigate why!
-#define USE_LOCKS 1
+#define USE_LOCKS 0
 #define ONLY_MSPACES 1
 #define USE_DL_PREFIX 1
 #define FOOTERS 0
-//#define INSECURE 1
 
 inline static size_t time(int)
 {
@@ -1461,32 +1458,6 @@ static MLOCK_T magic_init_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 #else /* WIN32 */
 
-// SIV: {{{
-#if 1 // <- SIV:
-#define MLOCK_T CRITICAL_SECTION
-
-//#define INITIAL_LOCK(l)      InitializeCriticalSection(l)
-//#define ACQUIRE_LOCK(l)      (EnterCriticalSection(l),0)
-//#define RELEASE_LOCK(l)      LeaveCriticalSection(l)
-
-static inline void INITIAL_LOCK( LPCRITICAL_SECTION l )
-{
-  InitializeCriticalSection( l );
-}
-
-static inline int ACQUIRE_LOCK( LPCRITICAL_SECTION l )
-{
-  EnterCriticalSection( l );
-  return 0;
-}
-
-static inline void RELEASE_LOCK( LPCRITICAL_SECTION l )
-{
-  LeaveCriticalSection( l );
-}
-
-// SIV: }}}
-#else // <- SIV:
 /*
    Because lock-protected regions have bounded times, and there
    are no recursive lock calls, we can use simple spinlocks.
@@ -1513,13 +1484,11 @@ static void win32_release_lock (MLOCK_T *sl) {
 #define INITIAL_LOCK(l)      *(l)=0
 #define ACQUIRE_LOCK(l)      win32_acquire_lock(l)
 #define RELEASE_LOCK(l)      win32_release_lock(l)
-#endif // #if 0 // <- SIV:
 
 #if HAVE_MORECORE
 static MLOCK_T morecore_mutex;
 #endif /* HAVE_MORECORE */
-// SIV: it's redundant for pocket DjVu. And also here we have the lack of InitCriticalSection call.
-//static MLOCK_T magic_init_mutex;
+static MLOCK_T magic_init_mutex;
 #endif /* WIN32 */
 
 #define USE_LOCK_BIT               (2U)
@@ -2545,16 +2514,14 @@ static int init_mparams(void) {
 #else /* (FOOTERS && !INSECURE) */
     s = (size_t)0x58585858U;
 #endif /* (FOOTERS && !INSECURE) */
-    // SIV: it's redundant for pocket DjVu. And also here we have the lack of InitCriticalSection call.
-    // ACQUIRE_MAGIC_INIT_LOCK();
+    ACQUIRE_MAGIC_INIT_LOCK();
     if (mparams.magic == 0) {
       mparams.magic = s;
       /* Set up lock for main malloc area */
       INITIAL_LOCK(&gm->mutex);
       gm->mflags = mparams.default_mflags;
     }
-    // SIV: see above
-    //RELEASE_MAGIC_INIT_LOCK();
+    RELEASE_MAGIC_INIT_LOCK();
 
 #ifndef WIN32
     mparams.page_size = malloc_getpagesize;

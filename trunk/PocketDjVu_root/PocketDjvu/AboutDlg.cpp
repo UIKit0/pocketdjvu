@@ -48,6 +48,7 @@ LRESULT CAboutDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
   ATL::CString link;
   m_homePageLink.GetWindowText( link );
   m_homePageLink.SetHyperLink( link );
+  m_homePageLink.SetHyperLinkExtendedStyle( HLINK_UNDERLINEHOVER, HLINK_UNDERLINEHOVER );
 
   return TRUE;
 }

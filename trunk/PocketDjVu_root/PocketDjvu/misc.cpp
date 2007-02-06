@@ -74,19 +74,26 @@ void ShowNotification( HWND hwndSink, wchar_t const * szCaption, wchar_t const *
   sn.clsid = notifyGUID;
   sn.hwndSink = hwndSink;
   
-  WTL::CString txt = L"<html><body>";
+  static WTL::CString txt;
+  txt = L"<html><body>";
   txt += szBodytext;
-  WTL::CString hideStr;
-  hideStr.LoadString( IDS_DISMISS_LINK );
+  
+  WTL::CString hideStrFormat;
+  hideStrFormat.LoadString( IDS_DISMISS_LINK );
+  
   WTL::CString hideCmd;
-  hideCmd.Format( L"<br><a href=\"cmd:%d\">Dismiss</a>.", int(ID_NOFIFY_1) );
+  hideCmd.Format( hideStrFormat, int(ID_NOFIFY_1) );
+
   txt += hideCmd;
   txt += L"</html></body>";
   sn.pszHTML = txt;
-  sn.pszTitle = szCaption;
+
+  static WTL::CString cap;
+  cap = szCaption;
+  sn.pszTitle = cap;
 
 #if WINVER > 0x0420
-  WTL::CString dismiss;
+  static WTL::CString dismiss;
   dismiss.LoadString( IDS_DISMISS );
   sn.rgskn[0].pszTitle = dismiss;
   sn.rgskn[0].skc.wpCmd = ID_NOFIFY_1;
