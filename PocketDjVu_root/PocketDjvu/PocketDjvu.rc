@@ -37,7 +37,7 @@ BEGIN
     POPUP "•"
     BEGIN
         MENUITEM "About...",                    ID_APP_ABOUT
-        MENUITEM "Options...",                  ID_TOOLS_OPTIONS, GRAYED
+        MENUITEM "Options...",                  ID_TOOLS_OPTIONS
         MENUITEM SEPARATOR
         POPUP "Navigation"
         BEGIN
@@ -157,6 +157,30 @@ BEGIN
     CONTROL         "",IDC_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,2,17,184,48
 END
 
+IDD_VM DIALOG  0, 0, 100, 113
+STYLE DS_SETFONT | DS_MODALFRAME | WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Memory"
+FONT 8, "Microsoft Sans Serif"
+BEGIN
+    LTEXT           "Level: ",IDC_LEVEL,2,6,21,8
+    CONTROL         "",IDC_LEVEL_SLIDER,"msctls_trackbar32",WS_TABSTOP,29,2,67,15
+    LTEXT           "Setup swap-file name:",IDC_SWAPFILE_STATIC,2,20,96,8
+    EDITTEXT        IDC_SWAPFILE,2,29,79,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BROWSE_PATH,84,29,14,12
+    LTEXT           "Swap-file size (MB): ",IDC_MBSIZE_STATIC,2,47,64,8
+    EDITTEXT        IDC_MBSIZE,71,45,27,12,ES_AUTOHSCROLL | ES_NUMBER
+END
+
+IDD_TIMING DIALOG  0, 0, 145, 90
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Timing"
+FONT 8, "Microsoft Sans Serif"
+BEGIN
+    LTEXT           "This dialog is not implemented yet.\r\nPlease be patient.",IDC_STATIC,2,10,141,18
+    EDITTEXT        IDC_EDIT2,2,34,141,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT4,2,55,141,12,ES_AUTOHSCROLL
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -189,6 +213,22 @@ BEGIN
         RIGHTMARGIN, 186
         TOPMARGIN, 2
         BOTTOMMARGIN, 77
+    END
+
+    IDD_VM, DIALOG
+    BEGIN
+        LEFTMARGIN, 2
+        RIGHTMARGIN, 98
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 111
+    END
+
+    IDD_TIMING, DIALOG
+    BEGIN
+        LEFTMARGIN, 2
+        RIGHTMARGIN, 143
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 88
     END
 END
 #endif    // APSTUDIO_INVOKED

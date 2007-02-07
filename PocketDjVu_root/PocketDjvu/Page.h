@@ -28,7 +28,7 @@ public:
   {
     if ( m_pBmp )
     {
-      siv::vm_free( m_pBmp );
+      siv::vm_free( m_pBmp, 1 );
     }
   }
 

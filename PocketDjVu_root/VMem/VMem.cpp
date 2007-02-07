@@ -145,6 +145,14 @@ namespace siv
                                               g_SwapFileName.GetBufferSetLength(nChars),
                                               &nChars );
       g_SwapFileName.ReleaseBuffer();
+      if ( !res )
+      {
+        return false;
+      }
+
+      DWORD l=0;
+      res = (ERROR_SUCCESS == rk.QueryDWORDValue( L"Level", l )) && l;
+      m_level = l;
 
       return res;
     }
@@ -194,6 +202,11 @@ namespace siv
     {
       return m_msp;
     }
+    //.........................................................................
+    int GetLevel()
+    {
+      return m_level;
+    }
 
   // DATA:
   private:
@@ -206,18 +219,20 @@ namespace siv
     static ::ATL::CCriticalSection  m_cs;
     static CMemInit *               m_instance;
     static char                     m_space[];
+    static int                      m_level;
   };
 
   __declspec(selectany) bool volatile           CMemInit::m_bInited = false;
   __declspec(selectany) ::ATL::CCriticalSection CMemInit::m_cs;
   __declspec(selectany) CMemInit *              CMemInit::m_instance = 0;
   __declspec(selectany) char                    CMemInit::m_space[ sizeof CMemInit ];
+  __declspec(selectany) int                     CMemInit::m_level = 0;
 
   //---------------------------------------------------------------------------
-  void vm_free( void * pMem )
+  void vm_free( void * pMem, int level )
   {
     CMemInit * pmi = CMemInit::GetInstance();
-    if ( !pmi )
+    if ( !pmi || pmi->GetLevel() < level )
     {
       free( pMem );
       return;
@@ -226,11 +241,11 @@ namespace siv
     mspace_free( *pmi, pMem );
   }
 
-  void * vm_malloc( size_t bytes )
+  void * vm_malloc( size_t bytes, int level )
   {
     void * p = 0;
     CMemInit * pmi = CMemInit::GetInstance();
-    if ( !pmi )
+    if ( !pmi || pmi->GetLevel() < level )
     {
       p = malloc( bytes );
     }
@@ -247,11 +262,11 @@ namespace siv
     return p;
   }
 
-  void * vm_realloc( void * pMem, size_t bytes )
+  void * vm_realloc( void * pMem, size_t bytes, int level )
   {
     void * p = 0;
     CMemInit * pmi = CMemInit::GetInstance();
-    if ( !pmi )
+    if ( !pmi || pmi->GetLevel() < level )
     {
       p = realloc( pMem, bytes );
     }
@@ -268,11 +283,11 @@ namespace siv
     return p;
   }
 
-  void * vm_calloc( size_t n_elements, size_t elem_size )
+  void * vm_calloc( size_t n_elements, size_t elem_size, int level )
   {
     void * p = 0;
     CMemInit * pmi = CMemInit::GetInstance();
-    if ( !pmi )
+    if ( !pmi || pmi->GetLevel() < level )
     {
       p = calloc( n_elements, elem_size );
     }

@@ -70,9 +70,11 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
 	// date time picker and month calendar controls.
 	// Add additional flags to support additoinal controls not mentioned above.
   WTL::AtlInitCommonControls( ICC_BAR_CLASSES 
-						 | ICC_COOL_CLASSES
+						 | ICC_BAR_CLASSES
+             | ICC_TREEVIEW_CLASSES
 						 | ICC_PROGRESS_CLASS
 						 | ICC_TOOLTIP_CLASSES
+             | ICC_TAB_CLASSES
 						 );
   BOOL bRes = SHInitExtraControls();
   ATLASSERT( bRes );

@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "resource.h"
 
-#include "GoToPage.h"
+#include "./GoToPage.h"
+#include "./misc.h"
 
 LRESULT CGoToPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
@@ -32,6 +33,8 @@ LRESULT CGoToPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPara
   m_UpDn.SetPos( m_curPg );
   static UDACCEL accel[] = { {1,1}, {3,5}, {10,10} };
   m_UpDn.SetAccel( sizeof(accel)/sizeof(accel[0]), accel );
+
+  ::CreateDlgMenuBar( IDR_MENU_OKCANCEL, m_hWnd );
 
  	return TRUE;
 }

@@ -74,8 +74,7 @@ void ShowNotification( HWND hwndSink, wchar_t const * szCaption, wchar_t const *
   sn.clsid = notifyGUID;
   sn.hwndSink = hwndSink;
   
-  static WTL::CString txt;
-  txt = L"<html><body>";
+  WTL::CString txt = L"<html><body>";
   txt += szBodytext;
   
   WTL::CString hideStrFormat;
@@ -88,16 +87,36 @@ void ShowNotification( HWND hwndSink, wchar_t const * szCaption, wchar_t const *
   txt += L"</html></body>";
   sn.pszHTML = txt;
 
-  static WTL::CString cap;
-  cap = szCaption;
+  WTL::CString cap = szCaption;
   sn.pszTitle = cap;
 
 #if WINVER > 0x0420
-  static WTL::CString dismiss;
+  WTL::CString dismiss;
   dismiss.LoadString( IDS_DISMISS );
   sn.rgskn[0].pszTitle = dismiss;
   sn.rgskn[0].skc.wpCmd = ID_NOFIFY_1;
 #endif
 
   SHNotificationAdd( &sn );
+}
+
+//-----------------------------------------------------------------------------
+BOOL CreateDlgMenuBar( UINT nToolBarId, HWND hWndParent )
+{
+  ATLASSERT( hWndParent );
+
+  SHMENUBARINFO mbi = { 0 };
+  mbi.cbSize      = sizeof(mbi);
+  mbi.hwndParent  = hWndParent;
+  mbi.dwFlags     = SHCMBF_HMENU;
+  mbi.nToolBarId  = nToolBarId;
+  mbi.hInstRes    = ATL::_AtlBaseModule.GetModuleInstance();
+
+  BOOL bRet = ::SHCreateMenuBar( &mbi );
+  //if( bRet )
+  //{
+  //  HWND m_hWndMnuBar = mbi.hwndMB;
+  //}
+
+  return bRet;
 }

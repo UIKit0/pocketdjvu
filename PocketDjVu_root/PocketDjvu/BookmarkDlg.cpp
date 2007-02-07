@@ -1,9 +1,10 @@
 // BookmarkDlg.cpp : Implementation of CBookmarkDlg
 
 #include "stdafx.h"
-#include "Constants.h"
 
-#include "BookmarkDlg.h"
+#include "./Constants.h"
+#include "./BookmarkDlg.h"
+#include "./misc.h"
 
 CBookmarkDlg::CBookmarkDlg( wchar_t const * szFullPathName, CBookmarkInfo const & bookmarkInfo ) :
   m_szFullPathName(szFullPathName)
@@ -36,24 +37,6 @@ CBookmarkDlg::CBookmarkDlg( wchar_t const * szFullPathName, CBookmarkInfo const 
   }
 }
 
-BOOL CBookmarkDlg::CreateMenuBar( UINT nToolBarId )
-{
-  SHMENUBARINFO mbi = { 0 };
-  mbi.cbSize      = sizeof(mbi);
-  mbi.hwndParent  = m_hWnd;
-  mbi.dwFlags     = SHCMBF_HMENU;
-  mbi.nToolBarId  = nToolBarId;
-  mbi.hInstRes    = ATL::_AtlBaseModule.GetModuleInstance();
-
-  BOOL bRet = ::SHCreateMenuBar( &mbi );
-  //if( bRet )
-  //{
-  //  HWND m_hWndMnuBar = mbi.hwndMB;
-  //}
-
-  return bRet;
-}
-
 CBookmarkDlg::~CBookmarkDlg()
 {
 }	
@@ -82,7 +65,7 @@ LRESULT CBookmarkDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
   LoadFromRegistry();
   FindOrCreateCurrentFileBranch();
 
-  CreateMenuBar( IDR_MENU_OKCANCEL );
+  ::CreateDlgMenuBar( IDR_MENU_OKCANCEL, m_hWnd );
     
   return 1;  // Let the system set the focus
 }

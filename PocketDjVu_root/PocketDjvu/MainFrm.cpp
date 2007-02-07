@@ -9,13 +9,14 @@
 
 #include "resource.h"
 
-#include "aboutdlg.h"
-#include "MainFrm.h"
-#include "PageLoader.h"
-#include "GotoPage.h"
-#include "ScrollByTap.h"
-#include "MoveByStylus.h"
-#include "BookmarkDlg.h"
+#include "./aboutdlg.h"
+#include "./MainFrm.h"
+#include "./PageLoader.h"
+#include "./GotoPage.h"
+#include "./ScrollByTap.h"
+#include "./MoveByStylus.h"
+#include "./BookmarkDlg.h"
+#include "./OptionsDlg.h"
 #include "./misc.h"
 
 CMainFrame::CMainFrame() :
@@ -481,11 +482,12 @@ LRESULT CMainFrame::OnAppAbout( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
   return 0;
 }
 
-LRESULT CMainFrame::OnToolsOptions(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+LRESULT CMainFrame::OnToolsOptions( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
 {
-  // TODO:
-  ShowNotification( m_hWnd, L"Not implemented", L"This feature is not implemented yet.<br>Be patient, please." );
-
+  bHandled = true;
+  CFullScrnOnOff fs( *this );
+  COptionsDlg dlg;
+  dlg.DoModal( m_hWnd );
   return 0;
 }
 

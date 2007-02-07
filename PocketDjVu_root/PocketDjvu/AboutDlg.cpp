@@ -50,6 +50,8 @@ LRESULT CAboutDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
   m_homePageLink.SetHyperLink( link );
   m_homePageLink.SetHyperLinkExtendedStyle( HLINK_UNDERLINEHOVER, HLINK_UNDERLINEHOVER );
 
+  ::CreateDlgMenuBar( IDR_MENU_OKCANCEL, m_hWnd );
+
   return TRUE;
 }
 
