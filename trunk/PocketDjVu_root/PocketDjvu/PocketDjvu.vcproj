@@ -470,6 +470,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OptionsDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Page.cpp"
 				>
 			</File>
@@ -525,6 +529,14 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\TimingDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\VMDlg.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -575,6 +587,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OptionsDlg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Page.h"
 				>
 			</File>
@@ -604,6 +620,14 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TimingDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\VMDlg.h"
 				>
 			</File>
 		</Filter>

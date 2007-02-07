@@ -17,7 +17,7 @@ public:
 
 	~CBookmarkDlg();
 
-BEGIN_DLGRESIZE_MAP(CAboutDlg)
+BEGIN_DLGRESIZE_MAP(CBookmarkDlg)
   DLGRESIZE_CONTROL(IDC_STATIC_ADD, 0)
   DLGRESIZE_CONTROL(IDC_BOOKMARK_NAME, DLSZ_SIZE_X)
   DLGRESIZE_CONTROL(IDC_BTNADD, DLSZ_MOVE_X)
@@ -56,7 +56,6 @@ END_MSG_MAP()
 private:
   void LoadFromRegistry();
   void FindOrCreateCurrentFileBranch();
-  BOOL CreateMenuBar( UINT nToolBarId );
 
 // DATA:
 private:

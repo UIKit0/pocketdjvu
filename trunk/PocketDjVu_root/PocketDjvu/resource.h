@@ -19,6 +19,9 @@
 #define IDR_MENU_OKCANCEL               205
 #define IDB_TB_VGA                      206
 #define IDB_TB_QVGA                     207
+#define IDD_VM                          211
+#define IDD_DIALOG1                     212
+#define IDD_TIMING                      212
 #define IDC_PAGES                       1000
 #define IDC_EDIT1                       1002
 #define IDC_PG_NUM                      1002
@@ -36,6 +39,20 @@
 #define IDC_STATIC_ADD                  1015
 #define IDC_CUR_BOOKMARK2               1016
 #define IDC_HOMEPAGE                    1016
+#define IDC_SLIDER2                     1020
+#define IDC_LEVEL_SLIDER                1020
+#define IDC_EDIT2                       1021
+#define IDC_BUTTON1                     1022
+#define IDC_EDIT4                       1022
+#define IDC_BROWSE_PATH                 1022
+#define IDC_EDIT3                       1023
+#define IDC_IDC_MBSIZE                  1023
+#define IDC_MBSIZE                      1023
+#define IDC_LEVEL                       1024
+#define IDC_SWAPFILE_STATIC             1025
+#define IDC_SWAPFILE                    1026
+#define IDC_MBSIZE_STATIC               1027
+#define IDC_IDC_MBSIZE_SPIN             1028
 #define ID_FILE_NEW_WINDOW              32771
 #define ID_TOOLS_OPTIONS                32772
 #define ID_NAVIGATE_ADDBOOKMARK         32775
@@ -62,9 +79,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        209
+#define _APS_NEXT_RESOURCE_VALUE        213
 #define _APS_NEXT_COMMAND_VALUE         32797
-#define _APS_NEXT_CONTROL_VALUE         1017
+#define _APS_NEXT_CONTROL_VALUE         1029
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif
