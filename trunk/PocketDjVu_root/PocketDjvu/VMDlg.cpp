@@ -2,8 +2,10 @@
 
 #include "./VMDlg.h"
 
-CVMDlg::CVMDlg()
+TODO...
+CVMDlg::CVMDlg() : m_storage( change it! HKEY_CURRENT_USER, L"Software\\My Company\\Application\\1.0")
 {
+  m_storage.Load();
 }
 
 CVMDlg::~CVMDlg()

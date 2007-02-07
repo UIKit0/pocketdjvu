@@ -607,6 +607,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rsettings.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ScrollByTap.h"
 				>
 			</File>

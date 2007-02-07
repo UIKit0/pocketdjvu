@@ -1,6 +1,7 @@
 #pragma once
 
 #include "resource.h"
+#include "./rsettings.h"
 
 class CVMDlg :
   public WTL::CPropertyPageImpl<CVMDlg>
@@ -48,4 +49,20 @@ END_MSG_MAP()
   //BOOL OnKillActive();
   //int OnApply();
 
+private:
+  class CRegStorage : public CRegSettings
+  {
+  public:
+    DWORD Value1; // DWORD option
+    WTL::CString Value2; // String option
+    DWORD RequiredValue;
+
+    BEGIN_REG_MAP(CRegStorage)
+      REG_ITEM(Value1, 1)
+      REG_ITEM(Value2, "Default Value")
+      REG_ITEM_REQUIRE(RequiredValue)
+    END_REG_MAP()
+  };
+
+  CRegStorage m_storage;
 };

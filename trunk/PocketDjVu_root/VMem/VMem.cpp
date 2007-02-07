@@ -222,11 +222,12 @@ namespace siv
     static int                      m_level;
   };
 
-  __declspec(selectany) bool volatile           CMemInit::m_bInited = false;
-  __declspec(selectany) ::ATL::CCriticalSection CMemInit::m_cs;
-  __declspec(selectany) CMemInit *              CMemInit::m_instance = 0;
-  __declspec(selectany) char                    CMemInit::m_space[ sizeof CMemInit ];
-  __declspec(selectany) int                     CMemInit::m_level = 0;
+  //---------------------------------------------------------------------------
+  bool volatile           CMemInit::m_bInited = false;
+  ::ATL::CCriticalSection CMemInit::m_cs;
+  CMemInit *              CMemInit::m_instance = 0;
+  char                    CMemInit::m_space[ sizeof CMemInit ];
+  int                     CMemInit::m_level = 0;
 
   //---------------------------------------------------------------------------
   void vm_free( void * pMem, int level )
