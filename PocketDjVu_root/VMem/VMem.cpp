@@ -23,7 +23,7 @@ extern "C"
 namespace siv
 {
 
-  static WTL::CString g_SwapFileName( L"\\SD Card\\file.swp" );
+  static WTL::CString g_SwapFileName( SWAP_FILENAME );
   static DWORD g_SizeMB = 64;
   //---------------------------------------------------------------------------
   class CMemInit
@@ -122,10 +122,8 @@ namespace siv
     static bool ReadRegValues()
     {
       ATL::CRegKey rk;
-      WTL::CString path( APP_REG_PATH );
-      path += L"\\VM\\";
 
-      bool res = ERROR_SUCCESS == rk.Open( HKEY_CURRENT_USER, path );
+      bool res = ERROR_SUCCESS == rk.Open( HKEY_CURRENT_USER, APP_REG_PATH_VM );
       if ( !res )
       {
         return false;

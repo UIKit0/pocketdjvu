@@ -15,8 +15,6 @@ public:
   void OnSheetInitialized();
 
 BEGIN_MSG_MAP(COptionsDlg)
-  COMMAND_ID_HANDLER(IDOK, OnClickedOK)
-  COMMAND_ID_HANDLER(IDCANCEL, OnClickedCancel)
   CHAIN_MSG_MAP(Base)
 END_MSG_MAP()
 
@@ -26,8 +24,6 @@ END_MSG_MAP()
 //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
   LRESULT OnWininiChange( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled );
-  LRESULT OnClickedOK( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled );
-  LRESULT OnClickedCancel( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled );
 
 // DATA:
 private:
