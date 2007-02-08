@@ -10,6 +10,9 @@
 
 #define _WIN32_WCE_AYGSHELL 1
 
+// SIV: It is necessary for right property pages handling.
+#define _WTL_NEW_PAGE_NOTIFY_HANDLERS
+
 #include <atlbase.h>
 #include <atlstr.h>   // SIV:
 #define _WTL_NO_CSTRING
