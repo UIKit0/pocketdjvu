@@ -41,7 +41,7 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "Navigation"
         BEGIN
-            MENUITEM "Bookmarks...",                ID_NAVIGATE_BOOKMARK
+            MENUITEM "Bookmarks...",                ID_NAVIGATE_BOOKMARK, GRAYED
             MENUITEM "GoTo Page...",                ID_NAVIGATION_GOTOPAGE
         END
         POPUP "Zoom && Scroll"
@@ -159,27 +159,31 @@ END
 
 IDD_VM DIALOG  0, 0, 144, 113
 STYLE DS_SETFONT | DS_MODALFRAME | WS_CHILD | WS_CAPTION | WS_SYSMENU
-CAPTION "Memory"
+CAPTION "Virtual Memory"
 FONT 8, "Microsoft Sans Serif"
 BEGIN
-    LTEXT           "Level: ",IDC_LEVEL,2,6,21,8
-    CONTROL         "",IDC_LEVEL_SLIDER,"msctls_trackbar32",TBS_AUTOTICKS | WS_TABSTOP,29,2,113,15
-    LTEXT           "Setup swap-file name:",IDC_SWAPFILE_STATIC,2,20,140,8
-    EDITTEXT        IDC_SWAPFILE,2,29,123,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "...",IDC_BROWSE_PATH,128,29,14,12
-    LTEXT           "Swap-file size (MB): ",IDC_MBSIZE_STATIC,2,47,63,8
-    EDITTEXT        IDC_MBSIZE,72,45,57,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_MBSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS,131,45,11,12
+    LTEXT           "",IDC_LEVEL_PLACEHOLDER,2,2,21,8
+    LTEXT           "Off",IDC_ST1,34,2,13,8
+    CTEXT           "Bmp",IDC_ST2,79,2,15,8
+    RTEXT           "Bmp+DjVu",IDC_ST3,104,2,38,8
+    LTEXT           "Level: ",IDC_LEVEL,2,18,21,8
+    CONTROL         "",IDC_LEVEL_SLIDER,"msctls_trackbar32",TBS_AUTOTICKS | WS_TABSTOP,29,14,113,15
+    LTEXT           "Setup swap-file name:",IDC_SWAPFILE_STATIC,2,32,140,8
+    EDITTEXT        IDC_SWAPFILE,2,41,123,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BROWSE_PATH,128,41,14,12
+    LTEXT           "Swap-file size (MB): ",IDC_MBSIZE_STATIC,2,59,63,8
+    EDITTEXT        IDC_MBSIZE,72,57,57,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_MBSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS,131,57,11,12
 END
 
 IDD_TIMING DIALOG  0, 0, 145, 90
 STYLE DS_SETFONT | WS_CHILD | WS_CAPTION | WS_SYSMENU
-CAPTION "Timing"
+CAPTION "Timings"
 FONT 8, "Microsoft Sans Serif"
 BEGIN
     LTEXT           "This dialog is not implemented yet.\r\nPlease be patient.",IDC_STATIC,2,10,141,18
-    EDITTEXT        IDC_EDIT2,2,34,141,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT4,2,55,141,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,2,34,141,12,ES_AUTOHSCROLL | NOT WS_VISIBLE
+    EDITTEXT        IDC_EDIT4,2,55,141,12,ES_AUTOHSCROLL | NOT WS_VISIBLE
 END
 
 
