@@ -3,7 +3,11 @@
 *  - modified
 #  - fixed
 
-v.0.9.4.....
+v.0.9.5.....
+=================
++ - Bookmark dialog (in progress)...
+
+v.0.9.4
 =================
 # - Non English characters in the file names are now supported.
 # - The "gray background" problem (i.e. no enough RAM for too large zoom factor) was fixed.
@@ -14,8 +18,6 @@ v.0.9.4.....
 + - The RSS feed was created (http://pocketdjvu.googlecode.com/svn/trunk/PocketDjVu_root/Info/Releases-feed.xml).
 + - Virtual Memory (VM) manager was created and used.
 + - VM settings dialog is implemented.
-
-+ - Bookmark dialog (in progress)...
 
 v.0.9.3
 =================

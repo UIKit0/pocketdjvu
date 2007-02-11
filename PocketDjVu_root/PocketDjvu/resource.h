@@ -54,7 +54,11 @@
 #define IDC_SWAPFILE_STATIC             1025
 #define IDC_SWAPFILE                    1026
 #define IDC_MBSIZE_STATIC               1027
+#define IDC_LEVEL_PLACEHOLDER           1028
 #define IDC_MBSIZE_SPIN                 1029
+#define IDC_ST1                         1030
+#define IDC_ST2                         1031
+#define IDC_ST3                         1032
 #define ID_FILE_NEW_WINDOW              32771
 #define ID_TOOLS_OPTIONS                32772
 #define ID_NAVIGATE_ADDBOOKMARK         32775
@@ -83,7 +87,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        214
 #define _APS_NEXT_COMMAND_VALUE         32797
-#define _APS_NEXT_CONTROL_VALUE         1030
+#define _APS_NEXT_CONTROL_VALUE         1033
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif
