@@ -3,10 +3,6 @@
 *  - modified
 #  - fixed
 
-v.0.9.5.....
-=================
-+ - Bookmark dialog (in progress)...
-
 v.0.9.4
 =================
 # - Non English characters in the file names are now supported.
