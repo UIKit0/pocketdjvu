@@ -1,0 +1,434 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "atlresce.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU_OKCANCEL MENU 
+BEGIN
+    MENUITEM "OK",                          IDOK
+    MENUITEM "Cancel",                      IDCANCEL
+END
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "•"
+    BEGIN
+        MENUITEM "About...",                    ID_APP_ABOUT
+        MENUITEM "Options...",                  ID_TOOLS_OPTIONS
+        MENUITEM SEPARATOR
+        POPUP "Navigation"
+        BEGIN
+            MENUITEM "Bookmarks...",                ID_NAVIGATE_BOOKMARK, GRAYED
+            MENUITEM "GoTo Page...",                ID_NAVIGATION_GOTOPAGE
+        END
+        POPUP "Zoom && Scroll"
+        BEGIN
+            MENUITEM "Zoom In",                     ID_ZOOM_ZOOMIN
+            MENUITEM "Zoom Out",                    ID_ZOOM_ZOOMOUT
+            MENUITEM "Fit Screen Width",            ID_ZOOM_FITSCREENWIDTH
+            MENUITEM "Fit Screen Height",           ID_ZOOM_FITSCREENHEIGHT
+            MENUITEM "Fit Page",                    ID_ZOOM_FITPAGE
+            MENUITEM SEPARATOR
+            MENUITEM "Zoom by Rect",                ID_ZOOM_ZOOMBYRECT
+            MENUITEM "Move by stylus",              ID_MOVE_BY_STYLUS
+            MENUITEM "Scroll by tap zones",         ID_SCROLL_BY_TAP
+        END
+        MENUITEM SEPARATOR
+        POPUP "Recent files"
+        BEGIN
+            MENUITEM "0",                           ID_FILE_MRU_FIRST
+        END
+        MENUITEM "Open...",                     ID_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "Fullscreen",                  ID_FULLSCREEN
+        MENUITEM SEPARATOR
+        MENUITEM "Exit",                        ID_APP_EXIT
+    END
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""atlresce.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// CEUX
+//
+
+HI_RES_AWARE CEUX 
+BEGIN
+    0x0001
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\PocketDjvu.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG  0, 0, 146, 122
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION
+EXSTYLE 0x80000000L
+CAPTION "About"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,2,2,21,20
+    LTEXT           "PocketDjVu v.",IDC_STATIC_VER,35,7,70,8,SS_NOPREFIX
+    LTEXT           "Copyright © 2007 Igor.Solovyov@gmail.com",IDC_STATIC_CR,2,25,142,8
+    LTEXT           "This program is licensed under GNU GPL version 2, or above",IDC_STATIC_LIC,2,48,142,18
+    EDITTEXT        IDC_INFO,2,69,142,37,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | WS_VSCROLL,WS_EX_STATICEDGE
+    LTEXT           "http://Igor.Solovyov.googlepages.com",IDC_HOMEPAGE,2,37,142,8
+END
+
+IDD_GOTO_PAGE DIALOG  0, 0, 111, 29
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "GoTo Page"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_PG_NUM,7,7,60,15,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SPIN1,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,62,7,11,15
+    PUSHBUTTON      "Ok",IDOK,73,7,31,15
+END
+
+IDD_BOOKMARK DIALOG  0, 0, 188, 82
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE 0x80000000L
+CAPTION "Bookmarks"
+FONT 8, "Microsoft Sans Serif"
+BEGIN
+    LTEXT           "Add:",IDC_STATIC_ADD,2,4,18,8
+    EDITTEXT        IDC_BOOKMARK_NAME,22,2,135,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "+",IDC_BTNADD,159,2,13,12
+    PUSHBUTTON      "-",IDC_BTNDEL,173,2,13,12
+    CONTROL         "",IDC_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,2,17,184,48
+END
+
+IDD_VM DIALOG  0, 0, 144, 113
+STYLE DS_SETFONT | DS_MODALFRAME | WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Virtual Memory"
+FONT 8, "Microsoft Sans Serif"
+BEGIN
+    LTEXT           "",IDC_LEVEL_PLACEHOLDER,2,2,21,8
+    LTEXT           "Off",IDC_ST1,34,2,13,8
+    CTEXT           "Bmp",IDC_ST2,79,2,15,8
+    RTEXT           "Bmp+DjVu",IDC_ST3,104,2,38,8
+    LTEXT           "Level: ",IDC_LEVEL,2,18,21,8
+    CONTROL         "",IDC_LEVEL_SLIDER,"msctls_trackbar32",TBS_AUTOTICKS | WS_TABSTOP,29,14,113,15
+    LTEXT           "Setup swap-file name:",IDC_SWAPFILE_STATIC,2,32,140,8
+    EDITTEXT        IDC_SWAPFILE,2,41,123,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BROWSE_PATH,128,41,14,12
+    LTEXT           "Swap-file size (MB): ",IDC_MBSIZE_STATIC,2,59,63,8
+    EDITTEXT        IDC_MBSIZE,72,57,57,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_MBSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS,131,57,11,12
+END
+
+IDD_TIMING DIALOG  0, 0, 145, 90
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Timings"
+FONT 8, "Microsoft Sans Serif"
+BEGIN
+    LTEXT           "This dialog is not implemented yet.\r\nPlease be patient.",IDC_STATIC,2,10,141,18
+    EDITTEXT        IDC_EDIT2,2,34,141,12,ES_AUTOHSCROLL | NOT WS_VISIBLE
+    EDITTEXT        IDC_EDIT4,2,55,141,12,ES_AUTOHSCROLL | NOT WS_VISIBLE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 2
+        RIGHTMARGIN, 144
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 120
+        HORZGUIDE, 66
+    END
+
+    IDD_GOTO_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 104
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 22
+    END
+
+    IDD_BOOKMARK, DIALOG
+    BEGIN
+        LEFTMARGIN, 2
+        RIGHTMARGIN, 186
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 77
+    END
+
+    IDD_VM, DIALOG
+    BEGIN
+        LEFTMARGIN, 2
+        RIGHTMARGIN, 142
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 111
+    END
+
+    IDD_TIMING, DIALOG
+    BEGIN
+        LEFTMARGIN, 2
+        RIGHTMARGIN, 143
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 88
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS 
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 0,9,4,0
+ PRODUCTVERSION 0,9,4,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x21L
+#else
+ FILEFLAGS 0x20L
+#endif
+ FILEOS 0x80000L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "Igor Solovyov"
+            VALUE "FileDescription", "PocketDjvu Module"
+            VALUE "FileVersion", "0, 9, 4, 0"
+            VALUE "InternalName", "PocketDjvu"
+            VALUE "LegalCopyright", "Copyright © 2007, Igor Solovyov"
+            VALUE "OriginalFilename", "PocketDjvu.exe"
+            VALUE "ProductName", "PocketDjvu Module"
+            VALUE "ProductVersion", "0, 9, 4, 0"
+            VALUE "SpecialBuild", "004"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MFRTB               BITMAP                  "res\\MFRTB_toolbar.bmp"
+IDB_TB_VGA              BITMAP                  "res\\32x32_true.bmp"
+IDB_TB_QVGA             BITMAP                  "res\\16x16_true.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MFRTB TOOLBAR  16, 15
+BEGIN
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_ZOOM_ZOOMIN
+    BUTTON      ID_ZOOM_ZOOMOUT
+    SEPARATOR
+    BUTTON      ID_ZOOM_ZOOMBYRECT
+    BUTTON      ID_MOVE_BY_STYLUS
+    BUTTON      ID_SCROLL_BY_TAP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "PocketDjvu"
+    IDS_DISMISS             "Dismiss"
+    IDS_DISMISS_LINK        "<br><a href=""cmd:%d"">Dismiss.</a>"
+    IDS_WARNING             "Warning"
+    IDS_ZOOM_TOO_MUCH       "Zoom factor chosen is too large for so small RAM."
+    IDS_CAN_NOT_CREATE_MMFILE "Can't create swap-file."
+    IDS_TOO_LONG_TEXT_VALUE "The text value is too long"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_WINDOW_NEW           "Open another window for the active document\nNew Window"
+    ID_WINDOW_ARRANGE       "Arrange icons at the bottom of the window\nArrange Icons"
+    ID_WINDOW_CASCADE       "Arrange windows so they overlap\nCascade Windows"
+    ID_WINDOW_TILE_HORZ     "Arrange windows as non-overlapping tiles\nTile Windows"
+    ID_WINDOW_TILE_VERT     "Arrange windows as non-overlapping tiles\nTile Windows"
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE 
+BEGIN
+    ATL_IDS_SCSIZE          "Change the window size"
+    ATL_IDS_SCMOVE          "Change the window position"
+    ATL_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    ATL_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    ATL_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    ATL_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    ATL_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE 
+BEGIN
+    ATL_IDS_SCRESTORE       "Restore the window to normal size"
+    ATL_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE 
+BEGIN
+    ATL_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE 
+BEGIN
+    ATL_IDS_MRU_FILE        "Open this document"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_NEW_WINDOW      "Open a new window\nNew Window"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_INT_VAL_WRONG       "The value %d is wrong"
+    IDS_DOUBLE_VAL_WRONG    "The value %g is wrong"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
