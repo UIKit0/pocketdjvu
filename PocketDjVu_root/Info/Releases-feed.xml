@@ -30,6 +30,7 @@
           virtual memory permits to have extra big zoom factor but on
           account of time. So I don't recommend to use virtual memory in
           the 2nd mode (i.e. "Bmp+DjVu") but only in extreme needs.
+          Also you have to reload the program after memory settings were changed.
         </description>
       </item>
         
