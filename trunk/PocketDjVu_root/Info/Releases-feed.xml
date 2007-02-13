@@ -4,7 +4,7 @@
         <title>PocketDjVu updates notification.</title>
         <description>If you want to keep up to date PocketDjVu installed on your handheld PC you could subscribe on this feed.</description>
         <link>http://Igor.Solovyov.googlepages.com</link>
-        <lastBuildDate>Mon, 12 Feb 2007 23:04:07 +0200</lastBuildDate>
+        <lastBuildDate>Mon, 13 Feb 2007 14:43:20 +0200</lastBuildDate>
         <pubDate>Mon, 12 Feb 2007 23:04:07 +0200</pubDate>
         <generator>Hand made :-) (see http://blogs.law.harvard.edu/tech/rss)</generator>
       
@@ -19,11 +19,11 @@
         <title>The PocketDjVu 0.9.4.0 is released.</title>
         <link>http://code.google.com/p/pocketdjvu/downloads/list</link>
         <guid isPermaLink="false">{656072B9-F6F8-4aba-9D3A-287EDDAEA98B}</guid>
-        <pubDate>Mon, 12 Feb 2007 23:04:07 +0200</pubDate>
+        <pubDate>Mon, 13 Feb 2007 14:43:20 +0200</pubDate>
         <description>
           The changes made in 0.9.4.0 version you can find
-          <![CDATA[
-          <a href="http://pocketdjvu.googlecode.com/svn/tags/PocketDjVu_root_v.0.9.4.0/PocketDjvu/changes.txt">here</a>
+          <![CDATA[          
+          <a href="http://pocketdjvu.googlecode.com/svn/tags/PocketDjVu_root_v.0.9.4.0/Info/changes.txt">here</a>
           ]]>
           Note! Two new modes of virtual memory usage were added. I would
           like to stress that there are no miracles in the computing and
