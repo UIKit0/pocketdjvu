@@ -31,6 +31,8 @@ CMainFrame::CMainFrame() :
   , m_cmdIDCntrl()
   , m_bDirty()
 {
+  m_toolTips.reserve(16);
+  m_toolTips.push_back( L"" ); // For 1st menu button (i.e. "*").
 }
 
 BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
@@ -71,9 +73,28 @@ BOOL CMainFrame::OnIdle()
   return FALSE;
 }
 
+void CMainFrame::LoadTooltipStr( DWORD id )
+{
+  
+  wchar_t const * pTooltipStr = (wchar_t const *)LoadString( _Module.GetModuleInstance(), id, NULL, 0 );  
+  if ( !pTooltipStr )
+  {
+    m_toolTips.push_back( L"" );
+  }
+  else
+  {
+    // Make sure that the RC.EXE is invoked with the "-n" option.
+    WORD numChars = *(-1+(WORD*)pTooltipStr);
+    WORD numCharsCnt = wcslen(pTooltipStr) + 1; //+1 - zero terminal
+    ATLASSERT( numChars == numCharsCnt );
+
+    m_toolTips.push_back( pTooltipStr );
+  }
+}
+
 LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-  HINSTANCE hinst = ATL::_AtlBaseModule.GetModuleInstance();
+  HINSTANCE hinst = _Module.GetModuleInstance();
 
   SHMENUBARINFO mbi = { 0 };
   mbi.cbSize      = sizeof(mbi);
@@ -111,6 +132,8 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
       pButtons[i].fsState = TBSTATE_ENABLED;
       pButtons[i].fsStyle = TBSTYLE_BUTTON;
 
+      LoadTooltipStr( pItems[i] );
+
       ++nIcon;
     }
     else
@@ -128,6 +151,9 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
   BOOL res = -1 != ::CommandBar_AddBitmap( m_hWndCECommandBar, hinst, nResourceID, nIcon, 0, 0 );
   res = res && ::CommandBar_AddButtons( m_hWndCECommandBar, nItems, pButtons );
 
+  res = res && ::CommandBar_AddToolTips( m_hWndCECommandBar, m_toolTips.size(), &m_toolTips[0] );
+
+  //...........................................................................
   m_notyfyIcon.Setup( m_hWnd, WM_ICON_NOTIFICATION, IDR_MAINFRAME );
   res = m_notyfyIcon.Install();
 
