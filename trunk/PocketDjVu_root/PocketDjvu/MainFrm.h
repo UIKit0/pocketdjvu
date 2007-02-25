@@ -1,6 +1,7 @@
 #pragma once
 
 #include <deque>
+#include <vector>
 
 #include "../libdjvu/DjVuDocument.h"
 #include "./Constants.h"
@@ -118,10 +119,11 @@ public:
   void MoveImage( WTL::CPoint vec, int pageIndex );
 
 private:
-  #pragma region ICtrlNotify
+#pragma region ICtrlNotify
   void FinishCtrl( void * pSourceCtrl, bool bCancel );
 #pragma endregion
 
+  void LoadTooltipStr( DWORD id );
   void UpdateScreenMode();
   void OnPageUpDn( bool bDown, bool bByPage = true  );
   void OnPageLeftRight( bool toRight, bool bByPage = true );
@@ -196,6 +198,8 @@ private:
   // DATA:
 private:
 #pragma region GUI
+  std::vector<wchar_t const *> m_toolTips;
+
   bool m_bFullScreen;
   int m_curClientWidth;
   WTL::CString m_initDir;

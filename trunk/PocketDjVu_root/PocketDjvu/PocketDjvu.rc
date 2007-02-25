@@ -347,7 +347,7 @@ END
 STRINGTABLE 
 BEGIN
     ID_FILE_NEW             "Create a new document\nNew"
-    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_OPEN            "Open an existing file"
     ID_FILE_CLOSE           "Close the active document\nClose"
     ID_FILE_SAVE            "Save the active document\nSave"
     ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
@@ -420,12 +420,21 @@ END
 STRINGTABLE 
 BEGIN
     ID_FILE_NEW_WINDOW      "Open a new window\nNew Window"
+    ID_ZOOM_ZOOMIN          "Zoom in"
+    ID_ZOOM_ZOOMOUT         "Zoom out"
+    ID_ZOOM_ZOOMBYRECT      "Zoom by Rectangle"
 END
 
 STRINGTABLE 
 BEGIN
     IDS_INT_VAL_WRONG       "The value %d is wrong"
     IDS_DOUBLE_VAL_WRONG    "The value %g is wrong"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_MOVE_BY_STYLUS       "Move by stylus"
+    ID_SCROLL_BY_TAP        "Scroll by tap zones"
 END
 
 #endif    // English (U.S.) resources

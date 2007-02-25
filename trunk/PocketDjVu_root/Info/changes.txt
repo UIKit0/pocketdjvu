@@ -3,6 +3,11 @@
 *  - modified
 #  - fixed
 
+v.0.9.5
+=================
++ - Tooltips for toolbar buttons were added.
++ - Bookmark dialog (in progress)...
+
 v.0.9.4
 =================
 # - Non English characters in the file names are now supported.

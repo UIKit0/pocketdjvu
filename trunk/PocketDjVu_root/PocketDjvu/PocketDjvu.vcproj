@@ -658,6 +658,38 @@
 			<File
 				RelativePath=".\PocketDjvu.rc"
 				>
+				<FileConfiguration
+					Name="Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I)"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalOptions="/n"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Pocket PC 2003 (ARMV4)"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalOptions="/n"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Windows Mobile 5.0 Pocket PC SDK (ARMV4I)"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalOptions="/n"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Pocket PC 2003 (ARMV4)"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalOptions="/n"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
