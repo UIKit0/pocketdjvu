@@ -8,6 +8,7 @@
 #include "./Page.h"
 #include "./RectZoomCtrl.h"
 #include "./CNofyIcon.h"
+#include "./DjVuToolBar.h"
 
 //-----------------------------------------------------------------------------
 class CMainFrame : 
@@ -256,6 +257,7 @@ private:
   WPARAM m_cursorKey;
   
   CNofyIcon m_notyfyIcon;
+  CDjVuToolBar m_tb;
 
 #pragma endregion
 

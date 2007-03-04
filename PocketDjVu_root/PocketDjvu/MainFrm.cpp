@@ -19,101 +19,6 @@
 #include "./OptionsDlg.h"
 #include "./misc.h"
 
-
-//===========================================
-class CImpWin : public ATL::CWindowImplBase
-{
-public:
-  CImpWin( HWND )
-  {
-  }
-};
-
-class CDjVuToolBar : public WTL::CToolBarCtrlT< CImpWin >
-{
-  typedef WTL::CToolBarCtrlT< CImpWin > Base;
-public:
-  CDjVuToolBar()
-  {
-  }
-
-  BEGIN_MSG_MAP(CDjVuToolBar)
-    MESSAGE_HANDLER(WM_PAINT, OnPaint)
-    //CHAIN_MSG_MAP(Base)
-  END_MSG_MAP()
-
-  LRESULT OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
-
-  bool SubclassToolbar( HWND hWndMenuBar );
-
-private:
-  HWND m_hWndSIP;
-};
-
-bool CDjVuToolBar::SubclassToolbar( HWND hWndMenuBar )
-{
-  m_hWndSIP = FindChildWndByClassName( NULL, L"MS_SIPBUTTON" );
-  if ( !m_hWndSIP )
-  {    
-    return false;
-  }  
-
-  HWND hWndToolBar = FindChildWndByClassName( hWndMenuBar, L"ToolbarWindow32" );
-  if ( !hWndToolBar )
-  {
-    return false;
-  }
-
-  if ( !SubclassWindow( hWndToolBar ) )
-  {
-    return false;
-  }
-
-  return true;
-}
-
-LRESULT CDjVuToolBar::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
-{
-  DefWindowProc();
-
-  WTL::CDC dc = GetDC();
-
-  WTL::CRect sipR;
-  ::GetWindowRect( m_hWndSIP, sipR );
-  ScreenToClient( (POINT*)&sipR );
-  ScreenToClient( 1+(POINT*)&sipR );
-
-  WTL::CRect r;
-  GetRect( ID_SCROLL_BY_TAP, &r );
-  
-  r.left  = r.right + 4;
-  r.right = sipR.left - 4;
-   
-  WTL::CRect winR;
-  GetWindowRect( &winR );
-
-  r.top     = 0;
-  r.bottom  = sipR.bottom;
-  
-  WTL::CPen pen( (HPEN)GetStockObject(BLACK_PEN) );
-
-  HPEN hOldPen = dc.SelectPen( pen );
-  {
-    dc.MoveTo(r.TopLeft());
-    dc.LineTo(r.BottomRight());
-
-    dc.MoveTo(r.left,r.bottom);
-    dc.LineTo(r.right,r.top);
-
-    dc.DrawEdge( &r, BDR_RAISEDINNER, BF_RECT|BF_FLAT|BF_MONO );
-  }
-  dc.SelectPen( hOldPen );
-
-  return 0;
-}
-
-//=============
-
 CMainFrame::CMainFrame() :
   m_bFullScreen(false)
   , m_curClientWidth()
@@ -242,12 +147,13 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
   bool bVGA = max( GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN) ) > 320;
   nResourceID = bVGA ? IDB_TB_VGA : IDB_TB_QVGA;
   
+  // The following call creates actually the toolbar as child window to MenuBar.
   BOOL res = -1 != ::CommandBar_AddBitmap( m_hWndCECommandBar, hinst, nResourceID, nIcon, 0, 0 );
   res = res && ::CommandBar_AddButtons( m_hWndCECommandBar, nItems, pButtons );
-
   res = res && ::CommandBar_AddToolTips( m_hWndCECommandBar, m_toolTips.size(), &m_toolTips[0] );
-
-  static CDjVuToolBar m_tb;
+  
+  // After the toolbar was created we can subclass it for our information painting.  
+  m_tb.SetLastButtonID( ID_SCROLL_BY_TAP );
   m_tb.SubclassToolbar( m_hWndCECommandBar );
   //...........................................................................
   m_notyfyIcon.Setup( m_hWnd, WM_ICON_NOTIFICATION, IDR_MAINFRAME );
