@@ -454,6 +454,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DjVuToolBar.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\GotoPage.cpp"
 				>
 			</File>
@@ -560,6 +564,10 @@
 			</File>
 			<File
 				RelativePath=".\Constants.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DjVuToolBar.h"
 				>
 			</File>
 			<File

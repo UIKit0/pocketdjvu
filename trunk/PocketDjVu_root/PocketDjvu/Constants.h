@@ -26,4 +26,7 @@ const unsigned  g_cSwapDefaultMB = 64;
 
 /// It's pixels for double click recognitions.
 /// On my PPC 40 ones were returned by GetSystemMetrics(SM_CXDOUBLECLK) and it's unacceptable.
-const int   g_sDxDblClck = 6; 
+const int g_sDxDblClck = 6; 
+
+/// Distance between toolbar buttons and our info pannel
+const int g_cTollBarGap = 4;
