@@ -120,3 +120,75 @@ BOOL CreateDlgMenuBar( UINT nToolBarId, HWND hWndParent )
 
   return bRet;
 }
+
+//-----------------------------------------------------------------------------
+static HWND FindChildWndByClassNameImp( size_t clL,
+                                        HWND hWndParent, 
+                                        wchar_t const * pClassName,
+                                        bool bShallow )
+{
+  wchar_t * szBuf = 0;
+  HWND hLookingFor = 0;
+  HWND hNext = GetWindow( hWndParent, GW_CHILD );
+  while( hNext )
+  {
+    if ( !szBuf )
+    {
+      __try
+      {
+        szBuf = (wchar_t*)alloca( clL * sizeof(wchar_t) );
+      }
+      __except( GetExceptionCode() == STATUS_STACK_OVERFLOW )
+      {
+        return 0;
+      }
+    }
+    if ( !GetClassNameW( hNext, szBuf, clL ) )
+    {
+      DWORD err = GetLastError(); // ? ERROR_INSUFFICIENT_BUFFER    122L
+      return 0;
+    }
+
+    if ( !_wcsicmp( szBuf, pClassName ) )
+    {
+      return hNext;
+    }
+
+    if ( !bShallow )
+    {
+      hLookingFor = FindChildWndByClassNameImp( clL, hNext, pClassName, bShallow );
+      if ( hLookingFor )
+      {
+        return hLookingFor;
+      }
+    }    
+
+    hNext = ::GetWindow( hNext, GW_HWNDNEXT );
+  }
+
+  if ( !bShallow )
+  {
+    return 0;
+  }
+
+  hNext = GetWindow( hWndParent, GW_CHILD );
+  while( hNext )
+  {
+    hLookingFor = FindChildWndByClassNameImp( clL, hNext, pClassName, bShallow );
+    if ( hLookingFor )
+    {
+      return hLookingFor;
+    }
+    hNext = ::GetWindow( hNext, GW_HWNDNEXT );
+  }
+
+  return 0;
+}
+
+HWND FindChildWndByClassName( HWND hWndParent, wchar_t const * pClassName, bool bShallow )
+{
+  // +1 - if some window class has the name with the same leading characters as passed in the pClassName
+  //      we have to add at least 1 extra character to have possibility distinguish this case.
+  size_t clL = wcslen(pClassName) + 1 + 1; // +1 - Zero terminal
+  return FindChildWndByClassNameImp( clL, hWndParent, pClassName, bShallow );
+}

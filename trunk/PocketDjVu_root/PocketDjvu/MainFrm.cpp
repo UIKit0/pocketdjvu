@@ -19,6 +19,101 @@
 #include "./OptionsDlg.h"
 #include "./misc.h"
 
+
+//===========================================
+class CImpWin : public ATL::CWindowImplBase
+{
+public:
+  CImpWin( HWND )
+  {
+  }
+};
+
+class CDjVuToolBar : public WTL::CToolBarCtrlT< CImpWin >
+{
+  typedef WTL::CToolBarCtrlT< CImpWin > Base;
+public:
+  CDjVuToolBar()
+  {
+  }
+
+  BEGIN_MSG_MAP(CDjVuToolBar)
+    MESSAGE_HANDLER(WM_PAINT, OnPaint)
+    //CHAIN_MSG_MAP(Base)
+  END_MSG_MAP()
+
+  LRESULT OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+
+  bool SubclassToolbar( HWND hWndMenuBar );
+
+private:
+  HWND m_hWndSIP;
+};
+
+bool CDjVuToolBar::SubclassToolbar( HWND hWndMenuBar )
+{
+  m_hWndSIP = FindChildWndByClassName( NULL, L"MS_SIPBUTTON" );
+  if ( !m_hWndSIP )
+  {    
+    return false;
+  }  
+
+  HWND hWndToolBar = FindChildWndByClassName( hWndMenuBar, L"ToolbarWindow32" );
+  if ( !hWndToolBar )
+  {
+    return false;
+  }
+
+  if ( !SubclassWindow( hWndToolBar ) )
+  {
+    return false;
+  }
+
+  return true;
+}
+
+LRESULT CDjVuToolBar::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+{
+  DefWindowProc();
+
+  WTL::CDC dc = GetDC();
+
+  WTL::CRect sipR;
+  ::GetWindowRect( m_hWndSIP, sipR );
+  ScreenToClient( (POINT*)&sipR );
+  ScreenToClient( 1+(POINT*)&sipR );
+
+  WTL::CRect r;
+  GetRect( ID_SCROLL_BY_TAP, &r );
+  
+  r.left  = r.right + 4;
+  r.right = sipR.left - 4;
+   
+  WTL::CRect winR;
+  GetWindowRect( &winR );
+
+  r.top     = 0;
+  r.bottom  = sipR.bottom;
+  
+  WTL::CPen pen( (HPEN)GetStockObject(BLACK_PEN) );
+
+  HPEN hOldPen = dc.SelectPen( pen );
+  {
+    dc.MoveTo(r.TopLeft());
+    dc.LineTo(r.BottomRight());
+
+    dc.MoveTo(r.left,r.bottom);
+    dc.LineTo(r.right,r.top);
+
+    dc.DrawEdge( &r, BDR_RAISEDINNER, BF_RECT|BF_FLAT|BF_MONO );
+  }
+  dc.SelectPen( hOldPen );
+
+  return 0;
+}
+
+//=============
+
 CMainFrame::CMainFrame() :
   m_bFullScreen(false)
   , m_curClientWidth()
@@ -75,7 +170,6 @@ BOOL CMainFrame::OnIdle()
 
 void CMainFrame::LoadTooltipStr( DWORD id )
 {
-  
   wchar_t const * pTooltipStr = (wchar_t const *)LoadString( _Module.GetModuleInstance(), id, NULL, 0 );  
   if ( !pTooltipStr )
   {
@@ -107,8 +201,8 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
   BOOL bRet = ::SHCreateMenuBar( &mbi );
   ATLASSERT( bRet );
   
-  m_hWndCECommandBar = mbi.hwndMB;
-
+  m_hWndCECommandBar = mbi.hwndMB;  
+  
 #pragma region Toolbar
   UINT nResourceID = IDR_MFRTB;
 
@@ -140,7 +234,7 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
     {
       pButtons[i].fsStyle = TBSTYLE_SEP;
     }
-  }
+  }  
 #pragma endregion
 
   UIAddToolBar( m_hWndCECommandBar );
@@ -153,9 +247,11 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
 
   res = res && ::CommandBar_AddToolTips( m_hWndCECommandBar, m_toolTips.size(), &m_toolTips[0] );
 
+  static CDjVuToolBar m_tb;
+  m_tb.SubclassToolbar( m_hWndCECommandBar );
   //...........................................................................
   m_notyfyIcon.Setup( m_hWnd, WM_ICON_NOTIFICATION, IDR_MAINFRAME );
-  res = m_notyfyIcon.Install();
+  res = m_notyfyIcon.Install();  
 
   WTL::CRect r;
   GetClientRect( &r );

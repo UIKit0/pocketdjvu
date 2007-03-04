@@ -23,15 +23,13 @@ class CMainFrame :
   typedef std::deque< PagePtr > Pages;
 
 public:
-#ifndef SIV_WTL_NAMESPACE
-#   error "Check the namespace in the macro SIV_WTL_NAMESPACE in file <...wtl\include\atlframe.h>"
-#endif
   DECLARE_FRAME_WND_CLASS(NULL, IDR_MAINFRAME)
   CMainFrame();
 
   virtual BOOL PreTranslateMessage(MSG* pMsg);
   virtual BOOL OnIdle();
 
+#pragma region UI update map
   BEGIN_UPDATE_UI_MAP(CMainFrame)
     UPDATE_ELEMENT(ID_ZOOM_ZOOMBYRECT, UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
     UPDATE_ELEMENT(ID_SCROLL_BY_TAP,   UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
@@ -47,10 +45,13 @@ public:
 
     UPDATE_ELEMENT(ID_FULLSCREEN,            UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
   END_UPDATE_UI_MAP()
+#pragma endregion UI update map
 
+#pragma region Messaging
   static UINT const WM_ICON_NOTIFICATION = WM_APP+100;
 
-  BEGIN_MSG_MAP(CMainFrame)            
+#pragma region Message handlers map
+  BEGIN_MSG_MAP(CMainFrame)
     CHAIN_MSG_MAP_DYNAMIC(0)
     MESSAGE_HANDLER(WM_CREATE, OnCreate)
     MESSAGE_HANDLER(WM_KEYDOWN, OnKeyDown)
@@ -75,9 +76,11 @@ public:
     CHAIN_MSG_MAP(CUpdateUI<CMainFrame>)
     CHAIN_MSG_MAP(CFrameWindowImpl<CMainFrame>)
     CHAIN_MSG_MAP(CAppWindowBase<CMainFrame>)
-    MESSAGE_HANDLER(WM_ICON_NOTIFICATION,OnTrayNotyfy)
+    MESSAGE_HANDLER(WM_ICON_NOTIFICATION,OnTrayNotyfy)    
   END_MSG_MAP()
+#pragma endregion 
 
+#pragma region Message handlers 
   // Handler prototypes (uncomment arguments if needed):
   //	LRESULT MessageHandler(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
   //	LRESULT CommandHandler(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
@@ -104,6 +107,9 @@ public:
   LRESULT OnTrayNotyfy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
   LRESULT OnBookmark(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
   LRESULT OnNofify_1(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+#pragma endregion 
+
+#pragma endregion Messaging
 
   void DoPaint( WTL::CDCHandle dc );
   void AppSave();
@@ -123,6 +129,7 @@ private:
   void FinishCtrl( void * pSourceCtrl, bool bCancel );
 #pragma endregion
 
+#pragma region Private worker methods
   void LoadTooltipStr( DWORD id );
   void UpdateScreenMode();
   void OnPageUpDn( bool bDown, bool bByPage = true  );
@@ -194,7 +201,7 @@ private:
     CMainFrame & m_rThis;
     bool m_bFullScreen;
   };
-
+#pragma endregion Private worker methods
   // DATA:
 private:
 #pragma region GUI
