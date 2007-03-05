@@ -153,8 +153,8 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
   res = res && ::CommandBar_AddToolTips( m_hWndCECommandBar, m_toolTips.size(), &m_toolTips[0] );
   
   // After the toolbar was created we can subclass it for our information painting.  
-  m_tb.SetLastButtonID( ID_SCROLL_BY_TAP );
   m_tb.SubclassToolbar( m_hWndCECommandBar );
+  m_tb.SetFrameWnd( m_hWnd );
   //...........................................................................
   m_notyfyIcon.Setup( m_hWnd, WM_ICON_NOTIFICATION, IDR_MAINFRAME );
   res = m_notyfyIcon.Install();  
@@ -183,8 +183,7 @@ LRESULT CMainFrame::OnKeyDown( UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL
     case VK_RETURN:
     {
       m_bFullScreen = !m_bFullScreen;
-      UpdateScreenMode();
-      bHandled = true;
+      UpdateScreenMode();      
     }
     break;
 
@@ -198,8 +197,7 @@ LRESULT CMainFrame::OnKeyDown( UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL
         m_scSate = SC_DN;
         RunTimerLong();
       }
-      m_cursorKey = wParam;
-      bHandled = true;
+      m_cursorKey = wParam;      
     break;
   }
   return 0;
@@ -238,8 +236,7 @@ LRESULT CMainFrame::OnKeyUp( UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL &
       }
       StopTimer();
       m_scSate = SC_START;
-      m_cursorKey = 0;
-      bHandled = true;
+      m_cursorKey = 0;      
     break;    
   }  
     
@@ -271,8 +268,7 @@ void CMainFrame::StopTimer()
 LRESULT CMainFrame::OnTimer( UINT /*uMsg*/, WPARAM wParamIsTimerID, LPARAM /*lParam*/, BOOL& bHandled )
 {
   if ( 1 != wParamIsTimerID )
-    return 0;
-  bHandled = true;
+    return 0;  
 
   ASSERT( SC_L_TIMER == m_scSate || SC_SH_TIMER == m_scSate );
   StopTimer();
@@ -372,6 +368,8 @@ void CMainFrame::AppSave()
     m_bDirty = false;
     PagePtr p1sVis = Get1stVisiblePage();
     m_mru[ 0 ].m_pageNum = p1sVis ? p1sVis->GetPageIndex() : 0;
+    
+    m_tb.SetPages( m_mru[ 0 ].m_pageNum + 1, m_pDjVuDoc->get_pages_num() );
 
     int j=-1;
     for ( int i=0; i<g_cMruNumber; ++i )
@@ -392,8 +390,6 @@ void CMainFrame::AppSave()
 
 LRESULT CMainFrame::OnFileOpen(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
 {
-  bHandled = true;
-  
   CFullScrnOnOff fullScrOnOff( *this );
 
 #if UNDER_CE < 0x500
@@ -440,6 +436,7 @@ bool CMainFrame::AppNewInstance( LPCTSTR lpstrCmdLine )
 
 bool CMainFrame::OpenFile( LPCWSTR fullFileName, int pageIndex )
 {
+  m_tb.SetPages();
   WTL::CWaitCursor wc;
   WTL::CString fileName( L"file://localhost" );
   fileName += fullFileName;
@@ -503,7 +500,6 @@ bool CMainFrame::OpenFile( LPCWSTR fullFileName, int pageIndex )
 
 LRESULT CMainFrame::OnAppAbout( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
 {
-  bHandled = true;
   CFullScrnOnOff fs( *this );
   CAboutDlg dlg;
   dlg.DoModal();
@@ -512,7 +508,6 @@ LRESULT CMainFrame::OnAppAbout( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 
 LRESULT CMainFrame::OnToolsOptions( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
 {
-  bHandled = true;
   CFullScrnOnOff fs( *this );
   COptionsDlg dlg;
   dlg.DoModal( m_hWnd );
@@ -589,14 +584,13 @@ LRESULT CMainFrame::OnActivate( UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOO
   { // Activate!
     UpdateScreenMode();
   }
-  bHandled = true;
+
   return 0;
 }
 
 LRESULT CMainFrame::OnSettingChange( UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL& bHandled )
 {
   // TODO: check if window is not active and postpone image reloading
-  bHandled = true;
   if ( !m_pDjVuDoc || m_Pages.empty() || SETTINGCHANGE_RESET != wParam )
     return 0;
 
@@ -647,7 +641,7 @@ void CMainFrame::ShowZoomWarning()
 
 LRESULT CMainFrame::OnZoomCmd( WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& bHandled )
 {
-  bHandled = true;
+
   if ( !m_pDjVuDoc )
     return 0;
 
@@ -977,7 +971,8 @@ PagePtr CMainFrame::GetCurrentPage( int * pIndex /*= 0*/ )
 }
 
 void CMainFrame::LoadSettings()
-{  
+{
+  m_tb.SetPages();
   int j=0;
   for ( int i=0; i<g_cMruNumber; ++i )
   {
@@ -1122,12 +1117,11 @@ LRESULT CMainFrame::OnMru( WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOO
     m_mru[g_cMruNumber-1].Clear();
     UpdateMruMenu();
   }
-  bHandled = true;
+
   return 0;
 }
 LRESULT CMainFrame::OnNavigationGotopage( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
 {
-  bHandled = true;
   if ( !m_pDjVuDoc )
     return 0;
 
@@ -1263,8 +1257,6 @@ void CMainFrame::CalcZoomKandOffset( WTL::CRect & r )
 
 LRESULT CMainFrame::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& bHandled )
 {
-  bHandled = true;
-
   DWORD t = GetTickCount();
   if ( t - m_1stClick < g_cDobleClickTime )
   {
@@ -1302,8 +1294,6 @@ LRESULT CMainFrame::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lPar
 
 LRESULT CMainFrame::OnTrayNotyfy( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& bHandled )
 {
-  bHandled = true;
-
   switch( lParam )
   {
     case WM_LBUTTONUP:
@@ -1316,8 +1306,6 @@ LRESULT CMainFrame::OnTrayNotyfy( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lPara
 }
 LRESULT CMainFrame::OnFullscreenCmd( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
 {
-  bHandled = true;
-
   m_bFullScreen = !m_bFullScreen;
   UpdateScreenMode();
 
@@ -1326,13 +1314,11 @@ LRESULT CMainFrame::OnFullscreenCmd( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*
 
 LRESULT CMainFrame::OnScrollByTap( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
 {
-  bHandled = true;
   OnCtrlButton< ID_SCROLL_BY_TAP, CScrollByTap >();
   return 0;
 }
 LRESULT CMainFrame::OnMoveByStylus( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
 {
-  bHandled = true;
   OnCtrlButton< ID_MOVE_BY_STYLUS, CMoveByStylus >();
   return 0;
 }
@@ -1354,8 +1340,6 @@ void CMainFrame::MoveImage( WTL::CPoint vec, int pageIndex )
 
 LRESULT CMainFrame::OnBookmark( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
 {
-  bHandled = true;
-  
   CFullScrnOnOff fs( *this );  
   int visPgInd = 0;
   WTL::CRect r;
@@ -1378,8 +1362,6 @@ LRESULT CMainFrame::OnBookmark( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 
 LRESULT CMainFrame::OnNofify_1( WORD /*wNotifyCode*/,WORD /*wID*/,HWND /*hWndCtl*/,BOOL& bHandled )
 {
-  bHandled = true;
-
   NotificationRemove();
 
   return 0;

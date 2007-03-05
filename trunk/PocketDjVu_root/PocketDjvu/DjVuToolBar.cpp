@@ -5,6 +5,8 @@
 #include "./misc.h"
 #include "./constants.h"
 
+#include <strsafe.h>
+
 bool CDjVuToolBar::SubclassToolbar( HWND hWndMenuBar )
 {
   m_hWndSIP = FindChildWndByClassName( NULL, L"MS_SIPBUTTON" );
@@ -27,38 +29,53 @@ bool CDjVuToolBar::SubclassToolbar( HWND hWndMenuBar )
   return true;
 }
 
+bool CDjVuToolBar::GetOutRect( RECT * rect )
+{
+  WTL::CRect sipR;
+  if ( !::GetWindowRect( m_hWndSIP, sipR ) )
+  {
+    return false;
+  }
+  ScreenToClient( &sipR.TopLeft() );
+  ScreenToClient( &sipR.BottomRight() );
+
+  RECT & r = *rect;  
+  int btnCnt = GetButtonCount();
+  ATLASSERT( btnCnt );
+  --btnCnt;
+  if ( !GetItemRect( btnCnt, &r ) )
+  {
+    return 0;
+  }
+  
+  if ( sipR.left <= r.right )
+  {
+    return false;
+  }
+  r.left  = r.right + g_cTollBarGap;
+  r.right = sipR.left - g_cTollBarGap;
+  r.bottom  = sipR.bottom;
+
+  return true;
+}
+
+
 LRESULT CDjVuToolBar::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
   DefWindowProc();
 
+  if ( !m_curPg || !m_numPg )
+  {
+    return 0;
+  }
+
   WTL::CDC dc = GetDC();
 
-  WTL::CRect sipR;
-  if ( !::GetWindowRect( m_hWndSIP, sipR ) )
-  {
-    return 0;
-  }
-  ScreenToClient( (POINT*)&sipR );
-  ScreenToClient( 1+(POINT*)&sipR );
-
   WTL::CRect r;
-  if ( !GetRect( m_theLastButtonID, &r ) )
+  if ( !GetOutRect( &r ) )
   {
     return 0;
   }
-  
-  // TODO: transfer the rect calculation into separate method
-  //      check the SIP button position and don't draw our panel if it is in the middle position (WM 5.0)
-
-  r.left  = r.right + g_cTollBarGap;
-  r.right = sipR.left - g_cTollBarGap;
-   
-  WTL::CRect winR;
-  GetWindowRect( &winR );
-
-  r.top     = 0;
-  r.bottom  = sipR.bottom;
-  
   //WTL::CPen pen( (HPEN)GetStockObject(BLACK_PEN) );
 
   //HPEN hOldPen = dc.SelectPen( pen );
@@ -68,19 +85,43 @@ LRESULT CDjVuToolBar::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
     lf.lfHeight = -14;
     lf.lfPitchAndFamily = VARIABLE_PITCH | FF_SWISS;
     
-    dc.DrawEdge( &r, BDR_RAISEDINNER, BF_RECT|BF_MONO );
+    dc.DrawEdge( &r, BDR_SUNKENINNER, BF_RECT );
 
     r.DeflateRect( 3, 3 );
+    wchar_t str[ 32 ];
+    StringCchPrintf( str, sizeof(str)/sizeof(str[0]), L"%d of % %d pg.", m_curPg, m_numPg );
     if ( f.CreateFontIndirect( &lf ) )
     {
       HFONT olfF = dc.SelectFont( f );
-      dc.SetBkMode( TRANSPARENT );
-
-      dc.DrawTextW( L"123 / 1002", -1, &r, DT_LEFT|DT_TOP|DT_NOPREFIX|DT_WORDBREAK );
+      int oldBkMode = dc.SetBkMode( TRANSPARENT );
+      COLORREF oldCol = dc.SetTextColor( RGB(0,0,0) ); // TODO: set "themed" color
+      
+      dc.DrawTextW( str, -1, &r, DT_LEFT|DT_TOP|DT_NOPREFIX|DT_WORDBREAK );
+      
+      dc.SetTextColor( oldCol );
+      dc.SetBkMode( oldBkMode );
       dc.SelectFont( olfF );
     }
   }
   //dc.SelectPen( hOldPen );
 
+  return 0;
+}
+
+LRESULT CDjVuToolBar::OnLButtonUp( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& bHandled )
+{
+  bHandled  = false;
+  
+  WTL::CRect r;
+  if ( !GetOutRect( &r ) )
+  {
+    return 0;
+  }
+
+  WTL::CPoint p( GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) );
+  if ( r.PtInRect( p ) )
+  {
+    ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_GOTOPAGE, 0 ); 
+  }
   return 0;
 }
