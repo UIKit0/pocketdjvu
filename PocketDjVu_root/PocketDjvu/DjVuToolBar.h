@@ -25,11 +25,7 @@ public:
     m_hWndFrame = hWndFrame;
   }
 
-  void SetPages( int curPg=0, int numPg=0 )
-  {
-    curPg   = m_curPg;
-    m_numPg = numPg;
-  }
+  void SetPages( int curPg=0, int numPg=0 );
 
   BEGIN_MSG_MAP(CDjVuToolBar)
     MESSAGE_HANDLER(WM_PAINT, OnPaint)

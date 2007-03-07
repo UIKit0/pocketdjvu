@@ -30,3 +30,4 @@ const int g_sDxDblClck = 6;
 
 /// Distance between toolbar buttons and our info pannel
 const int g_cTollBarGap = 4;
+const int g_cPgFontHpx  = 14;
