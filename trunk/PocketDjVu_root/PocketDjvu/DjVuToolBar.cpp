@@ -82,14 +82,14 @@ LRESULT CDjVuToolBar::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
   {
     WTL::CFont f;
     LOGFONT lf = {0};
-    lf.lfHeight = -14;
+    lf.lfHeight = -g_cPgFontHpx;
     lf.lfPitchAndFamily = VARIABLE_PITCH | FF_SWISS;
     
     dc.DrawEdge( &r, BDR_SUNKENINNER, BF_RECT );
 
     r.DeflateRect( 3, 3 );
     wchar_t str[ 32 ];
-    StringCchPrintf( str, sizeof(str)/sizeof(str[0]), L"%d of % %d pg.", m_curPg, m_numPg );
+    StringCchPrintf( str, sizeof(str)/sizeof(str[0]), L"%d/%d pg.", m_curPg, m_numPg );
     if ( f.CreateFontIndirect( &lf ) )
     {
       HFONT olfF = dc.SelectFont( f );
@@ -124,4 +124,24 @@ LRESULT CDjVuToolBar::OnLButtonUp( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lPar
     ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_GOTOPAGE, 0 ); 
   }
   return 0;
+}
+
+void CDjVuToolBar::SetPages( int curPg, int numPg )
+{
+  if ( m_curPg == curPg && m_numPg == numPg )
+  {
+    return;
+  }
+
+  m_curPg   = curPg;
+  m_numPg = numPg;
+
+  WTL::CRect r;
+  if ( !GetOutRect( &r ) )
+  {
+    return;
+  }
+
+
+  InvalidateRect( &r );
 }
