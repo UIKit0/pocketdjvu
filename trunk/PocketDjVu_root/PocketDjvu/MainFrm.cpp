@@ -143,9 +143,8 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
 #pragma endregion
 
   UIAddToolBar( m_hWndCECommandBar );
-
-  bool bVGA = max( GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN) ) > 320;
-  nResourceID = bVGA ? IDB_TB_VGA : IDB_TB_QVGA;
+  
+  nResourceID = IsVGA() ? IDB_TB_VGA : IDB_TB_QVGA;
   
   // The following call creates actually the toolbar as child window to MenuBar.
   BOOL res = -1 != ::CommandBar_AddBitmap( m_hWndCECommandBar, hinst, nResourceID, nIcon, 0, 0 );
