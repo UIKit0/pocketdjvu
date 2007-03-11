@@ -14,6 +14,7 @@
 #define IDS_STRING132                   132
 #define IDS_ZOOM_TOO_MUCH               132
 #define IDS_CAN_NOT_CREATE_MMFILE       133
+#define IDS_TOTAL_PGS                   134
 #define IDS_TOO_LONG_TEXT_VALUE         135
 #define IDR_MFRTB                       202
 #define IDD_BOOKMARK                    204
@@ -59,6 +60,7 @@
 #define IDC_ST1                         1030
 #define IDC_ST2                         1031
 #define IDC_ST3                         1032
+#define IDC_TOTAL_PGS                   1033
 #define ID_FILE_NEW_WINDOW              32771
 #define ID_TOOLS_OPTIONS                32772
 #define ID_NAVIGATE_ADDBOOKMARK         32775
@@ -87,7 +89,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        214
 #define _APS_NEXT_COMMAND_VALUE         32797
-#define _APS_NEXT_CONTROL_VALUE         1033
+#define _APS_NEXT_CONTROL_VALUE         1034
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

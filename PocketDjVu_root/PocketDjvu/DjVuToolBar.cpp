@@ -59,6 +59,39 @@ bool CDjVuToolBar::GetOutRect( RECT * rect )
   return true;
 }
 
+static void DrawHistoryButtond( WTL::CDC & dc, WTL::CRect & panelRect )
+{
+  WTL::CRect r    = panelRect;
+  ++r.left;
+  r.right         = r.left + (IsVGA() ? 16 : 8);
+  panelRect.left  = r.right;
+
+  WTL::CPen pen( (HPEN)GetStockObject(BLACK_PEN) );
+  WTL::CBrush br( (HBRUSH)GetStockObject(BLACK_BRUSH) );
+
+  HPEN hOldPen = dc.SelectPen( pen );
+  HBRUSH hOldBr = dc.SelectBrush( br );
+  
+  {
+    POINT points[] = { {r.left,  r.top+r.Height()/4},
+                       {r.right, r.top},
+                       {r.right, r.top+r.Height()/2}
+                     };
+    // TODO: draw special icon?
+    dc.Polygon( points, sizeof(points)/sizeof(points[0]));
+  }
+  {
+    POINT points[] = { {r.left,  r.top+r.Height()/2},
+                       {r.right, r.top+r.Height()*3/4},
+                       {r.left,  r.top+r.Height()}
+                     };
+    // TODO: draw special icon?
+    dc.Polygon( points, sizeof(points)/sizeof(points[0]));
+  }
+
+  dc.SelectBrush( hOldBr );
+  dc.SelectPen( hOldPen );
+}
 
 LRESULT CDjVuToolBar::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
@@ -76,9 +109,7 @@ LRESULT CDjVuToolBar::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
   {
     return 0;
   }
-  //WTL::CPen pen( (HPEN)GetStockObject(BLACK_PEN) );
-
-  //HPEN hOldPen = dc.SelectPen( pen );
+  
   {
     WTL::CFont f;
     LOGFONT lf = {0};
@@ -86,6 +117,7 @@ LRESULT CDjVuToolBar::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
     lf.lfPitchAndFamily = VARIABLE_PITCH | FF_SWISS;
     
     dc.DrawEdge( &r, BDR_SUNKENINNER, BF_RECT );
+    DrawHistoryButtond( dc, r );
 
     r.DeflateRect( 3, 3 );
     wchar_t str[ 32 ];
@@ -94,7 +126,7 @@ LRESULT CDjVuToolBar::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
     {
       HFONT olfF = dc.SelectFont( f );
       int oldBkMode = dc.SetBkMode( TRANSPARENT );
-      COLORREF oldCol = dc.SetTextColor( RGB(0,0,0) ); // TODO: set "themed" color
+      COLORREF oldCol = dc.SetTextColor( ::GetSysColor(COLOR_BTNTEXT) );
       
       dc.DrawTextW( str, -1, &r, DT_LEFT|DT_TOP|DT_NOPREFIX|DT_WORDBREAK );
       
@@ -103,12 +135,10 @@ LRESULT CDjVuToolBar::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
       dc.SelectFont( olfF );
     }
   }
-  //dc.SelectPen( hOldPen );
-
   return 0;
 }
 
-LRESULT CDjVuToolBar::OnLButtonUp( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& bHandled )
+LRESULT CDjVuToolBar::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& bHandled )
 {
   bHandled  = false;
   
@@ -119,9 +149,35 @@ LRESULT CDjVuToolBar::OnLButtonUp( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lPar
   }
 
   WTL::CPoint p( GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) );
-  if ( r.PtInRect( p ) )
+
+  BTN_ZONE zone = TestBtnZone( p, r );
+  switch ( zone )
   {
-    ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_GOTOPAGE, 0 ); 
+    case PANE:
+    {
+      SHRGINFO shrg = {0};
+      shrg.cbSize     = sizeof shrg;
+      shrg.hwndClient = m_hWnd;
+      shrg.ptDown     = p;
+      shrg.dwFlags    = SHRG_RETURNCMD;
+      if ( GN_CONTEXTMENU != SHRecognizeGesture( &shrg ) )
+      {
+        ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_GOTOPAGE, 0 ); 
+      }
+      else
+      {
+        //TODO: ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_SHOW_HISTORY, lParam ); 
+      }
+    }
+    break;
+
+    case BACK:
+      //TODO: ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_BACK, 0 ); 
+    break;
+
+    case FORWARD:
+      //TODO: ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_FORWARD, 0 ); 
+    break;
   }
   return 0;
 }
@@ -141,7 +197,28 @@ void CDjVuToolBar::SetPages( int curPg, int numPg )
   {
     return;
   }
-
-
   InvalidateRect( &r );
+}
+
+CDjVuToolBar::BTN_ZONE CDjVuToolBar::TestBtnZone( WTL::CPoint p, WTL::CRect const & panelRect ) const
+{
+  if ( !panelRect.PtInRect( p ) )
+  {
+    return NOPE;
+  }
+
+  WTL::CRect r    = panelRect;
+  r.right         = 1+r.left + (IsVGA() ? 16 : 8);
+
+  if ( r.right < p.x )
+  {
+    return PANE;
+  }
+
+  if ( r.Height()/2 < p.y )
+  {
+    return FORWARD;
+  }
+
+  return BACK;
 }

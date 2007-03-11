@@ -192,3 +192,9 @@ HWND FindChildWndByClassName( HWND hWndParent, wchar_t const * pClassName, bool 
   size_t clL = wcslen(pClassName) + 1 + 1; // +1 - Zero terminal
   return FindChildWndByClassNameImp( clL, hWndParent, pClassName, bShallow );
 }
+
+bool IsVGA()
+{
+  bool bVGA = max( GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN) ) > 320;
+  return bVGA;
+}

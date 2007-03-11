@@ -33,15 +33,25 @@ LRESULT CGoToPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPara
   m_UpDn.SetPos( m_curPg );
   static UDACCEL accel[] = { {1,1}, {3,5}, {10,10} };
   m_UpDn.SetAccel( sizeof(accel)/sizeof(accel[0]), accel );
+  
+  //................................
+  {
+    CWindow wndTotal = GetDlgItem(IDC_TOTAL_PGS);
+    WTL::CString sPgNum;
+    sPgNum.Format( IDS_TOTAL_PGS, m_maxPg ); // L"/ %d pgs."    
+    wndTotal.SetWindowText( sPgNum );
+  }
 
   ::CreateDlgMenuBar( IDR_MENU_OKCANCEL, m_hWnd );
 
- 	return TRUE;
+  return TRUE;
 }
 
 LRESULT CGoToPage::OnCloseCmd(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-  DoDataExchange( TRUE );
-	EndDialog(wID);
-	return 0;
+  if ( DoDataExchange( TRUE ) )
+  {
+    EndDialog(wID);
+  }
+  return 0;
 }

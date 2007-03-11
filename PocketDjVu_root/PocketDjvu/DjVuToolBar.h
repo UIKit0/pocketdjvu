@@ -29,15 +29,23 @@ public:
 
   BEGIN_MSG_MAP(CDjVuToolBar)
     MESSAGE_HANDLER(WM_PAINT, OnPaint)
-    MESSAGE_HANDLER(WM_LBUTTONUP, OnLButtonUp)
+    MESSAGE_HANDLER(WM_LBUTTONDOWN, OnLButtonDown)
   END_MSG_MAP()
 
   LRESULT OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
-  LRESULT OnLButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+  LRESULT OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
   bool SubclassToolbar( HWND hWndMenuBar );
 
 private:
+  enum BTN_ZONE
+  {
+    NOPE,
+    BACK,
+    FORWARD,
+    PANE
+  };
+  enum BTN_ZONE TestBtnZone( WTL::CPoint p, WTL::CRect const & panelRect ) const;
   bool GetOutRect( RECT * rect );
 
 private:

@@ -43,3 +43,5 @@ BOOL CreateDlgMenuBar( UINT nToolBarId, HWND hWndParent );
 HWND FindChildWndByClassName( HWND hWndParent, 
                               wchar_t const * pClassName,
                               bool bShallow=true );
+
+bool IsVGA();
