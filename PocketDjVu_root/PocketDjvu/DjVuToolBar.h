@@ -37,6 +37,8 @@ public:
 
   bool SubclassToolbar( HWND hWndMenuBar );
 
+  POINT GetPointForMenu();
+
 private:
   enum BTN_ZONE
   {

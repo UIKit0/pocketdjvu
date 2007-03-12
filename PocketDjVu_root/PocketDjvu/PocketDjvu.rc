@@ -43,6 +43,9 @@ BEGIN
         BEGIN
             MENUITEM "Bookmarks...",                ID_NAVIGATE_BOOKMARK, GRAYED
             MENUITEM "GoTo Page...",                ID_NAVIGATION_GOTOPAGE
+            MENUITEM "Back",                        ID_NAVIGATION_BACK
+            MENUITEM "Forward",                     ID_NAVIGATION_FORWARD
+            MENUITEM "History",                     ID_NAVIGATION_HISTORY
         END
         POPUP "Zoom && Scroll"
         BEGIN

@@ -62,8 +62,7 @@ bool CDjVuToolBar::GetOutRect( RECT * rect )
 static void DrawHistoryButtond( WTL::CDC & dc, WTL::CRect & panelRect )
 {
   WTL::CRect r    = panelRect;
-  ++r.left;
-  r.right         = r.left + (IsVGA() ? 16 : 8);
+  r.right         = 1+r.left + (IsVGA() ? 16 : 8);
   panelRect.left  = r.right;
 
   WTL::CPen pen( (HPEN)GetStockObject(BLACK_PEN) );
@@ -116,7 +115,7 @@ LRESULT CDjVuToolBar::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
     lf.lfHeight = -g_cPgFontHpx;
     lf.lfPitchAndFamily = VARIABLE_PITCH | FF_SWISS;
     
-    dc.DrawEdge( &r, BDR_SUNKENINNER, BF_RECT );
+    dc.DrawEdge( &r, BDR_SUNKENOUTER, BF_MONO|BF_RIGHT );
     DrawHistoryButtond( dc, r );
 
     r.DeflateRect( 3, 3 );
@@ -166,17 +165,17 @@ LRESULT CDjVuToolBar::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lP
       }
       else
       {
-        //TODO: ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_SHOW_HISTORY, lParam ); 
+        ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_HISTORY, lParam ); 
       }
     }
     break;
 
     case BACK:
-      //TODO: ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_BACK, 0 ); 
+      ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_BACK, 0 ); 
     break;
 
     case FORWARD:
-      //TODO: ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_FORWARD, 0 ); 
+      ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_FORWARD, 0 ); 
     break;
   }
   return 0;
@@ -221,4 +220,12 @@ CDjVuToolBar::BTN_ZONE CDjVuToolBar::TestBtnZone( WTL::CPoint p, WTL::CRect cons
   }
 
   return BACK;
+}
+
+POINT CDjVuToolBar::GetPointForMenu()
+{
+  WTL::CRect r;
+  GetOutRect( &r );
+  r.right = 1+r.left + (IsVGA() ? 16 : 8);
+  return r.TopLeft();
 }
