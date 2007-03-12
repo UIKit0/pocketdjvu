@@ -36,8 +36,12 @@ public:
     UPDATE_ELEMENT(ID_SCROLL_BY_TAP,   UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
     UPDATE_ELEMENT(ID_MOVE_BY_STYLUS,  UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
 
-    //UPDATE_ELEMENT(ID_NAVIGATE_ADDBOOKMARK,  UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+    UPDATE_ELEMENT(ID_NAVIGATE_ADDBOOKMARK,  UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
     UPDATE_ELEMENT(ID_NAVIGATION_GOTOPAGE,   UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+    UPDATE_ELEMENT(ID_NAVIGATION_BACK,       UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+    UPDATE_ELEMENT(ID_NAVIGATION_FORWARD,    UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+    UPDATE_ELEMENT(ID_NAVIGATION_HISTORY,    UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+
     UPDATE_ELEMENT(ID_ZOOM_ZOOMIN,           UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
     UPDATE_ELEMENT(ID_ZOOM_ZOOMOUT,          UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
     UPDATE_ELEMENT(ID_ZOOM_FITSCREENWIDTH,   UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
@@ -61,22 +65,30 @@ public:
     MESSAGE_HANDLER(WM_SETTINGCHANGE, OnSettingChange)
     MESSAGE_HANDLER(WM_TIMER, OnTimer)
     MESSAGE_HANDLER(WM_LBUTTONDOWN, OnLButtonDown)
+
     COMMAND_ID_HANDLER(ID_APP_EXIT, OnFileExit)
     COMMAND_ID_HANDLER(ID_FILE_OPEN, OnFileOpen)
     COMMAND_ID_HANDLER(ID_APP_ABOUT, OnAppAbout)
     COMMAND_ID_HANDLER(ID_TOOLS_OPTIONS, OnToolsOptions)
+    
     COMMAND_RANGE_HANDLER(ID_FILE_MRU_FILE1, ID_FILE_MRU_FILE1+g_cMruNumber-1, OnMru)
     COMMAND_RANGE_HANDLER(ID_ZOOM_ZOOMIN, ID_ZOOM_FITPAGE, OnZoomCmd)
+    
     COMMAND_ID_HANDLER(ID_NAVIGATION_GOTOPAGE, OnNavigationGotopage)
+    COMMAND_RANGE_HANDLER(ID_NAVIGATION_BACK, ID_NAVIGATION_FORWARD, OnNavigationBackForward)
+    COMMAND_ID_HANDLER(ID_NAVIGATION_HISTORY, OnNavigationHistory)
+    
     COMMAND_ID_HANDLER(ID_FULLSCREEN, OnFullscreenCmd)
     COMMAND_ID_HANDLER(ID_SCROLL_BY_TAP, OnScrollByTap)
     COMMAND_ID_HANDLER(ID_MOVE_BY_STYLUS, OnMoveByStylus)
     COMMAND_ID_HANDLER(ID_NAVIGATE_BOOKMARK, OnBookmark)
     COMMAND_ID_HANDLER(ID_NOFIFY_1, OnNofify_1)    
+    
     CHAIN_MSG_MAP(CDoubleBufferImpl<CMainFrame>)
     CHAIN_MSG_MAP(CUpdateUI<CMainFrame>)
     CHAIN_MSG_MAP(CFrameWindowImpl<CMainFrame>)
     CHAIN_MSG_MAP(CAppWindowBase<CMainFrame>)
+    
     MESSAGE_HANDLER(WM_ICON_NOTIFICATION,OnTrayNotyfy)    
   END_MSG_MAP()
 #pragma endregion 
@@ -100,13 +112,15 @@ public:
   LRESULT OnZoomCmd(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
   LRESULT OnMru(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
   LRESULT OnNavigationGotopage(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+  LRESULT OnNavigationBackForward(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+  LRESULT OnNavigationHistory(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
   LRESULT OnFullscreenCmd(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
   LRESULT OnScrollByTap(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
   LRESULT OnMoveByStylus(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
   LRESULT OnTimer(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
   LRESULT OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
   LRESULT OnTrayNotyfy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
-  LRESULT OnBookmark(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+  LRESULT OnBookmark(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);  
   LRESULT OnNofify_1(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 #pragma endregion 
 

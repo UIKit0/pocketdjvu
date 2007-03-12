@@ -55,8 +55,12 @@ BOOL CMainFrame::OnIdle()
   state = disen | ( UIGetState( ID_MOVE_BY_STYLUS ) & disenMask );
   UISetState( ID_MOVE_BY_STYLUS,  state );
   //................
-  //UISetState( ID_NAVIGATE_ADDBOOKMARK,  disen );
+  UISetState( ID_NAVIGATE_ADDBOOKMARK,  disen );
   UISetState( ID_NAVIGATION_GOTOPAGE,   disen );
+  UISetState( ID_NAVIGATION_BACK,       disen );
+  UISetState( ID_NAVIGATION_FORWARD,    disen );
+  UISetState( ID_NAVIGATION_HISTORY,    disen );
+
   UISetState( ID_ZOOM_ZOOMIN,           disen );
   UISetState( ID_ZOOM_ZOOMOUT,          disen );
   UISetState( ID_ZOOM_FITSCREENWIDTH,   disen );
@@ -1163,6 +1167,32 @@ LRESULT CMainFrame::OnNavigationGotopage( WORD /*wNotifyCode*/, WORD /*wID*/, HW
   m_mru[0].m_pageNum = pg;
   m_bDirty = true;
   PageLayout();
+
+  return 0;
+}
+
+LRESULT CMainFrame::OnNavigationBackForward( WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/ )
+{
+  wID;
+  return 0;
+}
+
+LRESULT CMainFrame::OnNavigationHistory(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+  WTL::CMenu m;
+  if ( !m.CreatePopupMenu() )
+  {
+    return 0;
+  }
+
+  for ( int i=0; i<21; ++i)
+  {
+    wchar_t buf[32]; buf[0] = 0;
+    m.AppendMenuW( 0, i, _itow( i, buf, 10 ) );
+  }
+
+  POINT p = m_tb.GetPointForMenu();
+  int mItem = m.TrackPopupMenu( TPM_RETURNCMD, p.x, p.y, m_hWnd );
 
   return 0;
 }
