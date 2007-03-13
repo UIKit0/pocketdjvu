@@ -139,11 +139,10 @@ LRESULT CDjVuToolBar::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
 
 LRESULT CDjVuToolBar::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& bHandled )
 {
-  bHandled  = false;
-  
   WTL::CRect r;
   if ( !GetOutRect( &r ) )
   {
+    bHandled  = false;
     return 0;
   }
 
@@ -165,7 +164,7 @@ LRESULT CDjVuToolBar::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lP
       }
       else
       {
-        ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_HISTORY, lParam ); 
+        m_bPostHistoryCommand = true;
       }
     }
     break;
@@ -177,7 +176,23 @@ LRESULT CDjVuToolBar::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lP
     case FORWARD:
       ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_FORWARD, 0 ); 
     break;
+
+    default:
+      bHandled  = false;
+    break;
   }
+  return 0;
+}
+
+LRESULT CDjVuToolBar::OnLButtonUp( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& bHandled )
+{  
+  if ( m_bPostHistoryCommand )
+  {
+    m_bPostHistoryCommand = false;
+    ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_HISTORY, 0 ); 
+    return 0;
+  }
+  bHandled  = false;
   return 0;
 }
 
@@ -227,5 +242,7 @@ POINT CDjVuToolBar::GetPointForMenu()
   WTL::CRect r;
   GetOutRect( &r );
   r.right = 1+r.left + (IsVGA() ? 16 : 8);
-  return r.TopLeft();
+  WTL::CPoint p( r.TopLeft() );
+  ClientToScreen( &p );
+  return p;
 }

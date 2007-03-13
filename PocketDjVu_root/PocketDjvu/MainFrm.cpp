@@ -1184,15 +1184,15 @@ LRESULT CMainFrame::OnNavigationHistory(WORD /*wNotifyCode*/, WORD /*wID*/, HWND
   {
     return 0;
   }
-
-  for ( int i=0; i<21; ++i)
+  // TODO: implement HISTORY!
+  for ( int i=1; i<=11; ++i)
   {
     wchar_t buf[32]; buf[0] = 0;
     m.AppendMenuW( 0, i, _itow( i, buf, 10 ) );
   }
 
   POINT p = m_tb.GetPointForMenu();
-  int mItem = m.TrackPopupMenu( TPM_RETURNCMD, p.x, p.y, m_hWnd );
+  int mItem = m.TrackPopupMenu( TPM_RETURNCMD|TPM_BOTTOMALIGN|TPM_LEFTALIGN, p.x, p.y, m_hWnd );
 
   return 0;
 }
