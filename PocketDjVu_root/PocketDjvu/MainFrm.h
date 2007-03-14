@@ -9,6 +9,7 @@
 #include "./RectZoomCtrl.h"
 #include "./CNofyIcon.h"
 #include "./DjVuToolBar.h"
+#include "./BookmarkInfo.h"
 
 //-----------------------------------------------------------------------------
 class CMainFrame : 
@@ -229,7 +230,11 @@ private:
   DWORD m_1stClick;
 
   WTL::CAppInfoBase m_appInfo;
-  
+
+  std::vector<CBookmarkInfo> m_history;
+  int m_histCurInd;
+  int const m_maxHistL;
+
   // MRU
   struct CMru
   {
