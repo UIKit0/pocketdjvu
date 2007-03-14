@@ -30,9 +30,13 @@ CMainFrame::CMainFrame() :
   , m_cursorKey()
   , m_cmdIDCntrl()
   , m_bDirty()
+  , m_histCurInd()
+  , m_maxHistL(g_cHistoryLength)
 {
   m_toolTips.reserve(16);
   m_toolTips.push_back( L"" ); // For 1st menu button (i.e. "*").
+
+  m_history.reserve( m_maxHistL );  
 }
 
 BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
@@ -373,6 +377,27 @@ void CMainFrame::AppSave()
     m_mru[ 0 ].m_pageNum = p1sVis ? p1sVis->GetPageIndex() : 0;
     
     m_tb.SetPages( m_mru[ 0 ].m_pageNum + 1, m_pDjVuDoc->get_pages_num() );
+
+    if ( p1sVis )
+    {
+      m_history;
+      m_histCurInd;
+      m_maxHistL;
+      
+      CBookmarkInfo bi( p1sVis->GetPageIndex(), p1sVis->GetRect() );
+      int inc = !m_history.empty() && m_history[ m_histCurInd ].m_pageIndex == bi.m_pageIndex
+                ? 0 : 1; // update (rect, etc.) or insert new history item.
+      
+      m_histCurInd = (m_histCurInd + inc) % m_maxHistL;
+      if ( int(m_history.size()) <= m_histCurInd )
+      {        
+        m_history.push_back( bi );
+      }
+      else
+      {
+        m_history[ m_histCurInd ] = bi;
+      }
+    }
 
     int j=-1;
     for ( int i=0; i<g_cMruNumber; ++i )
@@ -837,7 +862,7 @@ void CMainFrame::AddVisibleButNotLoaded()
       break;
     
     r = m_Pages.front()->GetRect();
-    r.MoveToY( r.top - r.Height() - g_cPageGap );
+    r.MoveToY( r.top - r.Height() - g_cBetweenPageGap );
     if ( !IsVisible( r ) )
       break;
 
@@ -850,7 +875,7 @@ void CMainFrame::AddVisibleButNotLoaded()
     // place correction if the loaded page has the different size
     WTL::CRect newR = p->GetRect();
     r = m_Pages.front()->GetRect();
-    r.MoveToY( r.top - newR.Height() - g_cPageGap );
+    r.MoveToY( r.top - newR.Height() - g_cBetweenPageGap );
     int dy = r.top - newR.top;
     p->Scroll( 0, dy );
 
@@ -865,7 +890,7 @@ void CMainFrame::AddVisibleButNotLoaded()
       break;
     
     r = m_Pages.back()->GetRect();
-    r.MoveToY( r.top + r.Height() + g_cPageGap );
+    r.MoveToY( r.top + r.Height() + g_cBetweenPageGap );
     if ( !IsVisible( r ) )
       break;
 

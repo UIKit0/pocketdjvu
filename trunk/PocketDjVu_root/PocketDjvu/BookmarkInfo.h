@@ -1,11 +1,12 @@
 #pragma once
 
 //-----------------------------------------------------------------------------
+/// NB: Keep it as POD type.
 struct CBookmarkInfo
 {
   CBookmarkInfo( int pageIndex
-                    , WTL::CRect const & pageRect
-                    , bool bPortrait = true ) :
+                 , WTL::CRect const & pageRect
+                 , bool bPortrait = true ) :
     m_pageIndex(pageIndex)
     , m_pageRect(pageRect)
     , m_bPortrait(bPortrait)

@@ -41,7 +41,7 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "Navigation"
         BEGIN
-            MENUITEM "Bookmarks...",                ID_NAVIGATE_BOOKMARK, GRAYED
+            MENUITEM "Bookmarks...",                ID_NAVIGATE_BOOKMARK
             MENUITEM "GoTo Page...",                ID_NAVIGATION_GOTOPAGE
             MENUITEM "Back",                        ID_NAVIGATION_BACK
             MENUITEM "Forward",                     ID_NAVIGATION_FORWARD
@@ -345,7 +345,7 @@ BEGIN
     IDS_WARNING             "Warning"
     IDS_ZOOM_TOO_MUCH       "Zoom factor chosen is too large for so small RAM."
     IDS_CAN_NOT_CREATE_MMFILE "Can't create swap-file."
-    IDS_TOTAL_PGS           "/ %d pgs."
+    IDS_TOTAL_PGS           "/ %d pg."
     IDS_TOO_LONG_TEXT_VALUE "The text value is too long"
 END
 

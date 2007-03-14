@@ -52,8 +52,8 @@ bool CDjVuToolBar::GetOutRect( RECT * rect )
   {
     return false;
   }
-  r.left  = r.right + g_cTollBarGap;
-  r.right = sipR.left - g_cTollBarGap;
+  r.left  = r.right + g_cToolBarOuterGap;
+  r.right = sipR.left - g_cToolBarOuterGap;
   r.bottom  = sipR.bottom;
 
   return true;
@@ -62,7 +62,7 @@ bool CDjVuToolBar::GetOutRect( RECT * rect )
 static void DrawHistoryButtond( WTL::CDC & dc, WTL::CRect & panelRect )
 {
   WTL::CRect r    = panelRect;
-  r.right         = 1+r.left + (IsVGA() ? 16 : 8);
+  r.right         = g_cGapBetweenRectAndInfoZone + r.left + (IsVGA() ? g_cVgaBtnSize : g_cQVgaBtnSize)/2;
   panelRect.left  = r.right;
 
   WTL::CPen pen( (HPEN)GetStockObject(BLACK_PEN) );
@@ -118,9 +118,9 @@ LRESULT CDjVuToolBar::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
     dc.DrawEdge( &r, BDR_SUNKENOUTER, BF_MONO|BF_RIGHT );
     DrawHistoryButtond( dc, r );
 
-    r.DeflateRect( 3, 3 );
-    wchar_t str[ 32 ];
-    StringCchPrintf( str, sizeof(str)/sizeof(str[0]), L"%d/%d pg.", m_curPg, m_numPg );
+    r.DeflateRect( g_cToolBarInnerGap, g_cToolBarInnerGap );
+    wchar_t str[ 16 ];
+    StringCbPrintf( str, sizeof(str), L"%d/%d pg.", m_curPg, m_numPg );
     if ( f.CreateFontIndirect( &lf ) )
     {
       HFONT olfF = dc.SelectFont( f );
@@ -222,7 +222,7 @@ CDjVuToolBar::BTN_ZONE CDjVuToolBar::TestBtnZone( WTL::CPoint p, WTL::CRect cons
   }
 
   WTL::CRect r    = panelRect;
-  r.right         = 1+r.left + (IsVGA() ? 16 : 8);
+  r.right         = g_cGapBetweenRectAndInfoZone + r.left + (IsVGA() ? g_cVgaBtnSize : g_cQVgaBtnSize)/2;
 
   if ( r.right < p.x )
   {
@@ -241,7 +241,7 @@ POINT CDjVuToolBar::GetPointForMenu()
 {
   WTL::CRect r;
   GetOutRect( &r );
-  r.right = 1+r.left + (IsVGA() ? 16 : 8);
+  r.right = g_cGapBetweenRectAndInfoZone + r.left + (IsVGA() ? g_cVgaBtnSize : g_cQVgaBtnSize)/2;
   WTL::CPoint p( r.TopLeft() );
   ClientToScreen( &p );
   return p;
