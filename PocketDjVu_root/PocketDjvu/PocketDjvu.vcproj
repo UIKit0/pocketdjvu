@@ -652,6 +652,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\24x24_back.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\24x24_forward.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\32x32_true.bmp"
 				>
 			</File>

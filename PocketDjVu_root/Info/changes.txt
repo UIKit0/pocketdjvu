@@ -5,7 +5,7 @@
 
 v.0.9.5
 =================
-+ - The WTL 8.0.7058 was used.
++ - The WTL 8.0.7070 was used.
 + - Tooltips for toolbar buttons were added.
 + - Toolbar was extended to show current/total pages and to support history navigation...
 + - Browsing history support (in progress)...

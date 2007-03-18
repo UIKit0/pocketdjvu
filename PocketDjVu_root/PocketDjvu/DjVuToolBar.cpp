@@ -26,6 +26,9 @@ bool CDjVuToolBar::SubclassToolbar( HWND hWndMenuBar )
     return false;
   }
 
+  m_back.LoadBitmap( MAKEINTRESOURCE(IsVGA()?IDB_BACK_VGA:IDB_BACK_QVGA) );
+  m_forward.LoadBitmap( MAKEINTRESOURCE(IsVGA()?IDB_FORWARD_VGA:IDB_FORWARD_QVGA) );
+
   return true;
 }
 
@@ -59,11 +62,39 @@ bool CDjVuToolBar::GetOutRect( RECT * rect )
   return true;
 }
 
-static void DrawHistoryButtond( WTL::CDC & dc, WTL::CRect & panelRect )
+bool CDjVuToolBar::DrawArrow( WTL::CDC & dc, WTL::CBitmap const & bmp, WTL::CRect r )
 {
-  WTL::CRect r    = panelRect;
-  r.right         = g_cGapBetweenRectAndInfoZone + r.left + (IsVGA() ? g_cVgaBtnSize : g_cQVgaBtnSize)/2;
-  panelRect.left  = r.right;
+  if ( !bmp )
+  {
+    return false;
+  }
+
+  WTL::CDC bdc;
+  if ( !bdc.CreateCompatibleDC( dc ) )
+  {
+    return false;
+  }
+
+  HBITMAP oldBmp = bdc.SelectBitmap( bmp );
+  WTL::CSize sz;
+  bmp.GetSize( sz );
+  BLENDFUNCTION bf = {0};
+  bf.BlendOp = AC_SRC_OVER;
+  bf.SourceConstantAlpha = 255;
+  bf.AlphaFormat = AC_SRC_ALPHA;
+
+  BOOL res = AlphaBlend( dc,  r.left, r.top, r.Width(), r.Height(),
+                         bdc, 0,      0,     sz.cx,     sz.cy,
+                         bf );
+  bdc.SelectBitmap( oldBmp );
+  return !!res;
+}
+
+void CDjVuToolBar::DrawHistoryButtond( WTL::CDC & dc, WTL::CRect & panelRect )
+{
+  WTL::CRect r   = panelRect;
+  r.right        = r.left  + panelRect.Height()/2;
+  panelRect.left = r.right + g_cGapBetweenRectAndInfoZone;
 
   WTL::CPen pen( (HPEN)GetStockObject(BLACK_PEN) );
   WTL::CBrush br( (HBRUSH)GetStockObject(BLACK_BRUSH) );
@@ -71,20 +102,37 @@ static void DrawHistoryButtond( WTL::CDC & dc, WTL::CRect & panelRect )
   HPEN hOldPen = dc.SelectPen( pen );
   HBRUSH hOldBr = dc.SelectBrush( br );
   
+  if ( !DrawArrow( dc,
+                   m_back, 
+                   WTL::CRect( r.left,
+                               r.top, 
+                               r.left+r.Height()/2,
+                               r.top+r.Height()/2
+                             )
+                 )
+     )
   {
     POINT points[] = { {r.left,  r.top+r.Height()/4},
                        {r.right, r.top},
                        {r.right, r.top+r.Height()/2}
                      };
-    // TODO: draw special icon?
     dc.Polygon( points, sizeof(points)/sizeof(points[0]));
   }
+
+  if ( !DrawArrow( dc,
+                   m_forward, 
+                   WTL::CRect( r.left,
+                               r.top+r.Height()/2, 
+                               r.left+r.Height()/2,
+                               r.top+r.Height()
+                             )
+                 )
+     )
   {
     POINT points[] = { {r.left,  r.top+r.Height()/2},
                        {r.right, r.top+r.Height()*3/4},
                        {r.left,  r.top+r.Height()}
                      };
-    // TODO: draw special icon?
     dc.Polygon( points, sizeof(points)/sizeof(points[0]));
   }
 
@@ -221,8 +269,8 @@ CDjVuToolBar::BTN_ZONE CDjVuToolBar::TestBtnZone( WTL::CPoint p, WTL::CRect cons
     return NOPE;
   }
 
-  WTL::CRect r    = panelRect;
-  r.right         = g_cGapBetweenRectAndInfoZone + r.left + (IsVGA() ? g_cVgaBtnSize : g_cQVgaBtnSize)/2;
+  WTL::CRect r   = panelRect;
+  r.right        = r.left  + panelRect.Height()/2;
 
   if ( r.right < p.x )
   {
@@ -241,7 +289,9 @@ POINT CDjVuToolBar::GetPointForMenu()
 {
   WTL::CRect r;
   GetOutRect( &r );
-  r.right = g_cGapBetweenRectAndInfoZone + r.left + (IsVGA() ? g_cVgaBtnSize : g_cQVgaBtnSize)/2;
+  
+  //r.right = g_cGapBetweenRectAndInfoZone + r.left + r.Height()/2;
+
   WTL::CPoint p( r.TopLeft() );
   ClientToScreen( &p );
   return p;

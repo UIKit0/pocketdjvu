@@ -51,6 +51,8 @@ private:
   };
   enum BTN_ZONE TestBtnZone( WTL::CPoint p, WTL::CRect const & panelRect ) const;
   bool GetOutRect( RECT * rect );
+  void DrawHistoryButtond( WTL::CDC & dc, WTL::CRect & panelRect );
+  bool DrawArrow( WTL::CDC & dc, WTL::CBitmap const & bmp, WTL::CRect r );
 
 private:
   HWND m_hWndSIP;
@@ -58,4 +60,7 @@ private:
   int m_curPg;
   int m_numPg;
   bool m_bPostHistoryCommand;
+
+  WTL::CBitmap m_back;
+  WTL::CBitmap m_forward;
 };

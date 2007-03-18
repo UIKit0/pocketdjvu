@@ -34,7 +34,5 @@ const int g_cToolBarOuterGap = 4;
 const int g_cToolBarInnerGap = 3;
 const int g_cPgFontHpx  = 14;
 const int g_cGapBetweenRectAndInfoZone = 1;
-const int g_cVgaBtnSize = 16;
-const int g_cQVgaBtnSize = g_cVgaBtnSize / 2;
 
 const int g_cHistoryLength = 21;

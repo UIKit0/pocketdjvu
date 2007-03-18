@@ -26,6 +26,11 @@
 #define IDD_TIMING                      212
 #define IDS_INT_VAL_WRONG               213
 #define IDS_DOUBLE_VAL_WRONG            214
+#define IDB_FORWARD_QVGA                216
+#define IDB_FORWARD_VGA                 217
+#define IDB_BACK_QVGA                   218
+#define IDB_BITMAP4                     219
+#define IDB_BACK_VGA                    219
 #define IDC_PAGES                       1000
 #define IDC_EDIT1                       1002
 #define IDC_PG_NUM                      1002
@@ -90,7 +95,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        214
+#define _APS_NEXT_RESOURCE_VALUE        220
 #define _APS_NEXT_COMMAND_VALUE         32800
 #define _APS_NEXT_CONTROL_VALUE         1034
 #define _APS_NEXT_SYMED_VALUE           104
