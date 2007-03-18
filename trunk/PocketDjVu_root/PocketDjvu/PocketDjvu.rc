@@ -13,6 +13,28 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
+// Russian resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+#ifdef _WIN32
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_FORWARD_QVGA        BITMAP                  "res\\24x24_forward.bmp"
+IDB_FORWARD_VGA         BITMAP                  "res\\24x24_forward.bmp"
+IDB_BACK_QVGA           BITMAP                  "res\\24x24_back.bmp"
+IDB_BACK_VGA            BITMAP                  "res\\24x24_back.bmp"
+#endif    // Russian resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
 // English (U.S.) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
@@ -20,6 +42,15 @@
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
 #endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MFRTB               BITMAP                  "res\\MFRTB_toolbar.bmp"
+IDB_TB_VGA              BITMAP                  "res\\32x32_true.bmp"
+IDB_TB_QVGA             BITMAP                  "res\\16x16_true.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -272,8 +303,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,9,4,0
- PRODUCTVERSION 0,9,4,0
+ FILEVERSION 0,9,5,0
+ PRODUCTVERSION 0,9,5,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x21L
@@ -290,13 +321,13 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Igor Solovyov"
             VALUE "FileDescription", "PocketDjvu Module"
-            VALUE "FileVersion", "0, 9, 4, 0"
+            VALUE "FileVersion", "0, 9, 5, 0"
             VALUE "InternalName", "PocketDjvu"
             VALUE "LegalCopyright", "Copyright © 2007, Igor Solovyov"
             VALUE "OriginalFilename", "PocketDjvu.exe"
             VALUE "ProductName", "PocketDjvu Module"
-            VALUE "ProductVersion", "0, 9, 4, 0"
-            VALUE "SpecialBuild", "004"
+            VALUE "ProductVersion", "0, 9, 5, 0"
+            VALUE "SpecialBuild", "005"
         END
     END
     BLOCK "VarFileInfo"
@@ -305,15 +336,6 @@ BEGIN
     END
 END
 
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Bitmap
-//
-
-IDR_MFRTB               BITMAP                  "res\\MFRTB_toolbar.bmp"
-IDB_TB_VGA              BITMAP                  "res\\32x32_true.bmp"
-IDB_TB_QVGA             BITMAP                  "res\\16x16_true.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //

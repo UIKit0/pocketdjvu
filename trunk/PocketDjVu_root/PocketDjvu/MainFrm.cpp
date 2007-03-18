@@ -380,12 +380,8 @@ void CMainFrame::AppSave()
 
     if ( p1sVis )
     {
-      m_history;
-      m_histCurInd;
-      m_maxHistL;
-      
       CBookmarkInfo bi( p1sVis->GetPageIndex(), p1sVis->GetRect() );
-      int inc = !m_history.empty() && m_history[ m_histCurInd ].m_pageIndex == bi.m_pageIndex
+      int inc = m_history.empty() || m_history[ m_histCurInd ].m_pageIndex == bi.m_pageIndex
                 ? 0 : 1; // update (rect, etc.) or insert new history item.
       
       m_histCurInd = (m_histCurInd + inc) % m_maxHistL;
