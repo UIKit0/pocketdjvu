@@ -4,6 +4,13 @@
 /// NB: Keep it as POD type.
 struct CBookmarkInfo
 {
+  CBookmarkInfo() :
+    m_pageIndex()
+    , m_pageRect()
+    , m_bPortrait()
+  {
+  }
+
   CBookmarkInfo( int pageIndex
                  , WTL::CRect const & pageRect
                  , bool bPortrait = true ) :

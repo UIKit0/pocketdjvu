@@ -16,6 +16,7 @@
 #define IDS_CAN_NOT_CREATE_MMFILE       133
 #define IDS_TOTAL_PGS                   134
 #define IDS_TOO_LONG_TEXT_VALUE         135
+#define IDS_HIST_MENUITEM               136
 #define IDR_MFRTB                       202
 #define IDD_BOOKMARK                    204
 #define IDR_MENU_OKCANCEL               205
