@@ -369,6 +369,7 @@ BEGIN
     IDS_CAN_NOT_CREATE_MMFILE "Can't create swap-file."
     IDS_TOTAL_PGS           "/ %d pg."
     IDS_TOO_LONG_TEXT_VALUE "The text value is too long"
+    IDS_HIST_MENUITEM       "Page %d"
 END
 
 STRINGTABLE 

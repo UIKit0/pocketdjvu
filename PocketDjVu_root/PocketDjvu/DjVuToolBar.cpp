@@ -90,7 +90,7 @@ bool CDjVuToolBar::DrawArrow( WTL::CDC & dc, WTL::CBitmap const & bmp, WTL::CRec
   return !!res;
 }
 
-void CDjVuToolBar::DrawHistoryButtond( WTL::CDC & dc, WTL::CRect & panelRect )
+void CDjVuToolBar::DrawHistoryButtond( WTL::CDC & dc, WTL::CRect & panelRect, BTN_ZONE zone )
 {
   WTL::CRect r   = panelRect;
   r.right        = r.left  + panelRect.Height()/2;
@@ -102,38 +102,46 @@ void CDjVuToolBar::DrawHistoryButtond( WTL::CDC & dc, WTL::CRect & panelRect )
   HPEN hOldPen = dc.SelectPen( pen );
   HBRUSH hOldBr = dc.SelectBrush( br );
   
-  if ( !DrawArrow( dc,
-                   m_back, 
-                   WTL::CRect( r.left,
-                               r.top, 
-                               r.left+r.Height()/2,
-                               r.top+r.Height()/2
-                             )
-                 )
-     )
   {
-    POINT points[] = { {r.left,  r.top+r.Height()/4},
-                       {r.right, r.top},
-                       {r.right, r.top+r.Height()/2}
-                     };
-    dc.Polygon( points, sizeof(points)/sizeof(points[0]));
+    WTL::CRect rb( r.left, r.top, r.left+r.Height()/2, r.top+r.Height()/2 );
+    if ( BACK == zone )
+    {
+      HBRUSH ob = dc.SelectBrush( (HBRUSH)::GetStockObject(WHITE_BRUSH) );
+      HPEN   op = dc.SelectPen( (HPEN)::GetStockObject(BLACK_PEN) );
+      dc.Rectangle( &rb );
+      dc.SelectPen( op );
+      dc.SelectBrush( ob );
+    }
+
+    if ( !DrawArrow( dc, m_back, rb ) )
+    {
+      POINT points[] = { {r.left,  r.top+r.Height()/4},
+                         {r.right, r.top},
+                         {r.right, r.top+r.Height()/2}
+                       };
+      dc.Polygon( points, sizeof(points)/sizeof(points[0]));
+    }
   }
 
-  if ( !DrawArrow( dc,
-                   m_forward, 
-                   WTL::CRect( r.left,
-                               r.top+r.Height()/2, 
-                               r.left+r.Height()/2,
-                               r.top+r.Height()
-                             )
-                 )
-     )
   {
-    POINT points[] = { {r.left,  r.top+r.Height()/2},
-                       {r.right, r.top+r.Height()*3/4},
-                       {r.left,  r.top+r.Height()}
-                     };
-    dc.Polygon( points, sizeof(points)/sizeof(points[0]));
+    WTL::CRect rf( r.left, r.top+r.Height()/2, r.left+r.Height()/2, r.top+r.Height() );
+    if ( FORWARD == zone )
+    {
+      HBRUSH ob = dc.SelectBrush( (HBRUSH)::GetStockObject(WHITE_BRUSH) );
+      HPEN   op = dc.SelectPen( (HPEN)::GetStockObject(BLACK_PEN) );
+      dc.Rectangle( &rf );
+      dc.SelectPen( op );
+      dc.SelectBrush( ob );
+    }
+
+    if ( !DrawArrow( dc, m_forward, rf ) )
+    {
+      POINT points[] = { {r.left,  r.top+r.Height()/2},
+                         {r.right, r.top+r.Height()*3/4},
+                         {r.left,  r.top+r.Height()}
+                       };
+      dc.Polygon( points, sizeof(points)/sizeof(points[0]));
+    }
   }
 
   dc.SelectBrush( hOldBr );
@@ -194,8 +202,7 @@ LRESULT CDjVuToolBar::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lP
     return 0;
   }
 
-  WTL::CPoint p( GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) );
-
+  WTL::CPoint p( GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) );  
   BTN_ZONE zone = TestBtnZone( p, r );
   switch ( zone )
   {
@@ -206,41 +213,70 @@ LRESULT CDjVuToolBar::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lP
       shrg.hwndClient = m_hWnd;
       shrg.ptDown     = p;
       shrg.dwFlags    = SHRG_RETURNCMD;
-      if ( GN_CONTEXTMENU != SHRecognizeGesture( &shrg ) )
+      if ( GN_CONTEXTMENU == SHRecognizeGesture( &shrg ) )
       {
-        ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_GOTOPAGE, 0 ); 
-      }
-      else
-      {
-        m_bPostHistoryCommand = true;
+        m_bPostGotoCommand = true;
       }
     }
     break;
 
     case BACK:
-      ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_BACK, 0 ); 
-    break;
-
     case FORWARD:
-      ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_FORWARD, 0 ); 
+      {
+        WTL::CDC dc = GetDC();
+        //DrawHistoryButtond( dc, r, zone );
+      }
     break;
 
     default:
       bHandled  = false;
-    break;
+    return 0;
   }
+
+  m_bPressedInpane = true;
   return 0;
 }
 
 LRESULT CDjVuToolBar::OnLButtonUp( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& bHandled )
-{  
-  if ( m_bPostHistoryCommand )
+{
+  if ( !m_bPressedInpane )
   {
-    m_bPostHistoryCommand = false;
-    ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_HISTORY, 0 ); 
+    bHandled = false;
     return 0;
   }
-  bHandled  = false;
+
+  WTL::CRect r;
+  if ( !GetOutRect( &r ) )
+  {
+    bHandled  = false;
+    return 0;
+  }
+
+  WTL::CPoint p( GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) );
+  
+  BTN_ZONE zone = TestBtnZone( p, r );
+  switch ( zone )
+  {
+    case PANE:
+    if ( m_bPostGotoCommand )
+    {
+      ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_GOTOPAGE, 0 ); 
+    }
+    else
+    {
+      ::PostMessage( m_hWndFrame, WM_COMMAND, ID_NAVIGATION_HISTORY, 0 ); 
+    }
+    break;
+
+    case BACK:
+    case FORWARD:
+      //InvalidateRect( &r );
+      ::PostMessage( m_hWndFrame, WM_COMMAND, BACK==zone ? ID_NAVIGATION_BACK : ID_NAVIGATION_FORWARD, 0 ); 
+    break;
+  }
+  
+  m_bPressedInpane   = false;
+  m_bPostGotoCommand = false;
   return 0;
 }
 

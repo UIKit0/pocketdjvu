@@ -30,6 +30,7 @@ CMainFrame::CMainFrame() :
   , m_cursorKey()
   , m_cmdIDCntrl()
   , m_bDirty()
+  , m_histStartInd()
   , m_histCurInd()
   , m_maxHistL(g_cHistoryLength)
 {
@@ -368,6 +369,32 @@ LRESULT CMainFrame::OnFileExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
   return 0;
 }
 
+void CMainFrame::UpdateHistory( PagePtr p1sVisPg )
+{
+  if ( !p1sVisPg )
+  {
+    return;
+  }
+    
+  CBookmarkInfo bi( p1sVisPg->GetPageIndex(), p1sVisPg->GetRect() );
+  int inc = m_history.empty() || m_history[ m_histCurInd ].m_pageIndex == bi.m_pageIndex
+            ? 0 : 1; // update (rect, etc.) or insert new history item.
+  
+  m_histCurInd = (m_histCurInd + inc) % m_maxHistL;
+  if ( int(m_history.size()) <= m_histCurInd )
+  {        
+    m_history.push_back( bi );
+  }
+  else
+  {
+    m_history[ m_histCurInd ] = bi;
+  }
+  if ( inc && m_histCurInd == m_histStartInd )
+  {
+    m_histStartInd = (m_histCurInd + 1) % m_maxHistL;
+  }
+}
+
 void CMainFrame::AppSave()
 {
   if ( m_bDirty && m_pDjVuDoc )
@@ -378,22 +405,7 @@ void CMainFrame::AppSave()
     
     m_tb.SetPages( m_mru[ 0 ].m_pageNum + 1, m_pDjVuDoc->get_pages_num() );
 
-    if ( p1sVis )
-    {
-      CBookmarkInfo bi( p1sVis->GetPageIndex(), p1sVis->GetRect() );
-      int inc = m_history.empty() || m_history[ m_histCurInd ].m_pageIndex == bi.m_pageIndex
-                ? 0 : 1; // update (rect, etc.) or insert new history item.
-      
-      m_histCurInd = (m_histCurInd + inc) % m_maxHistL;
-      if ( int(m_history.size()) <= m_histCurInd )
-      {        
-        m_history.push_back( bi );
-      }
-      else
-      {
-        m_history[ m_histCurInd ] = bi;
-      }
-    }
+    UpdateHistory( p1sVis );    
 
     int j=-1;
     for ( int i=0; i<g_cMruNumber; ++i )
@@ -1144,6 +1156,33 @@ LRESULT CMainFrame::OnMru( WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOO
 
   return 0;
 }
+
+bool CMainFrame::GoToPage( CBookmarkInfo const & bkmrk )
+{
+  Invalidate();
+  WTL::CWaitCursor wc;
+  PagePtr p1stVis = Get1stVisiblePage();
+  m_Pages.clear();
+  PagePtr pPage( new CPage( m_hWnd,
+                            m_pDjVuDoc,
+                            bkmrk.m_pageRect,
+                            true,
+                            bkmrk.m_pageIndex ) );
+  if ( !pPage->LoadBmpSync() )
+  {
+    m_Pages.push_back( p1stVis );
+    ShowZoomWarning(); // TODO: <- transfer to Loader and make adequate message composition.
+    return false;
+  }
+    
+  m_Pages.push_back( pPage );
+  m_mru[0].m_pageNum = bkmrk.m_pageIndex;
+  m_bDirty = true;
+  PageLayout();
+
+  return true;
+}
+
 LRESULT CMainFrame::OnNavigationGotopage( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
 {
   if ( !m_pDjVuDoc )
@@ -1172,22 +1211,8 @@ LRESULT CMainFrame::OnNavigationGotopage( WORD /*wNotifyCode*/, WORD /*wID*/, HW
     return 0;
   }
   
-  Invalidate();
-  WTL::CWaitCursor wc;
-  
-  m_Pages.clear();
-  PagePtr pPage( new CPage( m_hWnd, m_pDjVuDoc, clientRect, true, pg ) );
-  if ( !pPage->LoadBmpSync() )
-  {
-    m_Pages.push_back( p1stVis );
-    ShowZoomWarning();
-    return 0;
-  }
-  
-  m_Pages.push_back( pPage );
-  m_mru[0].m_pageNum = pg;
-  m_bDirty = true;
-  PageLayout();
+  CBookmarkInfo bkmrk( pg, clientRect );
+  GoToPage( bkmrk );
 
   return 0;
 }
@@ -1205,16 +1230,38 @@ LRESULT CMainFrame::OnNavigationHistory(WORD /*wNotifyCode*/, WORD /*wID*/, HWND
   {
     return 0;
   }
-  // TODO: implement HISTORY!
-  for ( int i=1; i<=11; ++i)
+  
+  
+  WTL::CString fmt;
+  fmt.LoadString( IDS_HIST_MENUITEM ); // "Page %d"
+
+  int cnt = m_history.size();
+  if ( !cnt )
   {
-    wchar_t buf[32]; buf[0] = 0;
-    m.AppendMenuW( 0, i, _itow( i, buf, 10 ) );
+    return 0;
   }
+  for ( int i = 0; i < cnt; ++i )    
+  {
+    int ind = (i + m_histStartInd) % m_maxHistL;    
+    WTL::CString mstr;
+    mstr.Format( fmt, m_history[ ind ].m_pageIndex+1 );
+    m.AppendMenu( 0, ind+1, mstr );
+  }
+  
+  m.CheckMenuItem( m_histCurInd+1, MF_BYCOMMAND | MF_CHECKED );
 
   POINT p = m_tb.GetPointForMenu();
-  int mItem = m.TrackPopupMenu( TPM_RETURNCMD|TPM_BOTTOMALIGN|TPM_LEFTALIGN, p.x, p.y, m_hWnd );
+  int mItem = -1 + m.TrackPopupMenu( TPM_RETURNCMD|TPM_BOTTOMALIGN|TPM_LEFTALIGN, p.x, p.y, m_hWnd );
+  if ( mItem <0 )
+  {
+    return 0;
+  }
 
+  if ( GoToPage( m_history[ mItem ] ) )
+  {
+    m_histCurInd = mItem; // current history page
+  }
+  
   return 0;
 }
 

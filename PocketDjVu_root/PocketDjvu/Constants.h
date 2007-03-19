@@ -35,4 +35,4 @@ const int g_cToolBarInnerGap = 3;
 const int g_cPgFontHpx  = 14;
 const int g_cGapBetweenRectAndInfoZone = 1;
 
-const int g_cHistoryLength = 21;
+const int g_cHistoryLength = 11;

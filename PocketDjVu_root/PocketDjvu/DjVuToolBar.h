@@ -16,7 +16,7 @@ class CDjVuToolBar : public WTL::CToolBarCtrlT< siv_hlpr_tb::CImpWin >
   typedef WTL::CToolBarCtrlT< siv_hlpr_tb::CImpWin > Base;
 public:
   CDjVuToolBar()
-    : m_hWndSIP(), m_curPg(), m_numPg(), m_bPostHistoryCommand()
+    : m_hWndSIP(), m_curPg(), m_numPg(), m_bPressedInpane(), m_bPostGotoCommand()
   {
   }
 
@@ -51,7 +51,7 @@ private:
   };
   enum BTN_ZONE TestBtnZone( WTL::CPoint p, WTL::CRect const & panelRect ) const;
   bool GetOutRect( RECT * rect );
-  void DrawHistoryButtond( WTL::CDC & dc, WTL::CRect & panelRect );
+  void DrawHistoryButtond( WTL::CDC & dc, WTL::CRect & panelRect, BTN_ZONE zone = NOPE );
   bool DrawArrow( WTL::CDC & dc, WTL::CBitmap const & bmp, WTL::CRect r );
 
 private:
@@ -59,7 +59,8 @@ private:
   HWND m_hWndFrame;
   int m_curPg;
   int m_numPg;
-  bool m_bPostHistoryCommand;
+  bool m_bPressedInpane;
+  bool m_bPostGotoCommand;
 
   WTL::CBitmap m_back;
   WTL::CBitmap m_forward;

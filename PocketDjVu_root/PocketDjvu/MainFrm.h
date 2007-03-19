@@ -167,6 +167,9 @@ private:
   void FinishCtrl();
   void CalcZoomKandOffset( WTL::CRect & r );
   void ShowZoomWarning();
+  void UpdateHistory( PagePtr p1sVisPg );
+  bool GoToPage( CBookmarkInfo const & bkmrk );
+
 
   template <int ID, typename TCtrl>
   void OnCtrlButton()
@@ -231,7 +234,9 @@ private:
 
   WTL::CAppInfoBase m_appInfo;
 
-  std::vector<CBookmarkInfo> m_history;
+  typedef std::vector<CBookmarkInfo> HistCont;
+  HistCont m_history;
+  int m_histStartInd;
   int m_histCurInd;
   int const m_maxHistL;
 
