@@ -369,6 +369,12 @@ LRESULT CMainFrame::OnFileExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
   return 0;
 }
 
+void CMainFrame::HistoryCleanup()
+{
+  m_histStartInd = m_histCurInd = 0;
+  m_history.clear();
+}
+
 void CMainFrame::UpdateHistory( PagePtr p1sVisPg )
 {
   if ( !p1sVisPg )
@@ -510,6 +516,7 @@ bool CMainFrame::OpenFile( LPCWSTR fullFileName, int pageIndex )
   m_Pages.clear();
   m_Pages.push_back( pPage );
   m_pDjVuDoc = pDjVuDoc;
+  HistoryCleanup();
   SetCurFileInMru( fullFileName, pageIndex );
   UpdateMruMenu();
   m_bDirty = true;

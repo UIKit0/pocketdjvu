@@ -11,6 +11,8 @@
 
 LRESULT CAboutDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
+  ::CreateDlgMenuBar( IDR_MENU_OKCANCEL, m_hWnd );
+
   Base::OnInitDialog( uMsg, wParam, lParam, bHandled );
   bHandled = true;
 
@@ -48,9 +50,7 @@ LRESULT CAboutDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
   ATL::CString link;
   m_homePageLink.GetWindowText( link );
   m_homePageLink.SetHyperLink( link );
-  m_homePageLink.SetHyperLinkExtendedStyle( HLINK_UNDERLINEHOVER, HLINK_UNDERLINEHOVER );
-
-  ::CreateDlgMenuBar( IDR_MENU_OKCANCEL, m_hWnd );
+  m_homePageLink.SetHyperLinkExtendedStyle( HLINK_UNDERLINEHOVER, HLINK_UNDERLINEHOVER );  
 
   return TRUE;
 }
