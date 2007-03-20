@@ -6,6 +6,8 @@
 
 LRESULT CGoToPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
+  ::CreateDlgMenuBar( IDR_MENU_OKCANCEL, m_hWnd );
+
   BOOL res = FALSE;
   if ( m_SIPstate.IsValid() )
   {
@@ -41,8 +43,6 @@ LRESULT CGoToPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPara
     sPgNum.Format( IDS_TOTAL_PGS, m_maxPg ); // L"/ %d pgs."    
     wndTotal.SetWindowText( sPgNum );
   }
-
-  ::CreateDlgMenuBar( IDR_MENU_OKCANCEL, m_hWnd );
 
   return TRUE;
 }

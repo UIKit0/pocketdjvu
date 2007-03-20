@@ -103,6 +103,12 @@ BEGIN
     END
 END
 
+IDR_MENU_SAVE_GOTO MENU 
+BEGIN
+    MENUITEM "Save",                        ID_SAVE
+    MENUITEM "Bookmark",                    ID_GOTOBOOKMARK
+END
+
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -185,8 +191,8 @@ EXSTYLE 0x80000000L
 CAPTION "Bookmarks"
 FONT 8, "Microsoft Sans Serif"
 BEGIN
-    LTEXT           "Add:",IDC_STATIC_ADD,2,4,18,8
-    EDITTEXT        IDC_BOOKMARK_NAME,22,2,135,12,ES_AUTOHSCROLL
+    LTEXT           "Name:",IDC_STATIC_ADD,2,4,21,8
+    EDITTEXT        IDC_BOOKMARK_NAME,26,2,131,12,ES_AUTOHSCROLL
     PUSHBUTTON      "+",IDC_BTNADD,159,2,13,12
     PUSHBUTTON      "-",IDC_BTNDEL,173,2,13,12
     CONTROL         "",IDC_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,2,17,184,48

@@ -32,6 +32,8 @@
 #define IDB_BACK_QVGA                   218
 #define IDB_BITMAP4                     219
 #define IDB_BACK_VGA                    219
+#define IDR_                            220
+#define IDR_MENU_SAVE_GOTO              220
 #define IDC_PAGES                       1000
 #define IDC_EDIT1                       1002
 #define IDC_PG_NUM                      1002
@@ -91,13 +93,15 @@
 #define ID_NAVIGATION_BACK              32797
 #define ID_NAVIGATION_FORWARD           32798
 #define ID_NAVIGATION_HISTORY           32799
+#define ID_GOTOBOOKMARK                 32800
+#define ID_SAVE                         32801
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        220
-#define _APS_NEXT_COMMAND_VALUE         32800
+#define _APS_NEXT_RESOURCE_VALUE        221
+#define _APS_NEXT_COMMAND_VALUE         32802
 #define _APS_NEXT_CONTROL_VALUE         1034
 #define _APS_NEXT_SYMED_VALUE           104
 #endif

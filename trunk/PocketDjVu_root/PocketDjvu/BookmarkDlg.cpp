@@ -43,9 +43,11 @@ CBookmarkDlg::~CBookmarkDlg()
 
 LRESULT CBookmarkDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
+  ::CreateDlgMenuBar( IDR_MENU_SAVE_GOTO, m_hWnd );
+  
   Base::OnInitDialog( uMsg, wParam, lParam, bHandled );
+  
   bHandled = true;
-
   DoDataExchange();
   
   if ( m_szFullPathName.IsEmpty() )
@@ -63,9 +65,7 @@ LRESULT CBookmarkDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
   }
 
   LoadFromRegistry();
-  FindOrCreateCurrentFileBranch();
-
-  ::CreateDlgMenuBar( IDR_MENU_OKCANCEL, m_hWnd );
+  FindOrCreateCurrentFileBranch();  
     
   return 1;  // Let the system set the focus
 }
@@ -104,11 +104,24 @@ void CBookmarkDlg::FindOrCreateCurrentFileBranch()
   return;
 }
 
-LRESULT CBookmarkDlg::OnClickedOK( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled )
+LRESULT CBookmarkDlg::OnCancell( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled )
 {
   EndDialog( wID );
   return 0;
 }
+
+LRESULT CBookmarkDlg::OnSave( WORD wNotifyCode,WORD wID,HWND hWndCtl,BOOL& bHandled )
+{
+  EndDialog( wID );
+  return 0;
+}
+
+LRESULT CBookmarkDlg::OmGotoBookmark( WORD wNotifyCode,WORD wID,HWND hWndCtl,BOOL& bHandled )
+{
+  EndDialog( wID );
+  return 0;
+}
+
 
 LRESULT CBookmarkDlg::OnBtnAdd( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled )
 {

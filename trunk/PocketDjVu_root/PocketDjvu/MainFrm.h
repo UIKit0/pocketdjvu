@@ -167,6 +167,7 @@ private:
   void FinishCtrl();
   void CalcZoomKandOffset( WTL::CRect & r );
   void ShowZoomWarning();
+  void HistoryCleanup();  
   void UpdateHistory( PagePtr p1sVisPg );
   bool GoToPage( CBookmarkInfo const & bkmrk );
 
