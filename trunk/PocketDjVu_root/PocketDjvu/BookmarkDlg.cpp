@@ -9,6 +9,7 @@
 CBookmarkDlg::CBookmarkDlg( wchar_t const * szFullPathName, CBookmarkInfo const & bookmarkInfo ) :
   m_szFullPathName(szFullPathName)
   , m_bookmarkInfo(bookmarkInfo)
+  , m_bNotSaved()
 {
   WTL::CString regPath( APP_REG_PATH );
   regPath += L"\\Bookmarks";
@@ -47,7 +48,6 @@ LRESULT CBookmarkDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
   
   Base::OnInitDialog( uMsg, wParam, lParam, bHandled );
   
-  bHandled = true;
   DoDataExchange();
   
   if ( m_szFullPathName.IsEmpty() )
@@ -72,6 +72,12 @@ LRESULT CBookmarkDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
 
 void CBookmarkDlg::LoadFromRegistry()
 {
+  // TODO: implement
+}
+
+void CBookmarkDlg::SaveToRegistry()
+{
+  // TODO: implement
 }
 
 void CBookmarkDlg::FindOrCreateCurrentFileBranch()
@@ -112,6 +118,11 @@ LRESULT CBookmarkDlg::OnCancell( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT CBookmarkDlg::OnSave( WORD wNotifyCode,WORD wID,HWND hWndCtl,BOOL& bHandled )
 {
+  if ( m_bNotSaved )
+  {
+    SaveToRegistry();
+  }
+
   EndDialog( wID );
   return 0;
 }
@@ -135,14 +146,13 @@ LRESULT CBookmarkDlg::OnBtnAdd( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& 
   m_currentFileItem.Expand();
   ti.Select();
   m_tree.EnsureVisible( ti );
+  m_bNotSaved = true;
 
-  bHandled = true;
   return 0;
 }
 
 LRESULT CBookmarkDlg::OnBtnDel( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled )
 {
-  bHandled = true;
   WTL::CTreeItem ti = m_tree.GetSelectedItem();
   if ( ti.IsNull() )
     return 0;
@@ -178,13 +188,14 @@ LRESULT CBookmarkDlg::OnBtnDel( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& 
     act.Select();
     m_tree.EnsureVisible( act );
   }
+  
+  m_bNotSaved = true;
 
   return 0;
 }
 
 LRESULT CBookmarkDlg::OnWininiChange( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
-  bHandled = true;
   DoSipInfo();
   return 0;
 }
@@ -199,6 +210,5 @@ LRESULT CBookmarkDlg::OnTvnSelchangedTree( int /*idCtrl*/, LPNMHDR pNMHDR, BOOL&
     DoDataExchange( FALSE, IDC_BOOKMARK_NAME );
   }
 
-  bHandled = true;
   return 0;
 }
