@@ -62,12 +62,15 @@ END_MSG_MAP()
 
 private:
   void LoadFromRegistry();
+  void SaveToRegistry();
   void FindOrCreateCurrentFileBranch();
 
 // DATA:
 private:
   CSIPState m_sip;
   ATL::CRegKey m_rootReg;
+
+  bool m_bNotSaved;
 
   WTL::CString m_szFullPathName;
   CBookmarkInfo m_bookmarkInfo;
