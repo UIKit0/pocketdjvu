@@ -329,7 +329,7 @@ void CMainFrame::OnPageUpDn( bool bDown, bool bByPage )
   int dy = 0;
   if ( bByPage )
   {
-    dy = int(rc.Height() * g_cPageScrollK);
+    dy = rc.Height() * g_cPageScrollKPercent / 100;
   }
   else
   {
@@ -355,7 +355,7 @@ void CMainFrame::OnPageLeftRight( bool toRight, bool bByPage )
   if ( bByPage )
   {
     dX = clientRect.Width();
-    dX = dX * 8 / 10; // TODO: move this constant to settings
+    dX = dX * g_cHorizPanaramPercents / 100;
   }
   dX *= toRight ? 1 : -1;
 
@@ -1219,7 +1219,34 @@ LRESULT CMainFrame::OnNavigationGotopage( WORD /*wNotifyCode*/, WORD /*wID*/, HW
 
 LRESULT CMainFrame::OnNavigationBackForward( WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/ )
 {
-  wID;
+  if ( m_history.size() == 1 )
+  {
+    return 0;
+  }
+
+  int ind = 0;
+  int delta = m_histCurInd < m_histStartInd ? m_history.size() : 0;
+  int c = m_histCurInd - m_histStartInd + delta;
+
+  if ( ID_NAVIGATION_FORWARD == wID )
+  {
+    ind = c + 1;
+  }
+  else
+  {
+    ind = c - 1;
+  }
+  if ( ind < 0 || int(m_history.size()) <= ind  )
+  {
+    return 0;
+  }
+
+  ind = (ind + m_histStartInd) % m_history.size();
+
+  m_histCurInd = ind;
+  CBookmarkInfo bkmrk( m_history[ind] );
+  GoToPage( bkmrk );
+
   return 0;
 }
 
@@ -1230,8 +1257,7 @@ LRESULT CMainFrame::OnNavigationHistory(WORD /*wNotifyCode*/, WORD /*wID*/, HWND
   {
     return 0;
   }
-  
-  
+    
   WTL::CString fmt;
   fmt.LoadString( IDS_HIST_MENUITEM ); // "Page %d"
 
@@ -1242,7 +1268,7 @@ LRESULT CMainFrame::OnNavigationHistory(WORD /*wNotifyCode*/, WORD /*wID*/, HWND
   }
   for ( int i = 0; i < cnt; ++i )    
   {
-    int ind = (i + m_histStartInd) % m_maxHistL;    
+    int ind = (i + m_histStartInd) % m_maxHistL;
     WTL::CString mstr;
     mstr.Format( fmt, m_history[ ind ].m_pageIndex+1 );
     m.AppendMenu( 0, ind+1, mstr );
@@ -1252,7 +1278,7 @@ LRESULT CMainFrame::OnNavigationHistory(WORD /*wNotifyCode*/, WORD /*wID*/, HWND
 
   POINT p = m_tb.GetPointForMenu();
   int mItem = -1 + m.TrackPopupMenu( TPM_RETURNCMD|TPM_BOTTOMALIGN|TPM_LEFTALIGN, p.x, p.y, m_hWnd );
-  if ( mItem <0 )
+  if ( mItem < 0  ||  m_history.size() == 1 )
   {
     return 0;
   }
