@@ -2830,6 +2830,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Info\PocketDjVu_WM5_debug.inf"
+				>
+			</File>
+			<File
 				RelativePath="..\Info\Releases-feed.xml"
 				>
 			</File>
