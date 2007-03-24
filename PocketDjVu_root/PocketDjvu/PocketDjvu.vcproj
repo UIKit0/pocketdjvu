@@ -107,6 +107,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir) &#x0D;&#x0A;&#x0D;&#x0A;&quot;$(VSInstallDir)SmartDevices\SDK\SDKTools\cabwiz.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /compress /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot; &#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;echo --------------&#x0D;&#x0A;"
 			/>
 			<DeploymentTool
 				ForceDirty="-1"
@@ -207,6 +208,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir) &#x0D;&#x0A;&#x0D;&#x0A;&quot;$(VSInstallDir)SmartDevices\SDK\SDKTools\cabwiz.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /compress /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot; &#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;echo --------------&#x0D;&#x0A;"
 			/>
 			<DeploymentTool
 				ForceDirty="-1"
@@ -316,6 +318,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir) &#x0D;&#x0A;&#x0D;&#x0A;&quot;$(VSInstallDir)SmartDevices\SDK\SDKTools\cabwiz.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /compress /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot; &#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;echo --------------&#x0D;&#x0A;"
 			/>
 			<DeploymentTool
 				ForceDirty="-1"
@@ -427,6 +430,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir) &#x0D;&#x0A;&#x0D;&#x0A;&quot;$(VSInstallDir)SmartDevices\SDK\SDKTools\cabwiz.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /compress /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot; &#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;echo --------------&#x0D;&#x0A;"
 			/>
 			<DeploymentTool
 				ForceDirty="-1"
@@ -2826,11 +2830,27 @@
 			Name="Info"
 			>
 			<File
+				RelativePath="..\Info\AppMgr.ini"
+				>
+			</File>
+			<File
 				RelativePath="..\Info\changes.txt"
 				>
 			</File>
 			<File
+				RelativePath="..\Info\eula.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\Info\ez.bat"
+				>
+			</File>
+			<File
 				RelativePath="..\Info\PocketDjVu.inf"
+				>
+			</File>
+			<File
+				RelativePath="..\Info\readme.txt"
 				>
 			</File>
 			<File
