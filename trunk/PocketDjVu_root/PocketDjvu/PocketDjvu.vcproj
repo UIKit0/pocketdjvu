@@ -107,7 +107,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir) &#x0D;&#x0A;&#x0D;&#x0A;&quot;$(VSInstallDir)SmartDevices\SDK\SDKTools\cabwiz.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /compress /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot; &#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;echo --------------&#x0D;&#x0A;"
+				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir)&#x0D;&#x0A;&#x0D;&#x0A;&quot;$(VSInstallDir)SmartDevices\SDK\SDKTools\cabwiz.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /compress /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot;&#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;echo --------------&#x0D;&#x0A;"
 			/>
 			<DeploymentTool
 				ForceDirty="-1"
@@ -182,7 +182,7 @@
 				IgnoreImportLibrary="true"
 				AdditionalOptions=" /subsystem:windowsce,4.02"
 				AdditionalDependencies="atlsd.lib libcmtd.lib corelibc.lib coredll.lib commctrl.lib ole32.lib oleaut32.lib uuid.lib atl.lib atlosapis.lib ccrtrtti.lib $(NOINHERIT)"
-				OutputFile="$(OutDir)\$(ProjectName)_2.exe"
+				OutputFile="$(OutDir)\$(ProjectName)_dbg.exe"
 				LinkIncremental="2"
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
@@ -203,12 +203,12 @@
 			<Tool
 				Name="VCCodeSignTool"
 				AuthenticodeSignature="true"
-				Certificate="SHA-1 Hash=00655AD0C5BD2895782249A5765CF1F7758914A8|00655AD0C5BD2895782249A5765CF1F7758914A8"
+				Certificate="SHA-1 Hash=1049B790EDA3C369E9C206B44AF16B2657CC1555|1049B790EDA3C369E9C206B44AF16B2657CC1555"
 				ProvisionDevice="2"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir) &#x0D;&#x0A;&#x0D;&#x0A;&quot;$(VSInstallDir)SmartDevices\SDK\SDKTools\cabwiz.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /compress /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot; &#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;echo --------------&#x0D;&#x0A;"
+				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir)&#x0D;&#x0A;&#x0D;&#x0A;&quot;$(VSInstallDir)SmartDevices\SDK\SDKTools\cabwiz.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /compress /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot;&#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;echo --------------&#x0D;&#x0A;"
 			/>
 			<DeploymentTool
 				ForceDirty="-1"
@@ -318,7 +318,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir) &#x0D;&#x0A;&#x0D;&#x0A;&quot;$(VSInstallDir)SmartDevices\SDK\SDKTools\cabwiz.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /compress /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot; &#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;echo --------------&#x0D;&#x0A;"
+				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir)&#x0D;&#x0A;&#x0D;&#x0A;&quot;$(VSInstallDir)SmartDevices\SDK\SDKTools\cabwiz.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /compress /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot;&#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;echo --------------&#x0D;&#x0A;"
 			/>
 			<DeploymentTool
 				ForceDirty="-1"
@@ -430,7 +430,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir) &#x0D;&#x0A;&#x0D;&#x0A;&quot;$(VSInstallDir)SmartDevices\SDK\SDKTools\cabwiz.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /compress /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot; &#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;echo --------------&#x0D;&#x0A;"
+				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir)&#x0D;&#x0A;&#x0D;&#x0A;&quot;$(VSInstallDir)SmartDevices\SDK\SDKTools\cabwiz.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /compress /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot;&#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;echo --------------&#x0D;&#x0A;"
 			/>
 			<DeploymentTool
 				ForceDirty="-1"

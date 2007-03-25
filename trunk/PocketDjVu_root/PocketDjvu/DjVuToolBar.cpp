@@ -26,8 +26,10 @@ bool CDjVuToolBar::SubclassToolbar( HWND hWndMenuBar )
     return false;
   }
 
+#if UNDER_CE >= 0x500
   m_back.LoadBitmap( MAKEINTRESOURCE(IsVGA()?IDB_BACK_VGA:IDB_BACK_QVGA) );
   m_forward.LoadBitmap( MAKEINTRESOURCE(IsVGA()?IDB_FORWARD_VGA:IDB_FORWARD_QVGA) );
+#endif
 
   return true;
 }
@@ -64,6 +66,9 @@ bool CDjVuToolBar::GetOutRect( RECT * rect )
 
 bool CDjVuToolBar::DrawArrow( WTL::CDC & dc, WTL::CBitmap const & bmp, WTL::CRect r )
 {
+#if UNDER_CE < 0x500
+  return false;
+#else
   if ( !bmp )
   {
     return false;
@@ -88,6 +93,7 @@ bool CDjVuToolBar::DrawArrow( WTL::CDC & dc, WTL::CBitmap const & bmp, WTL::CRec
                          bf );
   bdc.SelectBitmap( oldBmp );
   return !!res;
+#endif
 }
 
 void CDjVuToolBar::DrawHistoryButtond( WTL::CDC & dc, WTL::CRect & panelRect, BTN_ZONE zone )

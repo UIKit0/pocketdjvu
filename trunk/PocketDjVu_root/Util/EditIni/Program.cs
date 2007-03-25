@@ -100,12 +100,8 @@ namespace EditIni
 
     static void CheckArguments()
     {
-      //string fp = Path.GetFullPath(m_iniFile).ToLower();
-      //string src = m_iniFile.ToLower();
-      //if (fp != src)
-      //{
-      //  throw new Exception("The full path to ini-file should be provided.");
-      //}
+      // It prevents creation ini-file in the Windows directory.
+      m_iniFile = Path.GetFullPath(m_iniFile);
     }
 
     static int Main(string[] args)
