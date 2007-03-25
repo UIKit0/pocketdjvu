@@ -44,10 +44,10 @@ CBookmarkDlg::~CBookmarkDlg()
 
 LRESULT CBookmarkDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
-  ::CreateDlgMenuBar( IDR_MENU_SAVE_GOTO, m_hWnd );
+  m_hWndMenuBar = ::CreateDlgMenuBar( IDR_MENU_SAVE_GOTO, m_hWnd );
   
   Base::OnInitDialog( uMsg, wParam, lParam, bHandled );
-  
+
   DoDataExchange();
   
   if ( m_szFullPathName.IsEmpty() )
@@ -203,12 +203,26 @@ LRESULT CBookmarkDlg::OnWininiChange( UINT uMsg, WPARAM wParam, LPARAM lParam, B
 LRESULT CBookmarkDlg::OnTvnSelchangedTree( int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& bHandled )
 {
   WTL::CTreeItem it( reinterpret_cast<LPNMTREEVIEW>(pNMHDR)->itemNew.hItem, &m_tree );
+  WTL::CTreeItem parent = it.GetParent();
 
-  if ( !it.GetParent().IsNull() )
+  if ( parent.IsNull() )
   {
-    it.GetText( m_sBookmarkName );
-    DoDataExchange( FALSE, IDC_BOOKMARK_NAME );
+    if ( m_hWndMenuBar )
+    {
+      // Disable SHEnableSoftkey
+    }
+    return 0;
   }
+  
+  if ( m_hWndMenuBar )
+  {
+    // Enable SHEnableSoftkey
+  }
+
+  it.GetText( m_sBookmarkName );
+  DoDataExchange( FALSE, IDC_BOOKMARK_NAME );
+ 
+  parent.GetText( m_szSelectedFullPathName );
 
   return 0;
 }

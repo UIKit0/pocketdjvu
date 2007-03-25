@@ -106,7 +106,8 @@ END
 IDR_MENU_SAVE_GOTO MENU 
 BEGIN
     MENUITEM "Save",                        ID_SAVE
-    MENUITEM "Bookmark",                    ID_GOTOBOOKMARK
+    MENUITEM "Bookmark",                    ID_GOTOBOOKMARK, GRAYED
+    MENUITEM "Fake",                        0
 END
 
 

@@ -38,7 +38,7 @@ inline void NotifyDataValidateError( HWND hwnd, UINT nCtrlID, BOOL bSave, _XData
   ShowNotification( hwnd, wrn, msg );
 }
 
-BOOL CreateDlgMenuBar( UINT nToolBarId, HWND hWndParent );
+HWND CreateDlgMenuBar( UINT nToolBarId, HWND hWndParent );
 
 HWND FindChildWndByClassName( HWND hWndParent, 
                               wchar_t const * pClassName,

@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("EditIni")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("me")]
+[assembly: AssemblyCompany("Igor Solovyov")]
 [assembly: AssemblyProduct("EditIni")]
-[assembly: AssemblyCopyright("Copyright © me 2007")]
+[assembly: AssemblyCopyright("Copyright © Igor Solovyov 2007")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

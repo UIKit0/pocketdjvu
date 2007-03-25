@@ -4,12 +4,18 @@
 #include "SIPState.h"
 #include "BookmarkInfo.h"
 
+#if UNDER_CE >= 0x500
+static const UINT BookmarkDlgStyle = SHIDIF_CANCELBUTTON|SHIDIF_SIPDOWN|SHIDIF_SIZEDLGFULLSCREEN;
+#else
+static const UINT BookmarkDlgStyle = WTL_STD_SHIDIF;
+#endif
+
 //-----------------------------------------------------------------------------
 class CBookmarkDlg :
-  public WTL::CStdDialogResizeImpl<CBookmarkDlg, SHIDIF_CANCELBUTTON|SHIDIF_SIPDOWN|SHIDIF_SIZEDLGFULLSCREEN>,
+  public WTL::CStdDialogResizeImpl<CBookmarkDlg/*, BookmarkDlgStyle*/>,
   public WTL::CWinDataExchange<CBookmarkDlg>
 {
-  typedef WTL::CStdDialogResizeImpl<CBookmarkDlg, SHIDIF_CANCELBUTTON|SHIDIF_SIPDOWN|SHIDIF_SIZEDLGFULLSCREEN> Base;
+  typedef WTL::CStdDialogResizeImpl<CBookmarkDlg/*, BookmarkDlgStyle*/> Base;
 public:
   enum { IDD = IDD_BOOKMARK };
 
@@ -36,6 +42,7 @@ BEGIN_MSG_MAP(CBookmarkDlg)
   MESSAGE_HANDLER(WM_WININICHANGE, OnWininiChange)
   
   COMMAND_ID_HANDLER(IDCANCEL, OnCancell)
+  COMMAND_ID_HANDLER(IDOK, OnCancell) // <- for Win 2003
   COMMAND_ID_HANDLER(ID_SAVE, OnSave)
   COMMAND_ID_HANDLER(ID_GOTOBOOKMARK, OmGotoBookmark)
 
@@ -79,4 +86,7 @@ private:
   WTL::CString m_sBookmarkName;
 
   WTL::CTreeItem m_currentFileItem;
+  WTL::CString m_szSelectedFullPathName;
+  
+  HWND m_hWndMenuBar;
 };

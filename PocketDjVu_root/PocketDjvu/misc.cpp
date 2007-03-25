@@ -101,7 +101,7 @@ void ShowNotification( HWND hwndSink, wchar_t const * szCaption, wchar_t const *
 }
 
 //-----------------------------------------------------------------------------
-BOOL CreateDlgMenuBar( UINT nToolBarId, HWND hWndParent )
+HWND CreateDlgMenuBar( UINT nToolBarId, HWND hWndParent )
 {
   ATLASSERT( hWndParent );
 
@@ -112,13 +112,11 @@ BOOL CreateDlgMenuBar( UINT nToolBarId, HWND hWndParent )
   mbi.nToolBarId  = nToolBarId;
   mbi.hInstRes    = ATL::_AtlBaseModule.GetModuleInstance();
 
-  BOOL bRet = ::SHCreateMenuBar( &mbi );
-  //if( bRet )
-  //{
-  //  HWND m_hWndMnuBar = mbi.hwndMB;
-  //}
-
-  return bRet;
+  if ( !::SHCreateMenuBar( &mbi ) )
+  {
+    return 0;
+  }
+  return mbi.hwndMB;
 }
 
 //-----------------------------------------------------------------------------
