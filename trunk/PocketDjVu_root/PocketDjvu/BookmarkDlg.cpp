@@ -129,6 +129,13 @@ LRESULT CBookmarkDlg::OnSave( WORD wNotifyCode,WORD wID,HWND hWndCtl,BOOL& bHand
 
 LRESULT CBookmarkDlg::OmGotoBookmark( WORD wNotifyCode,WORD wID,HWND hWndCtl,BOOL& bHandled )
 {
+  if ( m_bNotSaved )
+  {
+    SaveToRegistry();
+  }
+
+  // TODO: Save the info for selected bookmark...
+
   EndDialog( wID );
   return 0;
 }
@@ -200,6 +207,21 @@ LRESULT CBookmarkDlg::OnWininiChange( UINT uMsg, WPARAM wParam, LPARAM lParam, B
   return 0;
 }
 
+void CBookmarkDlg::EnableGotoBookmarkMenu( bool bEnable )
+{
+  if ( !m_hWndMenuBar )
+  {
+    return;
+  }
+  // it's absent on PPC2003SE: SHEnableSoftkey( m_hWndMenuBar, ID_GOTOBOOKMARK, FALSE, bEnable );
+  TBBUTTONINFO tbbi;
+  tbbi.cbSize  = sizeof(tbbi);
+  tbbi.dwMask  = TBIF_STATE;
+  tbbi.fsState = bEnable ? TBSTATE_ENABLED : TBSTATE_INDETERMINATE;
+
+  ::SendMessage( m_hWndMenuBar, TB_SETBUTTONINFO, ID_GOTOBOOKMARK, (LPARAM)&tbbi );
+}
+
 LRESULT CBookmarkDlg::OnTvnSelchangedTree( int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& bHandled )
 {
   WTL::CTreeItem it( reinterpret_cast<LPNMTREEVIEW>(pNMHDR)->itemNew.hItem, &m_tree );
@@ -207,18 +229,11 @@ LRESULT CBookmarkDlg::OnTvnSelchangedTree( int /*idCtrl*/, LPNMHDR pNMHDR, BOOL&
 
   if ( parent.IsNull() )
   {
-    if ( m_hWndMenuBar )
-    {
-      // Disable SHEnableSoftkey
-    }
+    EnableGotoBookmarkMenu( false );
     return 0;
   }
   
-  if ( m_hWndMenuBar )
-  {
-    // Enable SHEnableSoftkey
-  }
-
+  EnableGotoBookmarkMenu( true );
   it.GetText( m_sBookmarkName );
   DoDataExchange( FALSE, IDC_BOOKMARK_NAME );
  

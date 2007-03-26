@@ -4,18 +4,12 @@
 #include "SIPState.h"
 #include "BookmarkInfo.h"
 
-#if UNDER_CE >= 0x500
-static const UINT BookmarkDlgStyle = SHIDIF_CANCELBUTTON|SHIDIF_SIPDOWN|SHIDIF_SIZEDLGFULLSCREEN;
-#else
-static const UINT BookmarkDlgStyle = WTL_STD_SHIDIF;
-#endif
-
 //-----------------------------------------------------------------------------
 class CBookmarkDlg :
-  public WTL::CStdDialogResizeImpl<CBookmarkDlg/*, BookmarkDlgStyle*/>,
+  public WTL::CStdDialogResizeImpl<CBookmarkDlg>,
   public WTL::CWinDataExchange<CBookmarkDlg>
 {
-  typedef WTL::CStdDialogResizeImpl<CBookmarkDlg/*, BookmarkDlgStyle*/> Base;
+  typedef WTL::CStdDialogResizeImpl<CBookmarkDlg> Base;
 public:
   enum { IDD = IDD_BOOKMARK };
 
@@ -71,6 +65,7 @@ private:
   void LoadFromRegistry();
   void SaveToRegistry();
   void FindOrCreateCurrentFileBranch();
+  void EnableGotoBookmarkMenu( bool bEnable );
 
 // DATA:
 private:
