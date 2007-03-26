@@ -20,17 +20,19 @@ struct CBookmarkInfo
   {
   }
 
-  bool SaveToReg( HKEY hKey ) throw()
+  bool SaveToReg( HKEY hKeyParent, wchar_t const * szName ) const throw()
   {
     ATL::CRegKey key;
-    key.Attach( hKey );
+    key.Create( hKeyParent, szName );
+    if ( !key )
+    {
+      return false;
+    }
 
     bool res = true;
     res = res && ERROR_SUCCESS == key.SetDWORDValue( L"Page", m_pageIndex+1 );
     res = res && ERROR_SUCCESS == key.SetDWORDValue( L"bPortrait", m_bPortrait );
     res = res && ERROR_SUCCESS == key.SetBinaryValue( L"Rect", &m_pageRect, sizeof m_pageRect );
-
-    key.Detach();
     return res;
   }
 
