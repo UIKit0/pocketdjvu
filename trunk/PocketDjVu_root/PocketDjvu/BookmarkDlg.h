@@ -1,8 +1,12 @@
 #pragma once
 
+#include <set>
+#include <map>
+
 #include "resource.h"
 #include "SIPState.h"
 #include "BookmarkInfo.h"
+#include "smart_ptr.h"
 
 //-----------------------------------------------------------------------------
 class CBookmarkDlg :
@@ -67,6 +71,27 @@ private:
   void FindOrCreateCurrentFileBranch();
   void EnableGotoBookmarkMenu( bool bEnable );
 
+// PRIVATE TYPES:
+private:
+  class CBookmarkInfoRef : public siv_hlpr::CRefCntr<>, public CBookmarkInfo
+  {
+  public:
+    CBookmarkInfoRef( CBookmarkInfo const & src, wchar_t const * szName ) : m_szName( szName )
+    {
+      *(CBookmarkInfo*)this = src;
+    }
+
+    wchar_t const * GetName() const
+    {
+      return m_szName;
+    }
+  private:
+    WTL::CString m_szName;
+  };
+  typedef siv_hlpr::CSimpSPtr<CBookmarkInfoRef> BMPtr;
+  typedef std::set<BMPtr> BMSet;
+  typedef std::map<WTL::CString,BMSet> BMs;
+
 // DATA:
 private:
   CSIPState m_sip;
@@ -74,14 +99,23 @@ private:
 
   bool m_bNotSaved;
 
-  WTL::CString m_szFullPathName;
-  CBookmarkInfo m_bookmarkInfo;
-  
-  WTL::CTreeViewCtrlEx m_tree;
-  WTL::CString m_sBookmarkName;
-
+  /// The full path to currently opened file.
+  WTL::CString m_szCurFullPathName;
+  /// Bokkmark data for currently opened file.
+  CBookmarkInfo m_curBookmarkInfo;
+  /// The bookmark creation is possible only in the current branch.
   WTL::CTreeItem m_currentFileItem;
-  WTL::CString m_szSelectedFullPathName;
+
+  /// Root container of bookmarks.
+  BMs m_bms;
   
+  /// Menu bar of dialog.
   HWND m_hWndMenuBar;
+  /// Bookmark tree-control.
+  WTL::CTreeViewCtrlEx m_tree;
+  /// Bookmark name which correesponds to edit-box.
+  WTL::CString m_sBookmarkName;
+  
+  /// This is full path of selected bookmark. It's intended for ID_GOTOBOOKMARK result.
+  WTL::CString m_szSelectedFullPathName;
 };

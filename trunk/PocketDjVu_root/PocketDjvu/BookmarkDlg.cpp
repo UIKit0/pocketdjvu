@@ -7,8 +7,8 @@
 #include "./misc.h"
 
 CBookmarkDlg::CBookmarkDlg( wchar_t const * szFullPathName, CBookmarkInfo const & bookmarkInfo ) :
-  m_szFullPathName(szFullPathName)
-  , m_bookmarkInfo(bookmarkInfo)
+  m_szCurFullPathName(szFullPathName)
+  , m_curBookmarkInfo(bookmarkInfo)
   , m_bNotSaved()
 {
   WTL::CString regPath( APP_REG_PATH );
@@ -16,7 +16,7 @@ CBookmarkDlg::CBookmarkDlg( wchar_t const * szFullPathName, CBookmarkInfo const 
   m_rootReg.Create( HKEY_CURRENT_USER, regPath );
   ATLASSERT( m_rootReg.m_hKey );
 
-  if ( !m_szFullPathName.IsEmpty() )
+  if ( !m_szCurFullPathName.IsEmpty() )
   {
     WTL::CString sTime, sDate;
     SYSTEMTIME st;
@@ -50,7 +50,7 @@ LRESULT CBookmarkDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
 
   DoDataExchange();
   
-  if ( m_szFullPathName.IsEmpty() )
+  if ( m_szCurFullPathName.IsEmpty() )
   {
     ATL::CWindow wnd = GetDlgItem( IDC_BOOKMARK_NAME );
     if( wnd.IsWindow() )
@@ -76,29 +76,47 @@ void CBookmarkDlg::LoadFromRegistry()
 }
 
 void CBookmarkDlg::SaveToRegistry()
-{
-  // TODO: implement
+{  
+  for ( BMs::iterator i=m_bms.begin(); i!=m_bms.end(); ++i )
+  {
+    WTL::CString keyPathName = i->first;
+    keyPathName.Replace( '\\', '/' );
+    // remove old values.
+    m_rootReg.RecurseDeleteKey( keyPathName );
+
+    // write new values.
+    ATL::CRegKey pathReg;
+    pathReg.Create( m_rootReg, keyPathName );
+    if ( pathReg )
+    {      
+      for ( BMSet::iterator j=i->second.begin(); j!=i->second.end(); ++j )
+      {
+        CBookmarkInfoRef const & bmi = **j;
+        bmi.SaveToReg( pathReg, bmi.GetName() );
+      }
+    }
+  }
 }
 
 void CBookmarkDlg::FindOrCreateCurrentFileBranch()
 {
-  if ( m_szFullPathName.IsEmpty() )
+  if ( m_szCurFullPathName.IsEmpty() )
     return;
 
   WTL::CTreeItem rootItem = m_tree.GetRootItem();
   if ( rootItem.IsNull() )
   {
-    m_currentFileItem = m_tree.InsertItem( m_szFullPathName, 0, 0 );
+    m_currentFileItem = m_tree.InsertItem( m_szCurFullPathName, 0, 0 );
     m_currentFileItem.SetState( TVIS_BOLD, TVIS_BOLD );
     m_currentFileItem.Select();
-    m_currentFileItem.Expand();
+    m_currentFileItem.Expand();    
     return;
   }
   
   for ( ; rootItem.IsNull(); rootItem = rootItem.GetNextSibling() )
   {
     wchar_t str[ MAX_PATH ] = {0};
-    if ( rootItem.GetText( str, MAX_PATH ) && m_szFullPathName == str )
+    if ( rootItem.GetText( str, MAX_PATH ) && m_szCurFullPathName == str )
     {
       m_currentFileItem = rootItem;
       m_currentFileItem.SetState( TVIS_BOLD, TVIS_BOLD );
@@ -153,6 +171,11 @@ LRESULT CBookmarkDlg::OnBtnAdd( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& 
   m_currentFileItem.Expand();
   ti.Select();
   m_tree.EnsureVisible( ti );
+
+  BMPtr pBM( new CBookmarkInfoRef( m_curBookmarkInfo, m_sBookmarkName ) );
+  m_bms[ m_szCurFullPathName ].insert( pBM );
+  ti.SetData( (DWORD_PTR)pBM.GetPtr() );
+
   m_bNotSaved = true;
 
   return 0;
@@ -167,6 +190,8 @@ LRESULT CBookmarkDlg::OnBtnDel( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& 
   WTL::CTreeItem parent = ti.GetParent();
   if ( parent.IsNull() )
     return 0;
+  WTL::CString path;
+  parent.GetText( path );
   
   WTL::CTreeItem act = ti.GetNextSibling();
   if ( act.IsNull() )
@@ -176,8 +201,10 @@ LRESULT CBookmarkDlg::OnBtnDel( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& 
     {
       act = parent;
     }
-  }
+  }  
 
+  BMPtr pBM( (CBookmarkInfoRef*)ti.GetData() );
+  m_bms[ path ].erase( pBM );
   ti.Delete();
 
   if ( parent != m_currentFileItem && !parent.HasChildren() )
