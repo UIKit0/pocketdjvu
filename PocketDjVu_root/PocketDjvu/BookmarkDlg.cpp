@@ -72,7 +72,13 @@ LRESULT CBookmarkDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
 
 void CBookmarkDlg::LoadFromRegistry()
 {
-  // TODO: implement
+  wchar_t keyName[MAX_PATH+32];
+  DWORD l = sizeof(keyName)/sizeof(keyName[0]);
+  
+  int i=0;
+  while (ERROR_SUCCESS == m_rootReg.EnumKey( i++, keyName, &l ) )
+  {
+  }
 }
 
 void CBookmarkDlg::SaveToRegistry()

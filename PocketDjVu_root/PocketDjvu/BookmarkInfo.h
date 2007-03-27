@@ -36,10 +36,10 @@ struct CBookmarkInfo
     return res;
   }
 
-  bool LoadFromReg( HKEY hKey ) throw()
+  bool LoadFromReg( HKEY hKeyParent, wchar_t const * szName ) throw()
   {
     ATL::CRegKey key;
-    key.Attach( hKey );
+    key.Create( hKeyParent, szName );
 
     bool res = true;
     DWORD val = 0;
