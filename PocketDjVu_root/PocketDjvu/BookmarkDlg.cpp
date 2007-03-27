@@ -70,14 +70,81 @@ LRESULT CBookmarkDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
   return 1;  // Let the system set the focus
 }
 
+void CBookmarkDlg::LoadBookmark( WTL::CString szPathKey )
+{
+  ATL::CRegKey pathKey;
+  LONG res = pathKey.Open( m_rootReg, szPathKey );
+  if ( ERROR_SUCCESS != res )
+  {
+    return;
+  }
+  szPathKey.Replace( '/', '\\' );
+
+  WTL::CTreeItem pathItem;
+
+  res = ERROR_SUCCESS;
+  WTL::CString bookmarkName;
+  wchar_t * buf = bookmarkName.GetBufferSetLength( MAX_PATH+1 );
+  
+  for( int i=0; ERROR_NO_MORE_ITEMS!=res && i<1024; ++i )
+  {
+    DWORD l = bookmarkName.GetAllocLength();
+    LONG res = pathKey.EnumKey( i, buf, &l );
+    if( ERROR_MORE_DATA == res )
+    {
+      buf = bookmarkName.GetBufferSetLength( l+1 );
+      --i;
+      continue;
+    }
+    if ( ERROR_SUCCESS != res )
+    {
+      continue;
+    }    
+    
+    CBookmarkInfo bm;
+    if ( !bm.LoadFromReg( pathKey, buf ) )
+    {
+      continue;
+    }
+
+    BMPtr pBM( new CBookmarkInfoRef( bm, buf ) );
+    m_bms[ szPathKey ].insert( pBM );
+    
+    
+    if ( pathItem.IsNull() )
+    {
+      pathItem = m_tree.InsertItem( szPathKey, 0, 0 );
+      if ( pathItem.IsNull() )
+      {
+        return;
+      }
+    }
+    WTL::CTreeItem bmItem = pathItem.AddTail( buf, 0 );
+    bmItem.SetData( (DWORD_PTR)pBM.GetPtr() );
+  }
+}
+
 void CBookmarkDlg::LoadFromRegistry()
 {
-  wchar_t keyName[MAX_PATH+32];
-  DWORD l = sizeof(keyName)/sizeof(keyName[0]);
-  
-  int i=0;
-  while (ERROR_SUCCESS == m_rootReg.EnumKey( i++, keyName, &l ) )
+  LONG res = ERROR_SUCCESS;
+  WTL::CString keyName;
+  wchar_t * buf = keyName.GetBufferSetLength( MAX_PATH+1 );  
+
+  for( int i=0; ERROR_NO_MORE_ITEMS!=res && i<1024; ++i )
   {
+    DWORD l = keyName.GetAllocLength();
+    LONG res = m_rootReg.EnumKey( i, buf, &l );
+    if( ERROR_MORE_DATA == res )
+    {
+      buf = keyName.GetBufferSetLength( l+1 );
+      --i;
+      continue;
+    }
+    if ( ERROR_SUCCESS != res )
+    {
+      continue;
+    }    
+    LoadBookmark( buf );
   }
 }
 

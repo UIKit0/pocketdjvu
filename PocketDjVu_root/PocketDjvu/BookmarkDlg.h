@@ -67,6 +67,7 @@ END_MSG_MAP()
 
 private:
   void LoadFromRegistry();
+  void LoadBookmark( WTL::CString szPathKey );
   void SaveToRegistry();
   void FindOrCreateCurrentFileBranch();
   void EnableGotoBookmarkMenu( bool bEnable );

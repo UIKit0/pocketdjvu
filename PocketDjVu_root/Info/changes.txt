@@ -13,6 +13,7 @@ v.0.9.5
 
 + - Bookmark dialog (in progress)...
 + - "Tile" mode (in progress)...
++# - BUG: History head should be deleted after jumping back and browsing to another page.
 
 v.0.9.4
 =================
