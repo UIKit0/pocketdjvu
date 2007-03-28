@@ -82,14 +82,13 @@ void CBookmarkDlg::LoadBookmark( WTL::CString szPathKey )
 
   WTL::CTreeItem pathItem;
 
-  res = ERROR_SUCCESS;
   WTL::CString bookmarkName;
   wchar_t * buf = bookmarkName.GetBufferSetLength( MAX_PATH+1 );
-  
+  res = ERROR_SUCCESS;  
   for( int i=0; ERROR_NO_MORE_ITEMS!=res && i<1024; ++i )
   {
     DWORD l = bookmarkName.GetAllocLength();
-    LONG res = pathKey.EnumKey( i, buf, &l );
+    res = pathKey.EnumKey( i, buf, &l );
     if( ERROR_MORE_DATA == res )
     {
       buf = bookmarkName.GetBufferSetLength( l+1 );
@@ -120,20 +119,21 @@ void CBookmarkDlg::LoadBookmark( WTL::CString szPathKey )
       }
     }
     WTL::CTreeItem bmItem = pathItem.AddTail( buf, 0 );
+    m_currentFileItem.SortChildren( FALSE );
     bmItem.SetData( (DWORD_PTR)pBM.GetPtr() );
   }
 }
 
 void CBookmarkDlg::LoadFromRegistry()
-{
-  LONG res = ERROR_SUCCESS;
+{  
   WTL::CString keyName;
   wchar_t * buf = keyName.GetBufferSetLength( MAX_PATH+1 );  
 
+  LONG res = ERROR_SUCCESS;
   for( int i=0; ERROR_NO_MORE_ITEMS!=res && i<1024; ++i )
   {
     DWORD l = keyName.GetAllocLength();
-    LONG res = m_rootReg.EnumKey( i, buf, &l );
+    res = m_rootReg.EnumKey( i, buf, &l );
     if( ERROR_MORE_DATA == res )
     {
       buf = keyName.GetBufferSetLength( l+1 );
@@ -175,20 +175,12 @@ void CBookmarkDlg::FindOrCreateCurrentFileBranch()
 {
   if ( m_szCurFullPathName.IsEmpty() )
     return;
-
-  WTL::CTreeItem rootItem = m_tree.GetRootItem();
-  if ( rootItem.IsNull() )
-  {
-    m_currentFileItem = m_tree.InsertItem( m_szCurFullPathName, 0, 0 );
-    m_currentFileItem.SetState( TVIS_BOLD, TVIS_BOLD );
-    m_currentFileItem.Select();
-    m_currentFileItem.Expand();    
-    return;
-  }
   
-  for ( ; rootItem.IsNull(); rootItem = rootItem.GetNextSibling() )
+  for ( WTL::CTreeItem rootItem = m_tree.GetRootItem();
+        !rootItem.IsNull();
+        rootItem = rootItem.GetNextSibling() )
   {
-    wchar_t str[ MAX_PATH ] = {0};
+    wchar_t str[ MAX_PATH+1 ] = {0};
     if ( rootItem.GetText( str, MAX_PATH ) && m_szCurFullPathName == str )
     {
       m_currentFileItem = rootItem;
@@ -197,7 +189,10 @@ void CBookmarkDlg::FindOrCreateCurrentFileBranch()
     }
   }
 
-  ATLASSERT( false );
+  m_currentFileItem = m_tree.InsertItem( m_szCurFullPathName, 0, 0 );
+  m_currentFileItem.SetState( TVIS_BOLD, TVIS_BOLD );
+  m_currentFileItem.Select();
+  m_currentFileItem.Expand();
   return;
 }
 
@@ -225,8 +220,8 @@ LRESULT CBookmarkDlg::OmGotoBookmark( WORD wNotifyCode,WORD wID,HWND hWndCtl,BOO
     SaveToRegistry();
   }
 
-  // TODO: Save the info for selected bookmark...
-
+  m_pGoToBM = BMPtr( (CBookmarkInfoRef*)m_currentFileItem.GetData() );
+  
   EndDialog( wID );
   return 0;
 }
@@ -337,7 +332,7 @@ LRESULT CBookmarkDlg::OnTvnSelchangedTree( int /*idCtrl*/, LPNMHDR pNMHDR, BOOL&
   it.GetText( m_sBookmarkName );
   DoDataExchange( FALSE, IDC_BOOKMARK_NAME );
  
-  parent.GetText( m_szSelectedFullPathName );
+  //?parent.GetText( m_szSelectedFullPathName );
 
   return 0;
 }
