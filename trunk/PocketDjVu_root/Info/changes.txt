@@ -13,7 +13,9 @@ v.0.9.5
 # - If page was empty (0 bytes amount) the error was arisen: "Not enought RAM...".
 + - Bookmark dialog (in progress)...
 + - "Tile" mode (in progress)...
+
 +# - BUG: History head should be deleted after jumping back and browsing to another page.
++# - BUG: In the BookMark dialog the deleted bookmarks are not being deleted from registrary.
 
 v.0.9.4
 =================
