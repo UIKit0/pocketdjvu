@@ -10,7 +10,7 @@ v.0.9.5
 + - Toolbar was extended to show current/total pages and for support history navigation.
 + - Browsing history support was implemented.
 + - The installators as standalone exe-file as well as cab-file were implemented.
-
+# - If page was empty (0 bytes amount) the error was arisen: "Not enought RAM...".
 + - Bookmark dialog (in progress)...
 + - "Tile" mode (in progress)...
 +# - BUG: History head should be deleted after jumping back and browsing to another page.

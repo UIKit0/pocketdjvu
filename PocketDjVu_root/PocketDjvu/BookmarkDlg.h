@@ -14,12 +14,40 @@ class CBookmarkDlg :
   public WTL::CWinDataExchange<CBookmarkDlg>
 {
   typedef WTL::CStdDialogResizeImpl<CBookmarkDlg> Base;
+
 public:
+// TYPES:
   enum { IDD = IDD_BOOKMARK };
 
+  class CBookmarkInfoRef : public siv_hlpr::CRefCntr<>, public CBookmarkInfo
+  {
+  public:
+    CBookmarkInfoRef( CBookmarkInfo const & src, wchar_t const * szName ) : m_szName( szName )
+    {
+      *(CBookmarkInfo*)this = src;
+    }
+
+    wchar_t const * GetName() const
+    {
+      return m_szName;
+    }
+  private:
+    WTL::CString m_szName;
+  };
+  typedef siv_hlpr::CSimpSPtr<CBookmarkInfoRef> BMPtr;
+  typedef std::set<BMPtr> BMSet;
+  typedef std::map<WTL::CString,BMSet> BMs;
+
+// METHODS:  
+  
 	CBookmarkDlg( wchar_t const * szFullPathName, CBookmarkInfo const & bookmarkInfo );
 
 	~CBookmarkDlg();
+
+  BMPtr GetGoToBookMark()
+  {
+    return m_pGoToBM;
+  }
 
 BEGIN_DLGRESIZE_MAP(CBookmarkDlg)
   DLGRESIZE_CONTROL(IDC_STATIC_ADD, 0)
@@ -72,27 +100,6 @@ private:
   void FindOrCreateCurrentFileBranch();
   void EnableGotoBookmarkMenu( bool bEnable );
 
-// PRIVATE TYPES:
-private:
-  class CBookmarkInfoRef : public siv_hlpr::CRefCntr<>, public CBookmarkInfo
-  {
-  public:
-    CBookmarkInfoRef( CBookmarkInfo const & src, wchar_t const * szName ) : m_szName( szName )
-    {
-      *(CBookmarkInfo*)this = src;
-    }
-
-    wchar_t const * GetName() const
-    {
-      return m_szName;
-    }
-  private:
-    WTL::CString m_szName;
-  };
-  typedef siv_hlpr::CSimpSPtr<CBookmarkInfoRef> BMPtr;
-  typedef std::set<BMPtr> BMSet;
-  typedef std::map<WTL::CString,BMSet> BMs;
-
 // DATA:
 private:
   CSIPState m_sip;
@@ -118,5 +125,6 @@ private:
   WTL::CString m_sBookmarkName;
   
   /// This is full path of selected bookmark. It's intended for ID_GOTOBOOKMARK result.
-  WTL::CString m_szSelectedFullPathName;
+  //?WTL::CString m_szSelectedFullPathName;
+  BMPtr m_pGoToBM;
 };

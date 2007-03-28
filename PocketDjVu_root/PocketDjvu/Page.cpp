@@ -11,7 +11,8 @@ bool CPage::LoadBmpSync()
                       m_rc.Width(),
                       m_rc.Height(),
                       m_bWidthMostPrioritized );
-  if ( !bmpLdr.LoadBmp() )
+  CPageLoader::RET_CODES res = bmpLdr.LoadBmp();
+  if ( CPageLoader::RET_OK != res && CPageLoader::RET_EMPTY != res )
     return false;
 
   bmpLdr.StoleBmp( m_pBmp, m_rc );
@@ -25,6 +26,7 @@ void CPage::Draw( WTL::CDCHandle dc )
 {
   if ( !m_pBmp )
   {
+    dc.FillRect( m_rc, (HBRUSH)GetStockObject(WHITE_BRUSH) );
     return;
   }
   void * pvBits =(char*)m_pBmp + sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD)*m_pBmp->bmiHeader.biClrUsed;

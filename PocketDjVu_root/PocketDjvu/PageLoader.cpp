@@ -37,7 +37,7 @@ CPageLoader::~CPageLoader()
   }
 }
 
-bool CPageLoader::LoadBmp()
+CPageLoader::RET_CODES CPageLoader::LoadBmp()
 {
   __try
   {
@@ -45,10 +45,10 @@ bool CPageLoader::LoadBmp()
   }
   __except( EXCEPTION_EXECUTE_HANDLER )
   {
-    return false;
+    return RET_ERROR;
   }
 }
-bool CPageLoader::LoadBmpImp()
+CPageLoader::RET_CODES CPageLoader::LoadBmpImp()
 {
   try
   {
@@ -58,13 +58,13 @@ bool CPageLoader::LoadBmpImp()
     pImage->set_rotate( m_rotation );
 
     if ( !pImage->wait_for_complete_decode() )
-      return false;
+      return RET_ERROR;
 
     GP<DjVuInfo> pInfo = pImage->get_info();
     m_ImgWidth  = pInfo->width;
     m_ImgHeight = pInfo->height;
     if ( !m_ImgWidth || !m_ImgHeight )
-      return false;
+      return RET_ERROR;
 
     if ( m_rotation & 1 )
     {
@@ -78,35 +78,40 @@ bool CPageLoader::LoadBmpImp()
 	  if ( pPixm )
     {
       if ( !ConstructDIBbyPixmap( m_Width, m_Height, *pPixm ) )
-        return false;
+        return RET_ERROR;
     }
     else
     {
 		  GP<GBitmap> pBmp = pImage->get_bitmap( GRect(0,0,m_Width,m_Height),
                                              GRect(0,0,m_Width,m_Height) );
-      if ( !pBmp || !ConstructDIBbyBitmap( m_Width, m_Height, *pBmp ) )
+      if ( pBmp )
       {
-        return false;
+        if ( !ConstructDIBbyBitmap( m_Width, m_Height, *pBmp ) )
+          return RET_ERROR;
+      }
+      else
+      {
+        return RET_EMPTY;
       }
     }    
-    return true;
+    return RET_OK;
   }
   catch ( std::exception const & e )
   {
     e;
     // TODO: output diagnostics
-    return false;
+    return RET_ERROR;
   }
   catch( GException & e )
   {
     e;
     // TODO: output diagnostics
-    return false;
+    return RET_ERROR;
   }
   catch(...)
   {
     // TODO: output diagnostics
-    return false;
+    return RET_ERROR;
   }
 }
 

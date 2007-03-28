@@ -1486,7 +1486,12 @@ LRESULT CMainFrame::OnBookmark( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 
   CBookmarkInfo bi( visPgInd, r /*TODO: , m_bPortrait */ );
   CBookmarkDlg dlg( m_pDjVuDoc ? m_mru[0].m_curFillFileName : (wchar_t const * )0, bi );
-  dlg.DoModal();
+  if ( ID_GOTOBOOKMARK == dlg.DoModal() )
+  {
+    CBookmarkDlg::BMPtr pBM = dlg.GetGoToBookMark();
+    GoToPage( *pBM );
+  }
+
   return 0;
 }
 

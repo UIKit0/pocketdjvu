@@ -24,8 +24,8 @@ public:
              );
   ~CPageLoader();
 
-  bool LoadBmp();
-  bool LoadBmpImp();
+  enum RET_CODES { RET_OK, RET_ERROR, RET_EMPTY };
+  RET_CODES LoadBmp();  
 
   void StoleBmp( BITMAPINFO *& destpBmp, WTL::CRect & rc ) // throw()
   {
@@ -57,6 +57,8 @@ public:
   }
 
 private:
+  RET_CODES LoadBmpImp();
+
   void CalcDimensions( int imgWidth,
                        int imgHeight,
                        int & o_Width,
