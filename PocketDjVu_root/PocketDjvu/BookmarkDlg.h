@@ -44,8 +44,9 @@ public:
 
 	~CBookmarkDlg();
 
-  BMPtr GetGoToBookMark()
+  BMPtr GetGoToBookMark( WTL::CString & o_szCurFullPathName )
   {
+    o_szCurFullPathName = m_szCurFullPathName;
     return m_pGoToBM;
   }
 

@@ -476,7 +476,7 @@ bool CMainFrame::AppNewInstance( LPCTSTR lpstrCmdLine )
   return OpenFile( lpstrCmdLine, pageIndex );
 }
 
-bool CMainFrame::OpenFile( LPCWSTR fullFileName, int pageIndex )
+bool CMainFrame::OpenFile( LPCWSTR fullFileName, int pageIndex, WTL::CRect * pRect )
 {
   m_tb.SetPages();
   WTL::CWaitCursor wc;
@@ -504,7 +504,14 @@ bool CMainFrame::OpenFile( LPCWSTR fullFileName, int pageIndex )
   }  
 
   WTL::CRect clientRect;
-  GetClientRect( &clientRect );
+  if ( pRect )
+  {
+    clientRect = *pRect;
+  }
+  else
+  {
+    GetClientRect( &clientRect );
+  }
   PagePtr pPage( new CPage( m_hWnd, pDjVuDoc, clientRect, true, pageIndex ) );
   if ( !pPage->LoadBmpSync() )
   {
@@ -1484,12 +1491,26 @@ LRESULT CMainFrame::OnBookmark( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
     }
   }
 
-  CBookmarkInfo bi( visPgInd, r /*TODO: , m_bPortrait */ );
-  CBookmarkDlg dlg( m_pDjVuDoc ? m_mru[0].m_curFillFileName : (wchar_t const * )0, bi );
-  if ( ID_GOTOBOOKMARK == dlg.DoModal() )
+  CBookmarkDlg::BMPtr pBM;
+  WTL::CString szCurFullPathName;
   {
-    CBookmarkDlg::BMPtr pBM = dlg.GetGoToBookMark();
-    GoToPage( *pBM );
+    CBookmarkInfo bi( visPgInd, r /*TODO: , m_bPortrait */ );
+    CBookmarkDlg dlg( m_pDjVuDoc ? m_mru[0].m_curFillFileName : (wchar_t const * )0, bi );
+    if ( ID_GOTOBOOKMARK == dlg.DoModal() )
+    {
+      pBM = dlg.GetGoToBookMark( szCurFullPathName );
+    }
+  }
+  if ( pBM )
+  {
+    if ( !m_pDjVuDoc || szCurFullPathName.CompareNoCase( m_mru[0].m_curFillFileName ) )
+    {
+      OpenFile( szCurFullPathName, pBM->m_pageIndex, &pBM->m_pageRect );
+    }
+    else
+    {
+      GoToPage( *pBM );
+    }
   }
 
   return 0;

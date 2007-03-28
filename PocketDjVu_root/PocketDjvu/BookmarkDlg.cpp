@@ -119,7 +119,7 @@ void CBookmarkDlg::LoadBookmark( WTL::CString szPathKey )
       }
     }
     WTL::CTreeItem bmItem = pathItem.AddTail( buf, 0 );
-    m_currentFileItem.SortChildren( FALSE );
+    pathItem.SortChildren( FALSE );
     bmItem.SetData( (DWORD_PTR)pBM.GetPtr() );
   }
 }
@@ -220,9 +220,15 @@ LRESULT CBookmarkDlg::OmGotoBookmark( WORD wNotifyCode,WORD wID,HWND hWndCtl,BOO
     SaveToRegistry();
   }
 
-  m_pGoToBM = BMPtr( (CBookmarkInfoRef*)m_currentFileItem.GetData() );
-  
-  EndDialog( wID );
+  WTL::CTreeItem selIt = m_tree.GetSelectedItem();
+  if ( selIt.IsNull() || selIt.GetParent().IsNull() )
+  {
+    EndDialog( IDCANCEL );
+    return 0;
+  }
+  selIt.GetParent().GetText( m_szCurFullPathName );
+  m_pGoToBM = BMPtr( (CBookmarkInfoRef*)selIt.GetData() );  
+  EndDialog( m_pGoToBM ? wID : IDCANCEL );
   return 0;
 }
 

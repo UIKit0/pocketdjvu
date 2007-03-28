@@ -155,7 +155,7 @@ private:
   void ScrollPagesHor( int & moveX );
   void ClearRedundantCache();
   void AddVisibleButNotLoaded();
-  bool OpenFile( LPCWSTR fullFileName, int pageIndex=0 );
+  bool OpenFile( LPCWSTR fullFileName, int pageIndex=0, WTL::CRect * pRect=0 );
   PagePtr Get1stVisiblePage();
   PagePtr GetCurrentPage( int * pIndex = 0 );  
   void SetCurFileInMru( WTL::CString const & fullFileName, int pageIndex );
