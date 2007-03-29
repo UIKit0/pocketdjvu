@@ -141,7 +141,7 @@ void CDjVuToolBar::DrawHistoryButtond( WTL::CDC & dc, WTL::CRect & panelRect, BT
     }
 
     if ( !DrawArrow( dc, m_forward, rf ) )
-    {
+    { // TODO: Try to use TransparentImage, but special color for mask should be used.
       POINT points[] = { {r.left,  r.top+r.Height()/2},
                          {r.right, r.top+r.Height()*3/4},
                          {r.left,  r.top+r.Height()}
