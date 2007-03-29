@@ -264,8 +264,12 @@ LRESULT CBookmarkDlg::OnBtnDel( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& 
   WTL::CTreeItem parent = ti.GetParent();
   if ( parent.IsNull() )
     return 0;
+  
   WTL::CString path;
   parent.GetText( path );
+  BMPtr pBM( (CBookmarkInfoRef*)ti.GetData() );
+  m_bms[ path ].erase( pBM );
+  ti.Delete();
   
   WTL::CTreeItem act = ti.GetNextSibling();
   if ( act.IsNull() )
@@ -276,10 +280,6 @@ LRESULT CBookmarkDlg::OnBtnDel( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& 
       act = parent;
     }
   }  
-
-  BMPtr pBM( (CBookmarkInfoRef*)ti.GetData() );
-  m_bms[ path ].erase( pBM );
-  ti.Delete();
 
   if ( parent != m_currentFileItem && !parent.HasChildren() )
   {
