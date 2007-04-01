@@ -31,6 +31,11 @@ public:
     {
       return m_szName;
     }
+
+    void SetName( wchar_t const * szName )
+    {
+      m_szName = szName;
+    }
   private:
     WTL::CString m_szName;
   };
@@ -38,8 +43,7 @@ public:
   typedef std::set<BMPtr> BMSet;
   typedef std::map<WTL::CString,BMSet> BMs;
 
-// METHODS:  
-  
+// METHODS: 
 	CBookmarkDlg( wchar_t const * szFullPathName, CBookmarkInfo const & bookmarkInfo );
 
 	~CBookmarkDlg();
@@ -50,12 +54,16 @@ public:
     return m_pGoToBM;
   }
 
+  static bool SaveAutoBM( wchar_t const * szFullPath, CBookmarkInfo const & rBM );
+  static bool LoadAutoBM( wchar_t const * szFullPath, CBookmarkInfo & rBM );
+  static void DoesAutoBMExistOnly( wchar_t const * szFullPath );
+
 BEGIN_DLGRESIZE_MAP(CBookmarkDlg)
   DLGRESIZE_CONTROL(IDC_STATIC_ADD, 0)
   DLGRESIZE_CONTROL(IDC_BOOKMARK_NAME, DLSZ_SIZE_X)
   DLGRESIZE_CONTROL(IDC_BTNADD, DLSZ_MOVE_X)
-  DLGRESIZE_CONTROL(IDC_BTNDEL, DLSZ_MOVE_X)
-
+  DLGRESIZE_CONTROL(IDC_BTNDEL, DLSZ_MOVE_X)  
+  
   DLGRESIZE_CONTROL(IDC_TREE, DLSZ_SIZE_X|DLSZ_SIZE_Y)
 END_DLGRESIZE_MAP()
 
@@ -69,13 +77,15 @@ BEGIN_MSG_MAP(CBookmarkDlg)
   MESSAGE_HANDLER(WM_WININICHANGE, OnWininiChange)
   
   COMMAND_ID_HANDLER(IDCANCEL, OnCancell)
-  COMMAND_ID_HANDLER(IDOK, OnCancell) // <- for Win 2003
-  COMMAND_ID_HANDLER(ID_SAVE, OnSave)
-  COMMAND_ID_HANDLER(ID_GOTOBOOKMARK, OmGotoBookmark)
+  COMMAND_ID_HANDLER(IDOK, OnSave)
+  COMMAND_ID_HANDLER(ID_GOTOBOOKMARK, OnGotoBookmark)
 
   COMMAND_ID_HANDLER(IDC_BTNADD, OnBtnAdd)
   COMMAND_ID_HANDLER(IDC_BTNDEL, OnBtnDel)
   NOTIFY_HANDLER(IDC_TREE, TVN_SELCHANGED, OnTvnSelchangedTree)
+  NOTIFY_HANDLER(IDC_TREE, NM_DBLCLK, OnDblclkTree)
+  NOTIFY_HANDLER(IDC_TREE, TVN_BEGINLABELEDIT, OnTvnBeginLabelEditTree)
+  NOTIFY_HANDLER(IDC_TREE, TVN_ENDLABELEDIT, OnTvnEndLabelEditTree)  
   CHAIN_MSG_MAP(Base)
 END_MSG_MAP()
 
@@ -86,13 +96,16 @@ END_MSG_MAP()
 
   LRESULT OnCancell( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled );
   LRESULT OnSave( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled );
-  LRESULT OmGotoBookmark( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled );
+  LRESULT OnGotoBookmark( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled );
 
   LRESULT OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled );
   LRESULT OnWininiChange( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled );
   LRESULT OnBtnAdd( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled );
   LRESULT OnBtnDel( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled );
   LRESULT OnTvnSelchangedTree(int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& /*bHandled*/);
+  LRESULT OnDblclkTree(int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& /*bHandled*/);
+  LRESULT OnTvnBeginLabelEditTree(int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& /*bHandled*/);
+  LRESULT OnTvnEndLabelEditTree(int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& /*bHandled*/);
 
 private:
   void LoadFromRegistry();
@@ -125,7 +138,5 @@ private:
   /// Bookmark name which correesponds to edit-box.
   WTL::CString m_sBookmarkName;
   
-  /// This is full path of selected bookmark. It's intended for ID_GOTOBOOKMARK result.
-  //?WTL::CString m_szSelectedFullPathName;
   BMPtr m_pGoToBM;
 };

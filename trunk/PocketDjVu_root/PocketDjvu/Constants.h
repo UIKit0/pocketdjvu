@@ -37,3 +37,6 @@ const int g_cPgFontHpx  = 14;
 const int g_cGapBetweenRectAndInfoZone = 1;
 
 const int g_cHistoryLength = 11;
+
+static wchar_t const * BOOKMARK_REG_KEY       = L"\\Bookmarks";
+static wchar_t const * BOOKMARK_REG_AUTOSAVE  = L"AutoSave";
