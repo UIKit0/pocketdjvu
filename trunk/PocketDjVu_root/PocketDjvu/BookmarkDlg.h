@@ -19,39 +19,18 @@ public:
 // TYPES:
   enum { IDD = IDD_BOOKMARK };
 
-  class CBookmarkInfoRef : public siv_hlpr::CRefCntr<>, public CBookmarkInfo
-  {
-  public:
-    CBookmarkInfoRef( CBookmarkInfo const & src, wchar_t const * szName ) : m_szName( szName )
-    {
-      *(CBookmarkInfo*)this = src;
-    }
-
-    wchar_t const * GetName() const
-    {
-      return m_szName;
-    }
-
-    void SetName( wchar_t const * szName )
-    {
-      m_szName = szName;
-    }
-  private:
-    WTL::CString m_szName;
-  };
-  typedef siv_hlpr::CSimpSPtr<CBookmarkInfoRef> BMPtr;
-  typedef std::set<BMPtr> BMSet;
-  typedef std::map<WTL::CString,BMSet> BMs;
-
 // METHODS: 
 	CBookmarkDlg( wchar_t const * szFullPathName, CBookmarkInfo const & bookmarkInfo );
 
 	~CBookmarkDlg();
 
-  BMPtr GetGoToBookMark( WTL::CString & o_szCurFullPathName )
+  bool GetGoToBookMark( CBookmarkInfo & bm, WTL::CString & o_szCurFullPathName )
   {
+    if ( !m_pGoToBM )
+      return false;
     o_szCurFullPathName = m_szCurFullPathName;
-    return m_pGoToBM;
+    bm = *m_pGoToBM;
+    return true;
   }
 
   static bool SaveAutoBM( wchar_t const * szFullPath, CBookmarkInfo const & rBM );
@@ -108,6 +87,31 @@ END_MSG_MAP()
   LRESULT OnTvnEndLabelEditTree(int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& /*bHandled*/);
 
 private:
+// TYPES:
+  class CBookmarkInfoRef : public siv_hlpr::CRefCntr<>, public CBookmarkInfo
+  {
+  public:
+    CBookmarkInfoRef( CBookmarkInfo const & src, wchar_t const * szName ) : m_szName( szName )
+    {
+      *(CBookmarkInfo*)this = src;
+    }
+
+    wchar_t const * GetName() const
+    {
+      return m_szName;
+    }
+
+    void SetName( wchar_t const * szName )
+    {
+      m_szName = szName;
+    }
+  private:
+    WTL::CString m_szName;
+  };
+  typedef siv_hlpr::CSimpSPtr<CBookmarkInfoRef> BMPtr;
+  typedef std::set<BMPtr> BMSet;
+  typedef std::map<WTL::CString,BMSet> BMs;
+
   void LoadFromRegistry();
   void LoadBookmark( WTL::CString szPathKey );
   void SaveToRegistry();

@@ -403,31 +403,39 @@ void CMainFrame::UpdateHistory( PagePtr p1sVisPg )
 
 void CMainFrame::AppSave()
 {
-  if ( m_bDirty && m_pDjVuDoc )
+  if ( !m_bDirty || !m_pDjVuDoc )
   {
-    m_bDirty = false;
-    PagePtr p1sVis = Get1stVisiblePage();
-    m_mru[ 0 ].m_pageNum = p1sVis ? p1sVis->GetPageIndex() : 0;
-    
-    m_tb.SetPages( m_mru[ 0 ].m_pageNum + 1, m_pDjVuDoc->get_pages_num() );
-
-    UpdateHistory( p1sVis );    
-
-    int j=-1;
-    for ( int i=0; i<g_cMruNumber; ++i )
-    {
-      if ( m_mru[ i ].m_curFillFileName.IsEmpty() )
-        continue;
-      ++j;
-      WTL::CString file;
-      file.Format( L"MRU_file_%d", j );
-      WTL::CString page;
-      page.Format( L"MRU_page_%d", j );
-
-      m_appInfo.Save( m_mru[ i ].m_curFillFileName, (LPCWSTR)file );
-      m_appInfo.m_Key.SetDWORDValue( page, m_mru[ i ].m_pageNum );
-    }
+    return;
   }
+  
+  m_bDirty = false;
+  PagePtr p1sVis = Get1stVisiblePage();
+  CBookmarkInfo bm;
+  if ( p1sVis )
+  {
+    bm.m_pageIndex = p1sVis->GetPageIndex();
+    bm.m_pageRect  = p1sVis->GetRect();
+    // TODO: bm.m_bPortrait = ;
+  }
+  
+  m_tb.SetPages( bm.m_pageIndex + 1, m_pDjVuDoc->get_pages_num() );
+
+  UpdateHistory( p1sVis );
+
+  int j=-1;
+  for ( int i=0; i<g_cMruNumber; ++i )
+  {
+    if ( m_mru[ i ].IsEmpty() )
+      continue;
+    ++j;
+    WTL::CString file;
+    file.Format( L"MRU_file_%d", j );
+  
+    CBookmarkDlg::DoesAutoBMExistOnly( m_mru[ i ] );
+    m_appInfo.Save( m_mru[ i ], (LPCWSTR)file );
+  }
+  
+  CBookmarkDlg::SaveAutoBM( m_mru[ 0 ], bm );
 }
 
 LRESULT CMainFrame::OnFileOpen(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled )
@@ -441,8 +449,9 @@ LRESULT CMainFrame::OnFileOpen(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
     return 0;
   }
 
-  int pageIndex = GetPageIndFromMru( fd.m_szFileName );
-  OpenFile( fd.m_szFileName, pageIndex );
+  CBookmarkInfo bm;
+  CBookmarkDlg::LoadAutoBM( fd.m_szFileName, bm );
+  OpenFile( fd.m_szFileName, bm );
 #else
   wchar_t szFile[MAX_PATH] = {0};
   OPENFILENAMEEX  ofnex = {0};
@@ -463,8 +472,9 @@ LRESULT CMainFrame::OnFileOpen(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
     return 0;
   }
 
-  int pageIndex = GetPageIndFromMru( ofnex.lpstrFile );
-  OpenFile( ofnex.lpstrFile, pageIndex );
+  CBookmarkInfo bm;
+  CBookmarkDlg::LoadAutoBM( ofnex.lpstrFile, bm );
+  OpenFile( ofnex.lpstrFile, bm );
 #endif // UNDER_CE
 
   return 0;
@@ -472,11 +482,12 @@ LRESULT CMainFrame::OnFileOpen(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
 
 bool CMainFrame::AppNewInstance( LPCTSTR lpstrCmdLine )
 {
-  int pageIndex = GetPageIndFromMru( lpstrCmdLine );
-  return OpenFile( lpstrCmdLine, pageIndex );
+  CBookmarkInfo bm;
+  CBookmarkDlg::LoadAutoBM( lpstrCmdLine, bm );
+  return OpenFile( lpstrCmdLine, bm );
 }
 
-bool CMainFrame::OpenFile( LPCWSTR fullFileName, int pageIndex, WTL::CRect * pRect )
+bool CMainFrame::OpenFile( LPCWSTR fullFileName, CBookmarkInfo bm )
 {
   m_tb.SetPages();
   WTL::CWaitCursor wc;
@@ -498,21 +509,12 @@ bool CMainFrame::OpenFile( LPCWSTR fullFileName, int pageIndex, WTL::CRect * pRe
   int pagesInDoc = pDjVuDoc->get_pages_num();
   if( pagesInDoc <= 0 )
     return false;
-  if ( pagesInDoc <= pageIndex )
+  if ( pagesInDoc <= bm.m_pageIndex )
   {
-    pageIndex = 0;
+    bm.m_pageIndex = 0;
   }  
 
-  WTL::CRect clientRect;
-  if ( pRect )
-  {
-    clientRect = *pRect;
-  }
-  else
-  {
-    GetClientRect( &clientRect );
-  }
-  PagePtr pPage( new CPage( m_hWnd, pDjVuDoc, clientRect, true, pageIndex ) );
+  PagePtr pPage( new CPage( m_hWnd, pDjVuDoc, bm.m_pageRect, true, bm.m_pageIndex ) );
   if ( !pPage->LoadBmpSync() )
   {
     // TODO: show something reasonable (like ShowZoomWarning();)
@@ -524,7 +526,7 @@ bool CMainFrame::OpenFile( LPCWSTR fullFileName, int pageIndex, WTL::CRect * pRe
   m_Pages.push_back( pPage );
   m_pDjVuDoc = pDjVuDoc;
   HistoryCleanup();
-  SetCurFileInMru( fullFileName, pageIndex );
+  SetCurFileInMru( fullFileName );
   UpdateMruMenu();
   m_bDirty = true;
 #pragma endregion
@@ -1026,18 +1028,13 @@ void CMainFrame::LoadSettings()
   int j=0;
   for ( int i=0; i<g_cMruNumber; ++i )
   {
-    m_mru[ i ].m_curFillFileName = L"";
-    m_mru[ i ].m_pageNum = 0;
-
+    m_mru[ i ] = L"";
+    
     WTL::CString file;
     file.Format( L"MRU_file_%d", i );
-    WTL::CString page;
-    page.Format( L"MRU_page_%d", i );
 
     WTL::CString path;
-    DWORD pg;
     if ( !m_appInfo.Restore( path, (LPCWSTR)file ) &&
-         !m_appInfo.m_Key.QueryDWORDValue( page, pg ) &&
          !path.IsEmpty() )
     {
       HANDLE h = ::CreateFile( path,
@@ -1053,8 +1050,7 @@ void CMainFrame::LoadSettings()
       }
       ::CloseHandle( h );
 
-      m_mru[ j ].m_curFillFileName = path;
-      m_mru[ j ].m_pageNum = pg;
+      m_mru[ j ] = path;
       ++j;
     }
   }
@@ -1065,22 +1061,25 @@ void CMainFrame::LoadSettings()
     bLoaded = AppNewInstance( m_cmdLine );
   }
 
-  if ( !bLoaded && !m_mru[ 0 ].m_curFillFileName.IsEmpty() )
+  CBookmarkInfo bm;
+  CBookmarkDlg::LoadAutoBM( m_mru[ 0 ], bm );
+
+  if ( !bLoaded && !m_mru[ 0 ].IsEmpty() )
   {
-    OpenFile( m_mru[ 0 ].m_curFillFileName, m_mru[ 0 ].m_pageNum );
+    OpenFile( m_mru[ 0 ], bm );
   }
 }
 
-void CMainFrame::SetCurFileInMru( WTL::CString const & fullFileName, int pageIndex )
+void CMainFrame::SetCurFileInMru( WTL::CString const & fullFileName )
 {
   for ( int i=0; i<g_cMruNumber; ++i )
   {
-    if ( fullFileName == m_mru[i].m_curFillFileName )
+    if ( !fullFileName.CompareNoCase( m_mru[ i ] ) )
     {
-      CMru t = m_mru[i];
+      WTL::CString t = m_mru[ i ];
       for ( int j=i; j>0; --j )
       {
-        m_mru[j] = m_mru[j-1];
+        m_mru[ j ] = m_mru[ j-1 ];
       }
       m_mru[ 0 ] = t;
       return;
@@ -1089,45 +1088,51 @@ void CMainFrame::SetCurFileInMru( WTL::CString const & fullFileName, int pageInd
 
   for ( int i=g_cMruNumber-1; i>0; --i )
   {
-    m_mru[i] = m_mru[i-1];
+    m_mru[ i ] = m_mru[ i-1 ];
   }
-  m_mru[ 0 ].m_curFillFileName = fullFileName;
-  m_mru[ 0 ].m_pageNum = pageIndex;
-}
-
-int CMainFrame::GetPageIndFromMru( WTL::CString const & fileFullPath )
-{
-  for ( int i=0; i<g_cMruNumber; ++i )
-  {
-    if ( fileFullPath == m_mru[i].m_curFillFileName )
-    {
-      return m_mru[i].m_pageNum;
-    }
-  }
-  return 0;
+  
+  m_mru[ 0 ] = fullFileName;
 }
 
 void CMainFrame::UpdateMruMenu()
 {
-  HMENU hMenu = (HMENU)::SendMessage( m_hWndCECommandBar, SHCMBM_GETMENU, 0, 0 );
-  if ( !hMenu )
+  WTL::CMenuHandle mnu = (HMENU)::SendMessage( m_hWndCECommandBar, SHCMBM_GETMENU, 0, 0 );
+  if ( !mnu )
     return;
 
-  WTL::CMenuHandle mnu;
-  mnu.Attach( hMenu );
   WTL::CMenuHandle sub0Mnu = mnu.GetSubMenu( 0 );
   ATLASSERT( sub0Mnu );
   if ( !sub0Mnu )
     return;
 
-  WTL::CMenuHandle mruMnu = sub0Mnu.GetSubMenu( 6 ); // TODO: think how avoid hardcoded constant here
+#pragma region MRU files menu finding
+  WTL::CMenuHandle mruMnu;
+  for ( int i = 0; true; ++i )
+  {
+    MENUITEMINFO mii = {0}; 
+    mii.cbSize = sizeof mii;
+    mii.fMask = MIIM_TYPE | MIIM_ID | MIIM_SUBMENU;
+    if ( !sub0Mnu.GetMenuItemInfo( i, true, &mii ) )
+    {
+      return;
+    }
+    if ( !mii.hSubMenu )
+      continue;
+
+    WTL::CMenuHandle mnu = mii.hSubMenu;
+    if ( mnu.GetMenuItemInfo( 0, true, &mii ) && ID_FILE_MRU_FIRST == mii.wID )
+    {
+      mruMnu = mnu;
+      break;
+    }
+  }
   ATLASSERT( mruMnu );
   if ( !mruMnu )
     return;
+#pragma endregion
 
 #pragma region Cleanup
-  int mCnt = ATL::GetMenuItemCount( mruMnu );
-  while( mCnt-- )
+  for ( int mCnt = ATL::GetMenuItemCount( mruMnu ); mCnt--; )
   {
     mruMnu.RemoveMenu( mCnt, MF_BYPOSITION );
   }
@@ -1135,26 +1140,28 @@ void CMainFrame::UpdateMruMenu()
 
   for ( int i=0; i<g_cMruNumber; ++i )
   {
-    if ( m_mru[i].m_curFillFileName.IsEmpty() )
+    if ( m_mru[ i ].IsEmpty() )
       continue;
  
     wchar_t fName[_MAX_PATH];
-    _wsplitpath_s( (LPCWSTR)m_mru[i].m_curFillFileName,
+    _wsplitpath_s( (LPCWSTR)m_mru[ i ],
                    0,0,
                    0,0,
                    fName,sizeof(fName)/sizeof(fName[0]),
                    0,0 );
-    mruMnu.AppendMenuW( 0, ID_FILE_MRU_FILE1+i, fName );
+    mruMnu.AppendMenuW( 0, ID_FILE_MRU_FIRST+i, fName );
   }
 }
 
 LRESULT CMainFrame::OnMru( WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL & bHandled )
 {
-  unsigned i = wID - ID_FILE_MRU_FILE1;
-  if ( g_cMruNumber <= i || m_mru[i].m_curFillFileName.IsEmpty() )
+  unsigned i = wID - ID_FILE_MRU_FIRST;
+  if ( g_cMruNumber <= i || m_mru[ i ].IsEmpty() )
     return 1;
 
-  if ( OpenFile( m_mru[i].m_curFillFileName, m_mru[i].m_pageNum ) )
+  CBookmarkInfo bm;
+  CBookmarkDlg::LoadAutoBM( m_mru[ i ], bm );
+  if ( OpenFile( m_mru[ i ], bm ) )
   {
     Invalidate();
   }
@@ -1162,9 +1169,9 @@ LRESULT CMainFrame::OnMru( WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOO
   {    
     for ( unsigned j=i+1; j<g_cMruNumber; ++j )
     {
-      m_mru[j-1] = m_mru[j];
+      m_mru[ j-1 ] = m_mru[ j ];
     }
-    m_mru[g_cMruNumber-1].Clear();
+    m_mru[ g_cMruNumber-1 ].Empty();
     UpdateMruMenu();
   }
 
@@ -1190,7 +1197,6 @@ bool CMainFrame::GoToPage( CBookmarkInfo const & bkmrk )
   }
     
   m_Pages.push_back( pPage );
-  m_mru[0].m_pageNum = bkmrk.m_pageIndex;
   m_bDirty = true;
   PageLayout();
 
@@ -1490,26 +1496,22 @@ LRESULT CMainFrame::OnBookmark( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
       r = p1stVis->GetRect();
     }
   }
-
-  CBookmarkDlg::BMPtr pBM;
+  
+  CBookmarkInfo bi( visPgInd, r /* TODO: , m_bPortrait */ );
+  CBookmarkDlg dlg( m_pDjVuDoc ? m_mru[ 0 ] : (wchar_t const * )0, bi );
+  if ( ID_GOTOBOOKMARK != dlg.DoModal() )
+    return 0;
+  
   WTL::CString szCurFullPathName;
+  if ( dlg.GetGoToBookMark( bi, szCurFullPathName ) )
   {
-    CBookmarkInfo bi( visPgInd, r /*TODO: , m_bPortrait */ );
-    CBookmarkDlg dlg( m_pDjVuDoc ? m_mru[0].m_curFillFileName : (wchar_t const * )0, bi );
-    if ( ID_GOTOBOOKMARK == dlg.DoModal() )
+    if ( !m_pDjVuDoc || szCurFullPathName.CompareNoCase( m_mru[ 0 ] ) )
     {
-      pBM = dlg.GetGoToBookMark( szCurFullPathName );
-    }
-  }
-  if ( pBM )
-  {
-    if ( !m_pDjVuDoc || szCurFullPathName.CompareNoCase( m_mru[0].m_curFillFileName ) )
-    {
-      OpenFile( szCurFullPathName, pBM->m_pageIndex, &pBM->m_pageRect );
+      OpenFile( szCurFullPathName, bi );
     }
     else
     {
-      GoToPage( *pBM );
+      GoToPage( bi );
     }
   }
 

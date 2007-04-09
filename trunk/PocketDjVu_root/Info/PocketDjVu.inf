@@ -33,12 +33,10 @@ CEShortcuts = Shortcuts
 AddReg = AddReg
 ;CESetupDLL = custom_setup.dll
 
-
 [AddReg]
 HKCR, ".djvu",, 0x00000000, "djvufile"
 HKCR, "djvufile\DefaultIcon",, 0x00000000, "%InstallDir%\%ExeName%,0"
 HKCR, "djvufile\shell\Open\Command",, 0x00000000, """%InstallDir%\%ExeName%"" %%1"
-HKCU, "SOFTWARE\landi-soft.com\PocketDjVu",,,"test_002"
 
 [DestinationDirs]
 Files.App = 0,%InstallDir%

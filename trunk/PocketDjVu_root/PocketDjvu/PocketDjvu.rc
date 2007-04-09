@@ -93,7 +93,7 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "Recent files"
         BEGIN
-            MENUITEM "0",                           ID_FILE_MRU_FIRST
+            MENUITEM "was not opened yet",          ID_FILE_MRU_FIRST, GRAYED
         END
         MENUITEM "Open...",                     ID_FILE_OPEN
         MENUITEM SEPARATOR

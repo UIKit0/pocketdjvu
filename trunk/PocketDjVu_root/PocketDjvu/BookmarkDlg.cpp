@@ -157,6 +157,7 @@ bool CBookmarkDlg::SaveAutoBM( wchar_t const * szFullPath, CBookmarkInfo const &
 
   WTL::CString regPath( APP_REG_PATH );  
   regPath += BOOKMARK_REG_KEY;
+  regPath += L"\\";
   regPath += keyFileKey;
 
   ATL::CRegKey reg;
@@ -170,11 +171,12 @@ bool CBookmarkDlg::SaveAutoBM( wchar_t const * szFullPath, CBookmarkInfo const &
 
 bool CBookmarkDlg::LoadAutoBM( wchar_t const * szFullPath, CBookmarkInfo & rBM )
 {
-  WTL::CString keyFileKey= szFullPath;
+  WTL::CString keyFileKey = szFullPath;
   keyFileKey.Replace( '\\', '/' );
 
-  WTL::CString regPath( APP_REG_PATH );  
+  WTL::CString regPath( APP_REG_PATH );
   regPath += BOOKMARK_REG_KEY;
+  regPath += L"\\";
   regPath += keyFileKey;
 
   ATL::CRegKey reg;
@@ -193,6 +195,7 @@ void CBookmarkDlg::DoesAutoBMExistOnly( wchar_t const * szFullPath )
 
   WTL::CString regPath( APP_REG_PATH );  
   regPath += BOOKMARK_REG_KEY;
+  regPath += L"\\";
   regPath += keyFileKey;
 
   ATL::CRegKey reg;
