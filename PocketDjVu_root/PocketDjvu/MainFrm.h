@@ -155,11 +155,10 @@ private:
   void ScrollPagesHor( int & moveX );
   void ClearRedundantCache();
   void AddVisibleButNotLoaded();
-  bool OpenFile( LPCWSTR fullFileName, int pageIndex=0, WTL::CRect * pRect=0 );
+  bool OpenFile( LPCWSTR fullFileName, CBookmarkInfo bm );
   PagePtr Get1stVisiblePage();
   PagePtr GetCurrentPage( int * pIndex = 0 );  
-  void SetCurFileInMru( WTL::CString const & fullFileName, int pageIndex );
-  int GetPageIndFromMru( WTL::CString const & fileFullPath );
+  void SetCurFileInMru( WTL::CString const & fullFileName );
   void UpdateMruMenu();
   void RunTimerLong();
   void RunTimerShort();
@@ -242,19 +241,7 @@ private:
   int const m_maxHistL;
 
   // MRU
-  struct CMru
-  {
-    CMru() : m_pageNum() {}
-    void Clear()
-    {
-      m_curFillFileName.Empty();
-      m_pageNum = 0;
-    }
-
-    WTL::CString m_curFillFileName;
-    int m_pageNum;
-  };
-  CMru m_mru[ g_cMruNumber ];
+  WTL::CString  m_mru[ g_cMruNumber ];
   /// If true it means that something was changed in the settings and it worth to save.
   bool m_bDirty;
 
