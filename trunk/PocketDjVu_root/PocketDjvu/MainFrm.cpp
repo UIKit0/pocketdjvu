@@ -1037,6 +1037,17 @@ void CMainFrame::LoadSettings()
     if ( !m_appInfo.Restore( path, (LPCWSTR)file ) &&
          !path.IsEmpty() )
     {
+      bool bSkipAdding = false;
+      for ( int k=j; k>=0; --k )
+      {
+        if ( !path.CompareNoCase( m_mru[ k ] ) )
+        {
+          bSkipAdding = true;
+          break;
+        }
+      }
+      if ( bSkipAdding )
+        continue;
       HANDLE h = ::CreateFile( path,
                                GENERIC_READ,
                                FILE_SHARE_READ,
@@ -1049,7 +1060,7 @@ void CMainFrame::LoadSettings()
         continue;
       }
       ::CloseHandle( h );
-
+      
       m_mru[ j ] = path;
       ++j;
     }
