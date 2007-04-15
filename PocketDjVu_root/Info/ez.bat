@@ -12,4 +12,4 @@
 %EI% .\AppMgr.ini /sec PocketDjVu /key DeviceFile /val %TargetName%.exe
 %EI% .\AppMgr.ini /sec PocketDjVu /key CabFiles   /val %TargetName%.ARM.CAB
 
-%EZ% -l english -i AppMgr.ini -r %FromPath%readme.txt -e %FromPath%eula.txt -o PocketDjVu_Setup.exe
+%EZ% -l english -i AppMgr.ini -r %FromPath%readme.txt -e %FromPath%eula.txt -o %TargetName%_Setup.exe

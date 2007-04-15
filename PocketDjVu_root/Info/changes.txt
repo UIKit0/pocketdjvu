@@ -17,9 +17,8 @@ v.0.9.5
 # - If page was really empty (0 bytes image size) the error was arisen: "Not enought RAM...".
 + - Bookmark dialog was implemented.
 * - "Most Recently Used" menu is based on "AutoSave" bookmark. 
-    NB: The page information from MRU of previous PocketDjVu versions is not preserved!
-        Please do it manually
-+ - "Tile" mode (in progress)...
+    NB: The last page read information from MRU of previous PocketDjVu versions is not preserved!
+        Please, do it manually before use new version.
 
 v.0.9.4
 =================
