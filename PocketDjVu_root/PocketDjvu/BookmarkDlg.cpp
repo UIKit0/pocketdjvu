@@ -6,6 +6,8 @@
 #include "./BookmarkDlg.h"
 #include "./misc.h"
 
+UINT CBookmarkDlg::m_BookmarkDlgMsg = ::RegisterWindowMessage( L"730ABCF1-492F-49f7-A11A-9C3A143E47CB" );
+
 CBookmarkDlg::CBookmarkDlg( wchar_t const * szFullPathName, CBookmarkInfo const & bookmarkInfo ) :
   m_szCurFullPathName(szFullPathName)
   , m_curBookmarkInfo(bookmarkInfo)
@@ -490,12 +492,29 @@ LRESULT CBookmarkDlg::OnTvnEndLabelEditTree(int /*idCtrl*/, LPNMHDR pNMHDR, BOOL
   }
   p->SetName( pTVDispInfo->item.pszText );
 
-  parent.SortChildren();
-  it.EnsureVisible();
+  PostMessage( m_BookmarkDlgMsg, MSG_SORTandSHOW, LPARAM(it.m_hTreeItem) );  
 
   m_sBookmarkName = pTVDispInfo->item.pszText;
   DoDataExchange( FALSE, IDC_BOOKMARK_NAME );
   m_bNotSaved = true;
 
   return TRUE;
+}
+
+LRESULT CBookmarkDlg::OnBookmarkDlgMsg(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+  switch ( wParam ) 
+  {
+    case MSG_SORTandSHOW:
+    {
+      WTL::CTreeItem it( HTREEITEM(lParam), &m_tree );
+      WTL::CTreeItem parent = it.GetParent();
+      if ( !parent.IsNull() )
+      {
+        parent.SortChildren();
+        it.EnsureVisible();
+      }
+    }
+  }
+  return 0;
 }

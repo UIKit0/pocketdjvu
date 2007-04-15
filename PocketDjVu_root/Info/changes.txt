@@ -7,13 +7,18 @@ v.0.9.5
 =================
 + - The WTL 8.0.7070 was used.
 + - Tooltips for toolbar buttons were added.
-+ - Toolbar was extended to show current/total pages and for support browsing history navigation.
-+ - Browsing history feature was implemented.
-+ - The installators as standalone exe-file as well as cab-file were implemented.
-# - If page was empty (0 bytes amount) the error was arisen: "Not enought RAM...".
++ - Toolbar was extended to show current/total pages and for support browsing history
+    navigation.
++ - Browsing history feature was implemented:
+      + the tap on arrow toolbar buttons means "Back" or "Forward" commands;
+      + the tap in extending toolbar zone means history menu invocation;
+      + the long pressing means "GoTo Page" dialog invocation.
++ - The standalone exe-file installer as well as cab-file were implemented.
+# - If page was really empty (0 bytes image size) the error was arisen: "Not enought RAM...".
 + - Bookmark dialog was implemented.
 * - "Most Recently Used" menu is based on "AutoSave" bookmark. 
-    NB: The page information from MRU of previous version is not preserved!
+    NB: The page information from MRU of previous PocketDjVu versions is not preserved!
+        Please do it manually
 + - "Tile" mode (in progress)...
 
 v.0.9.4

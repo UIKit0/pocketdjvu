@@ -105,7 +105,7 @@ END
 
 IDR_MENU_SAVE_GOTO MENU 
 BEGIN
-    MENUITEM "Bookmark",                    ID_GOTOBOOKMARK, GRAYED
+    MENUITEM "Load",                       ID_GOTOBOOKMARK, GRAYED
     MENUITEM "Cancel",                      IDCANCEL
 END
 
@@ -336,7 +336,7 @@ BEGIN
             VALUE "OriginalFilename", "PocketDjvu.exe"
             VALUE "ProductName", "PocketDjvu Module"
             VALUE "ProductVersion", "0, 9, 5, 0"
-            VALUE "SpecialBuild", "005"
+            VALUE "SpecialBuild", "070415"
         END
     END
     BLOCK "VarFileInfo"
