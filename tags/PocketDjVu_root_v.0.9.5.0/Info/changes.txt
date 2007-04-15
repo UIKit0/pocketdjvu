@@ -1,0 +1,59 @@
++  - new
+-  - deleted
+*  - modified
+#  - fixed
+
+v.0.9.5
+=================
++ - The WTL 8.0.7070 was used.
++ - Tooltips for toolbar buttons were added.
++ - Toolbar was extended to show current/total pages and for support browsing history
+    navigation.
++ - Browsing history feature was implemented:
+      + the tap on arrow toolbar buttons means "Back" or "Forward" commands;
+      + the tap in extending toolbar zone means history menu invocation;
+      + the long pressing means "GoTo Page" dialog invocation.
++ - The standalone exe-file installer as well as cab-file were implemented.
+# - If page was really empty (0 bytes image size) the error was arisen: "Not enought RAM...".
++ - Bookmark dialog was implemented.
+* - "Most Recently Used" menu is based on "AutoSave" bookmark. 
+    NB: The last page read information from MRU of previous PocketDjVu versions is not preserved!
+        Please, do it manually before use new version.
+
+v.0.9.4
+=================
+# - Non English characters in the file names are now supported.
+# - The "gray background" problem (i.e. no enough RAM for too large zoom factor) was fixed.
++ - The "WM notification" showing possibility is implemented (e.g. for too large zoom factor).
++ - The hyperlink to PocketDjVu homepage was added to About dialog box.
++ - Significantly reduced the amount of necessary RAM for loading and drawing of page images.
++ - The new toolbar icons were added.
++ - The RSS feed was created (http://pocketdjvu.googlecode.com/svn/trunk/PocketDjVu_root/Info/Releases-feed.xml).
++ - Virtual Memory (VM) manager was created and used.
++ - VM settings dialog is implemented.
+
+v.0.9.3
+=================
+# - the checking was added: if file from "recent used files" list still exists.
+    If not it's removed from the list.
++ - "Scroll by tap zones" command was added. 
+    There are 4 tap zones for scrolling and 1 central zone which works as usually(for context menu, etc.).
++ - "Move by stylus" command was added. The double click ends this mode.
+* - some menu commands and buttons are disabled without open file.
++ - double click toggle fullscreen mode.
+# - during up scrolling the page placement was corrected for pages which have different size.
+
+v.0.9.2
+=================
+# the filling of "Recent files" menu was broken in 0.9.1 version.
+* the binaries were rebuilt with WTL 8.0.6356
+
+v.0.9.1
+=================
++ this file was added.
++ the command "Fullscreen" was added to menu.
+* not implemented menu commands were grayed.
+
+v.0.9
+=================
++ The project was added to Google Code site.

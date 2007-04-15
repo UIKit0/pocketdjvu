@@ -1,0 +1,51 @@
+[Version]
+Signature = "$Windows NT$"
+Provider = "Igor Solovyov."
+CESignature = "$Windows CE$"
+
+[CEStrings]
+AppName = "PocketDjVu"
+; %CE1%  	Program Files
+InstallDir = %CE1%\%AppName%
+
+[Strings]
+; NB: Change only this line for particular exe-name
+ExeName = PocketDjVu.exe
+
+[CEDevice]
+UnsupportedPlatforms = "HPC","Jupiter"
+VersionMin=3.0
+VersionMax=6.99
+BuildMax=0xE0000000
+
+[CEDevice.ARM]
+ProcessorType = 2577
+
+[SourceDisksNames]
+1 = ,"Exe-files",,
+
+[SourceDisksFiles]
+%ExeName% = 1
+
+[DefaultInstall]
+CopyFiles = Files.App
+CEShortcuts = Shortcuts
+AddReg = AddReg
+;CESetupDLL = custom_setup.dll
+
+[AddReg]
+HKCR, ".djvu",, 0x00000000, "djvufile"
+HKCR, "djvufile\DefaultIcon",, 0x00000000, "%InstallDir%\%ExeName%,0"
+HKCR, "djvufile\shell\Open\Command",, 0x00000000, """%InstallDir%\%ExeName%"" %%1"
+
+[DestinationDirs]
+Files.App = 0,%InstallDir%
+; %CE11%  	Windows\Start Menu\Programs
+Shortcuts = 0,%CE11%
+DefaultDestDir = 0,%InstallDir%
+
+[Files.App]
+%ExeName%
+
+[Shortcuts]
+"PocketDjVu",0,%ExeName%
