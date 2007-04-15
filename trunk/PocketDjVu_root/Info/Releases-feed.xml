@@ -4,8 +4,8 @@
         <title>PocketDjVu updates notification.</title>
         <description>If you want to keep up to date PocketDjVu installed on your handheld PC you could subscribe on this feed.</description>
         <link>http://Igor.Solovyov.googlepages.com</link>
-        <lastBuildDate>Mon, 13 Feb 2007 14:43:20 +0200</lastBuildDate>
-        <pubDate>Mon, 13 Feb 2007 14:43:20 +0200</pubDate>
+        <lastBuildDate>Sun, 15 Apr 2007 21:46:50 +0200</lastBuildDate>
+        <pubDate>Sun, 15 Apr 2007 21:46:50 +0200</pubDate>
         <generator>Hand made :-) (see http://blogs.law.harvard.edu/tech/rss)</generator>
       
         <image>
@@ -14,7 +14,23 @@
             <link>http://Igor.Solovyov.googlepages.com</link>
             <description>PocketDjVu updates notification.</description>          
         </image>
-      
+
+      <item>
+        <title>The PocketDjVu 0.9.5.0 is released.</title>
+        <link>http://code.google.com/p/pocketdjvu/downloads/list</link>
+        <guid isPermaLink="false">{3911EBC8-10FB-4c7c-B942-FDD1E1A29F57}</guid>
+        <pubDate>Sun, 15 Apr 2007 21:46:50</pubDate>
+        <description>
+          The changes made in 0.9.5.0 version you can find
+          <![CDATA[          
+          <a href="http://pocketdjvu.googlecode.com/svn/tags/PocketDjVu_root_v.0.9.5.0/Info/changes.txt">here</a>
+          ]]>
+          Note! From now "Most Recently Used" menu is based on "AutoSave" bookmark.
+          NB: The last page read information from MRU of previous PocketDjVu versions is not preserved!
+          Please, do it manually before use new version.
+        </description>
+      </item>
+
       <item>
         <title>The PocketDjVu 0.9.4.0 is released.</title>
         <link>http://code.google.com/p/pocketdjvu/downloads/list</link>
