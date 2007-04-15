@@ -381,10 +381,10 @@ void CMainFrame::UpdateHistory( PagePtr p1sVisPg )
   {
     return;
   }
-    
+
   CBookmarkInfo bi( p1sVisPg->GetPageIndex(), p1sVisPg->GetRect() );
   int inc = m_history.empty() || m_history[ m_histCurInd ].m_pageIndex == bi.m_pageIndex
-            ? 0 : 1; // update (rect, etc.) or insert new history item.
+            ? 0 : 1; // update bookmark only or insert new history item.
   
   m_histCurInd = (m_histCurInd + inc) % m_maxHistL;
   if ( int(m_history.size()) <= m_histCurInd )
@@ -415,7 +415,6 @@ void CMainFrame::AppSave()
   {
     bm.m_pageIndex = p1sVis->GetPageIndex();
     bm.m_pageRect  = p1sVis->GetRect();
-    // TODO: bm.m_bPortrait = ;
   }
   
   m_tb.SetPages( bm.m_pageIndex + 1, m_pDjVuDoc->get_pages_num() );
@@ -430,8 +429,7 @@ void CMainFrame::AppSave()
     ++j;
     WTL::CString file;
     file.Format( L"MRU_file_%d", j );
-  
-    CBookmarkDlg::DoesAutoBMExistOnly( m_mru[ i ] );
+      
     m_appInfo.Save( m_mru[ i ], (LPCWSTR)file );
   }
   
@@ -482,6 +480,7 @@ LRESULT CMainFrame::OnFileOpen(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
 
 bool CMainFrame::AppNewInstance( LPCTSTR lpstrCmdLine )
 {
+
   CBookmarkInfo bm;
   CBookmarkDlg::LoadAutoBM( lpstrCmdLine, bm );
   return OpenFile( lpstrCmdLine, bm );
@@ -1047,7 +1046,10 @@ void CMainFrame::LoadSettings()
         }
       }
       if ( bSkipAdding )
+      {
+        DeleteMRURegVal( i );
         continue;
+      }
       HANDLE h = ::CreateFile( path,
                                GENERIC_READ,
                                FILE_SHARE_READ,
@@ -1057,6 +1059,7 @@ void CMainFrame::LoadSettings()
                                0 );
       if ( INVALID_HANDLE_VALUE == h )
       {
+        DeleteMRURegVal( i );
         continue;
       }
       ::CloseHandle( h );
@@ -1097,12 +1100,21 @@ void CMainFrame::SetCurFileInMru( WTL::CString const & fullFileName )
     }
   }
 
-  for ( int i=g_cMruNumber-1; i>0; --i )
+  int lastInd = g_cMruNumber-1;
+  CBookmarkDlg::DoesAutoBMExistOnly( m_mru[ lastInd ] );
+  for ( int i=lastInd; i>0; --i )
   {
     m_mru[ i ] = m_mru[ i-1 ];
-  }
-  
+  }  
   m_mru[ 0 ] = fullFileName;
+}
+
+void CMainFrame::DeleteMRURegVal( int index )
+{
+  CBookmarkDlg::DoesAutoBMExistOnly( m_mru[ index ] );
+  WTL::CString file;
+  file.Format( L"MRU_file_%d", index );
+  m_appInfo.Delete( ATL::_U_STRINGorID(file) );
 }
 
 void CMainFrame::UpdateMruMenu()
@@ -1177,7 +1189,9 @@ LRESULT CMainFrame::OnMru( WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOO
     Invalidate();
   }
   else
-  {    
+  {
+    DeleteMRURegVal( i );
+
     for ( unsigned j=i+1; j<g_cMruNumber; ++j )
     {
       m_mru[ j-1 ] = m_mru[ j ];
@@ -1508,7 +1522,7 @@ LRESULT CMainFrame::OnBookmark( WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
     }
   }
   
-  CBookmarkInfo bi( visPgInd, r /* TODO: , m_bPortrait */ );
+  CBookmarkInfo bi( visPgInd, r );
   CBookmarkDlg dlg( m_pDjVuDoc ? m_mru[ 0 ] : (wchar_t const * )0, bi );
   if ( ID_GOTOBOOKMARK != dlg.DoModal() )
     return 0;

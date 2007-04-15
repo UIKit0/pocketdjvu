@@ -1,10 +1,13 @@
 #pragma once
-
+//------------------------------------------------------------------------------
 WTL::CString GetModuleVersionStr( HMODULE hModule );
-
-void ShowNotification( HWND hwndSink, wchar_t const * szCaption, wchar_t const * szBodytext );
+//------------------------------------------------------------------------------
+void ShowNotification( HWND hwndSink,
+                       wchar_t const * szCaption,
+                       wchar_t const * szBodytext );
+//------------------------------------------------------------------------------
 void NotificationRemove();
-
+//------------------------------------------------------------------------------
 template <typename T, typename _XData>
 inline void NotifyDataValidateError( HWND hwnd, UINT nCtrlID, BOOL bSave, _XData & data )
 {
@@ -37,11 +40,25 @@ inline void NotifyDataValidateError( HWND hwnd, UINT nCtrlID, BOOL bSave, _XData
   wrn.LoadString( IDS_WARNING );
   ShowNotification( hwnd, wrn, msg );
 }
-
+//------------------------------------------------------------------------------
 HWND CreateDlgMenuBar( UINT nToolBarId, HWND hWndParent );
-
+//------------------------------------------------------------------------------
 HWND FindChildWndByClassName( HWND hWndParent, 
                               wchar_t const * pClassName,
                               bool bShallow=true );
-
+//------------------------------------------------------------------------------
 bool IsVGA();
+//------------------------------------------------------------------------------
+bool IsPortrait();
+//------------------------------------------------------------------------------
+template <typename T>
+inline int Round( T val )
+{
+  if ( val >= 0 )
+  {
+    return int( val + (T)0.5 );
+  }
+
+  return int( val - (T)0.5 );
+}
+//------------------------------------------------------------------------------

@@ -160,6 +160,7 @@ private:
   PagePtr GetCurrentPage( int * pIndex = 0 );  
   void SetCurFileInMru( WTL::CString const & fullFileName );
   void UpdateMruMenu();
+  void DeleteMRURegVal( int index );
   void RunTimerLong();
   void RunTimerShort();
   void StopTimer();
@@ -188,17 +189,7 @@ private:
       SetChainEntry( 0, m_pCtrl.GetPtr() );
       UISetCheck(ID, true);
     }
-  }
-
-  int Round( double val )
-  {
-    if ( val >= 0 )
-    {
-      return int( val + 0.5 );
-    }
-
-    return int( val - 0.5 );
-  }
+  }  
 
   class CFullScrnOnOff
   {
