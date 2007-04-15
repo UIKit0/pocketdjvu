@@ -190,6 +190,11 @@ bool CBookmarkDlg::LoadAutoBM( wchar_t const * szFullPath, CBookmarkInfo & rBM )
 
 void CBookmarkDlg::DoesAutoBMExistOnly( wchar_t const * szFullPath )
 {
+  if ( !szFullPath || !szFullPath[0] )
+  {
+    return;
+  }
+
   WTL::CString keyFileKey= szFullPath;
   keyFileKey.Replace( '\\', '/' );
 
@@ -222,7 +227,9 @@ void CBookmarkDlg::DoesAutoBMExistOnly( wchar_t const * szFullPath )
   }
   reg.Close();
 
-  reg.Open( HKEY_CURRENT_USER, BOOKMARK_REG_KEY );
+  regPath = APP_REG_PATH;
+  regPath += BOOKMARK_REG_KEY;
+  reg.Open( HKEY_CURRENT_USER, regPath );
   if ( !reg )
   {
     return;
@@ -482,7 +489,10 @@ LRESULT CBookmarkDlg::OnTvnEndLabelEditTree(int /*idCtrl*/, LPNMHDR pNMHDR, BOOL
     return FALSE; // reject the edited text and revert to the original label
   }
   p->SetName( pTVDispInfo->item.pszText );
-  
+
+  parent.SortChildren();
+  it.EnsureVisible();
+
   m_sBookmarkName = pTVDispInfo->item.pszText;
   DoDataExchange( FALSE, IDC_BOOKMARK_NAME );
   m_bNotSaved = true;

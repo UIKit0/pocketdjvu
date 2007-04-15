@@ -5,6 +5,7 @@
 #include "resource.h"
 #include "./misc.h"
 
+//------------------------------------------------------------------------------
 WTL::CString GetModuleVersionStr( HMODULE hModule )
 {
   wchar_t fname[ MAX_PATH ];
@@ -60,8 +61,10 @@ void NotificationRemove()
 {
   SHNotificationRemove( &notifyGUID, ID_NOFIFY_1 );
 }
-
-void ShowNotification( HWND hwndSink, wchar_t const * szCaption, wchar_t const * szBodytext )
+//------------------------------------------------------------------------------
+void ShowNotification( HWND hwndSink, 
+                       wchar_t const * szCaption,
+                       wchar_t const * szBodytext )
 {
   SHNOTIFICATIONDATA sn  = {0};
 
@@ -99,8 +102,7 @@ void ShowNotification( HWND hwndSink, wchar_t const * szCaption, wchar_t const *
 
   SHNotificationAdd( &sn );
 }
-
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 HWND CreateDlgMenuBar( UINT nToolBarId, HWND hWndParent )
 {
   ATLASSERT( hWndParent );
@@ -118,8 +120,7 @@ HWND CreateDlgMenuBar( UINT nToolBarId, HWND hWndParent )
   }
   return mbi.hwndMB;
 }
-
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 static HWND FindChildWndByClassNameImp( size_t clL,
                                         HWND hWndParent, 
                                         wchar_t const * pClassName,
@@ -182,7 +183,7 @@ static HWND FindChildWndByClassNameImp( size_t clL,
 
   return 0;
 }
-
+//------------------------------------------------------------------------------
 HWND FindChildWndByClassName( HWND hWndParent, wchar_t const * pClassName, bool bShallow )
 {
   // +1 - if some window class has the name with the same leading characters as passed in the pClassName
@@ -190,9 +191,28 @@ HWND FindChildWndByClassName( HWND hWndParent, wchar_t const * pClassName, bool 
   size_t clL = wcslen(pClassName) + 1 + 1; // +1 - Zero terminal
   return FindChildWndByClassNameImp( clL, hWndParent, pClassName, bShallow );
 }
-
+//------------------------------------------------------------------------------
 bool IsVGA()
 {
   bool bVGA = max( GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN) ) > 320;
   return bVGA;
+}
+//------------------------------------------------------------------------------
+bool IsPortrait()
+{
+  DEVMODE devmode = {0};
+  devmode.dmSize = sizeof devmode;
+  devmode.dmFields = DM_DISPLAYORIENTATION;
+  if ( DISP_CHANGE_SUCCESSFUL != ChangeDisplaySettingsEx( NULL, &devmode, NULL, CDS_TEST, NULL ) )
+  {
+    return true;
+  }
+
+  switch ( devmode.dmDisplayOrientation )
+  {
+  case DMDO_0:
+  case DMDO_180:
+    return true;
+  }
+  return false;
 }
