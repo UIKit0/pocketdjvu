@@ -86,9 +86,7 @@ public:
 private:
   void CheckPortrait()
   {
-    m_bPortrait = !m_bPortrait;
-    double k = 1.;
-    k = double(GetSystemMetrics(SM_CXSCREEN)) / GetSystemMetrics(SM_CYSCREEN);
+    double k = double(GetSystemMetrics(SM_CXSCREEN)) / GetSystemMetrics(SM_CYSCREEN);
     m_pageRect.left   = Round( k * m_pageRect.left );
     m_pageRect.top    = Round( k * m_pageRect.top );
     m_pageRect.right  = Round( k * m_pageRect.right );

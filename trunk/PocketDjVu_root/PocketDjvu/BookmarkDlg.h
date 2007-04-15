@@ -64,7 +64,8 @@ BEGIN_MSG_MAP(CBookmarkDlg)
   NOTIFY_HANDLER(IDC_TREE, TVN_SELCHANGED, OnTvnSelchangedTree)
   NOTIFY_HANDLER(IDC_TREE, NM_DBLCLK, OnDblclkTree)
   NOTIFY_HANDLER(IDC_TREE, TVN_BEGINLABELEDIT, OnTvnBeginLabelEditTree)
-  NOTIFY_HANDLER(IDC_TREE, TVN_ENDLABELEDIT, OnTvnEndLabelEditTree)  
+  NOTIFY_HANDLER(IDC_TREE, TVN_ENDLABELEDIT, OnTvnEndLabelEditTree)
+  MESSAGE_HANDLER(m_BookmarkDlgMsg,OnBookmarkDlgMsg)
   CHAIN_MSG_MAP(Base)
 END_MSG_MAP()
 
@@ -81,10 +82,11 @@ END_MSG_MAP()
   LRESULT OnWininiChange( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled );
   LRESULT OnBtnAdd( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled );
   LRESULT OnBtnDel( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled );
-  LRESULT OnTvnSelchangedTree(int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& /*bHandled*/);
-  LRESULT OnDblclkTree(int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& /*bHandled*/);
-  LRESULT OnTvnBeginLabelEditTree(int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& /*bHandled*/);
-  LRESULT OnTvnEndLabelEditTree(int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& /*bHandled*/);
+  LRESULT OnTvnSelchangedTree(int idCtrl, LPNMHDR pNMHDR, BOOL& bHandled);
+  LRESULT OnDblclkTree(int idCtrl, LPNMHDR pNMHDR, BOOL& bHandled);
+  LRESULT OnTvnBeginLabelEditTree(int idCtrl, LPNMHDR pNMHDR, BOOL& bHandled);
+  LRESULT OnTvnEndLabelEditTree(int idCtrl, LPNMHDR pNMHDR, BOOL& bHandled);
+  LRESULT OnBookmarkDlgMsg(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
 private:
 // TYPES:
@@ -143,4 +145,7 @@ private:
   WTL::CString m_sBookmarkName;
   
   BMPtr m_pGoToBM;
+
+  enum { MSG_NOTHING, MSG_SORTandSHOW };
+  static UINT m_BookmarkDlgMsg;
 };
