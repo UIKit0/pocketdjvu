@@ -3,6 +3,10 @@
 *  - modified
 #  - fixed
 
+v.0.9.6
+=================
++ - "Tile" mode (in progress)...
+
 v.0.9.5
 =================
 + - The WTL 8.0.7070 was used.
