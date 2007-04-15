@@ -8,7 +8,7 @@ SOFTWARE PRODUCT LICENSE
 
 1. GRANT OF LICENSE. This EULA grants you the following rights:
 
-· Igor Solovyov grants to you as an individual, a personal, nonexclusive license to make and use amy number of copies of the SOFTWARE PRODUCT. You may install copies of the SOFTWARE PRODUCT on an unlimited number of computers provided that you are the only individual using the SOFTWARE PRODUCT.
+· Igor Solovyov grants you as an individual, a personal, nonexclusive license to make and use any number of copies of the SOFTWARE PRODUCT. You may install copies of the SOFTWARE PRODUCT on an unlimited number of computers provided that you are the only individual using the SOFTWARE PRODUCT.
 
 
 
@@ -20,6 +20,6 @@ SOFTWARE PRODUCT LICENSE
 
 
 
-NO WARRANTY. THE SOFTWARE PRODUCT IS PROVIDED "AS-IS", WITHOUT WARRANTY OF ANY KIND, AND ANY USE OF THE SOFTWARE PRODUCT IS AT YOUR OWN RISK. To the maximum extent permitted by applicable law, Igor Solovyov disclaim all warranties AND CONDITIONS, either express or implied, including, but not limited to, implied warranties AND CONDITIONS of merchantability, fitness for a particular purpose, TITLE, AND NON-INFRINGEMENT, with regard to the SOFTWARE PRODUCT.
+NO WARRANTY. THE SOFTWARE PRODUCT IS PROVIDED "AS-IS", WITHOUT WARRANTY OF ANY KIND, AND ANY USE OF THE SOFTWARE PRODUCT IS AT YOUR OWN RISK. To the maximum extent permitted by applicable law, Igor Solovyov disclaims all warranties AND CONDITIONS, either express or implied, including, but not limited to, implied warranties AND CONDITIONS of merchantability, fitness for a particular purpose, TITLE, AND NON-INFRINGEMENT, with regard to the SOFTWARE PRODUCT.
 
 NO LIABILITY FOR CONSEQUENTIAL DAMAGES. To the maximum extent permitted by applicable law, in no event shall Igor Solovyov be liable for any special, incidental, indirect, or consequential damages whatsoever (including, without limitation, damages for loss of business profits, business interruption, loss of business information, or any other pecuniary loss) arising out of the use of or inability to use the software product, even if Igor Solovyov has been advised of the possibility of such damages. 
