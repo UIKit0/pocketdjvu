@@ -618,12 +618,22 @@ void CMainFrame::DoPaint( WTL::CDCHandle dc )
 
   for ( Pages::iterator i=m_Pages.begin(); i!=m_Pages.end(); ++i )
   {
+    WTL::CRect r = (*i)->GetRect();
     // this checking reduces accesses to bitmaps potentially stored in the swap file.
-    if ( !IsVisible( (*i)->GetRect() ) )
+    if ( !IsVisible( r ) )
     {
       continue;
     }
     (*i)->Draw( dc );
+    
+    // TODO: check if the r.Width > ScreenWidth
+    ::SetWindowOrgEx( dc, r.Width() + g_cBetweenPageGap, 0, NULL );
+    (*i)->Draw( dc );
+
+    ::SetWindowOrgEx( dc, -r.Width() - g_cBetweenPageGap, 0, NULL );
+    (*i)->Draw( dc );
+
+    ::SetWindowOrgEx( dc, 0, 0, NULL );
   }
 }
 
