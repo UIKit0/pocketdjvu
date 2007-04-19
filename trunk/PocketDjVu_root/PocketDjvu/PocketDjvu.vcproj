@@ -54,6 +54,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
+				AdditionalOptions="/QRxscale"
 				Optimization="0"
 				PreprocessorDefinitions="_WIN32_WCE=$(CEVER);UNDER_CE=$(CEVER);WINCE;_DEBUG;$(PLATFORMDEFINES);$(ARCHFAM);$(_ARCHFAM_);_UNICODE;_WINDOWS;HAS_WCHAR=1;HAS_MBSTATE=1;HAVE_NAMESPACES;_ATL_NO_AUTOMATIC_NAMESPACE;_WTL_NO_AUTOMATIC_NAMESPACE"
 				StringPooling="true"
@@ -153,6 +154,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
+				AdditionalOptions="/QRxscale"
 				Optimization="0"
 				PreprocessorDefinitions="_WIN32_WCE=$(CEVER);UNDER_CE=$(CEVER);WINCE;_DEBUG;$(PLATFORMDEFINES);$(ARCHFAM);$(_ARCHFAM_);_UNICODE;_WINDOWS;HAS_WCHAR=1;HAS_MBSTATE=1;HAVE_NAMESPACES"
 				StringPooling="true"
