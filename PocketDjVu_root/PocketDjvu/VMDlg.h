@@ -81,5 +81,5 @@ private:
 
   CRegStorage         m_storage;
   WTL::CTrackBarCtrl  m_LevelSlider;
-  WTL::CUpDownCtrl    m_spin;  
+  WTL::CUpDownCtrl    m_spin;
 };

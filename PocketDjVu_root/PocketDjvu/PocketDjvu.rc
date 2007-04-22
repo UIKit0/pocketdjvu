@@ -227,6 +227,22 @@ BEGIN
     EDITTEXT        IDC_EDIT4,2,55,141,12,ES_AUTOHSCROLL | NOT WS_VISIBLE
 END
 
+IDD_BROWSE DIALOG  0, 0, 186, 125
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Browse"
+FONT 8, "Microsoft Sans Serif"
+BEGIN
+    LTEXT           "Browse mode:",IDC_BROWSE_MODE_LAB,2,4,46,8
+    COMBOBOX        IDC_BROWSE_MODE_COMBO,56,2,128,68,CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    CTEXT           "Scrolling parameters",IDC_SCROLL_GRP,2,17,182,10,0,WS_EX_STATICEDGE
+    LTEXT           "Vertical %:",IDC_VERT_SCROLL_LAB,2,33,34,8
+    EDITTEXT        IDC_VERT_SCROLL,56,30,115,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_VERT_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS,174,30,10,12
+    LTEXT           "Horizontal %:",IDC_HOR_SCROLL_LAB,2,46,42,8
+    EDITTEXT        IDC_HOR_SCROLL,56,44,115,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_HOR_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS,174,44,10,12
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -279,6 +295,15 @@ BEGIN
         TOPMARGIN, 2
         BOTTOMMARGIN, 88
     END
+
+    IDD_BROWSE, DIALOG
+    BEGIN
+        LEFTMARGIN, 2
+        RIGHTMARGIN, 184
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 123
+        HORZGUIDE, 107
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -312,8 +337,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,9,5,1
- PRODUCTVERSION 0,9,5,1
+ FILEVERSION 0,9,6,0
+ PRODUCTVERSION 0,9,6,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x21L
@@ -330,13 +355,13 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Igor Solovyov"
             VALUE "FileDescription", "PocketDjvu Module"
-            VALUE "FileVersion", "0, 9, 5, 1"
+            VALUE "FileVersion", "0, 9, 6, 0"
             VALUE "InternalName", "PocketDjvu"
             VALUE "LegalCopyright", "Copyright © 2007, Igor Solovyov"
             VALUE "OriginalFilename", "PocketDjvu.exe"
             VALUE "ProductName", "PocketDjvu Module"
-            VALUE "ProductVersion", "0, 9, 5, 1"
-            VALUE "SpecialBuild", "070416"
+            VALUE "ProductVersion", "0, 9, 6, 0"
+            VALUE "SpecialBuild", "070423"
         END
     END
     BLOCK "VarFileInfo"
@@ -360,6 +385,21 @@ BEGIN
     BUTTON      ID_ZOOM_ZOOMBYRECT
     BUTTON      ID_MOVE_BY_STYLUS
     BUTTON      ID_SCROLL_BY_TAP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_BROWSE DLGINIT
+BEGIN
+    IDC_BROWSE_MODE_COMBO, 0x403, 13, 0
+0x6544, 0x6166, 0x6c75, 0x2074, 0x6f6d, 0x6564, "\000" 
+    IDC_BROWSE_MODE_COMBO, 0x403, 12, 0
+0x6150, 0x7272, 0x746f, 0x6d20, 0x646f, 0x0065, 
+    0
 END
 
 

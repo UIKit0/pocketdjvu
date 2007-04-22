@@ -2,6 +2,7 @@
 
 static wchar_t const * APP_REG_PATH    = L"Software\\landi-soft.com\\PocketDjVu";
 static wchar_t const * APP_REG_PATH_VM = L"Software\\landi-soft.com\\PocketDjVu\\VM\\";
+static wchar_t const * APP_REG_PATH_BROWSE = L"Software\\landi-soft.com\\PocketDjVu\\Browse\\";
 
 const float     g_cEps = 1.e-5;
 const int       g_cBetweenPageGap = 4;
@@ -9,8 +10,8 @@ const float     g_cZoomK = 0.125f;
 const float     g_cZoomMaxK = 5.f;
 const float     g_cZoomMinK = .3f;
 const int       g_cMinZoomRect = 16;
-const int       g_cPageScrollKPercent = 90;
-const int       g_cHorizPanaramPercents = 80;
+const int       g_cPageScrollVertPercent = 90;
+const int       g_cPageScrollHorPercent = 80;
 const int       g_cMruNumber = ID_FILE_MRU_LAST - ID_FILE_MRU_FIRST;
 const int       g_cLongScrollTimeout = 1100;  // msec
 const int       g_cShortScrollTimeout = 20;  // msec

@@ -329,7 +329,7 @@ void CMainFrame::OnPageUpDn( bool bDown, bool bByPage )
   int dy = 0;
   if ( bByPage )
   {
-    dy = rc.Height() * g_cPageScrollKPercent / 100;
+    dy = rc.Height() * g_cPageScrollVertPercent / 100;
   }
   else
   {
@@ -355,7 +355,7 @@ void CMainFrame::OnPageLeftRight( bool toRight, bool bByPage )
   if ( bByPage )
   {
     dX = clientRect.Width();
-    dX = dX * g_cHorizPanaramPercents / 100;
+    dX = dX * g_cPageScrollHorPercent / 100;
   }
   dX *= toRight ? 1 : -1;
 
@@ -819,20 +819,31 @@ void CMainFrame::ScrollPagesHor( int & moveX )
   if ( !moveX || m_Pages.empty() )
     return;
 
-  WTL::CRect r = (*m_Pages.begin())->GetRect();
-  if ( moveX < 0 )
+  WTL::CRect cr;
+  GetClientRect( &cr );
+
+  WTL::CRect const & r = (*m_Pages.begin())->GetRect();
+
+  if ( 0 )
   {
-    r.right += moveX;
-    if ( r.right <= 0 )
-      return;
+    if ( moveX < 0 )
+    {
+      int x = r.right + moveX;
+      if ( x <= 0 )
+        return;
+    }
+    else
+    {    
+      int x = r.left + moveX;
+      if ( x >= cr.right )
+        return;
+    }
   }
   else
   {
-    WTL::CRect cr;
-    GetClientRect( &cr );
-    r.left += moveX;
-    if ( r.left >= cr.right )
-      return;
+    int x = r.left + moveX;
+    x = x % r.Width();
+    moveX = x - r.left;
   }
 
   m_bDirty = true;
