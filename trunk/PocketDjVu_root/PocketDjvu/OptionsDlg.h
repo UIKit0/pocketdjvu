@@ -1,5 +1,6 @@
 #pragma once
 
+#include "./BrowseSettings.h"
 #include "./SIPState.h"
 #include "./TimingDlg.h"
 #include "./VMDlg.h"
@@ -27,7 +28,8 @@ END_MSG_MAP()
 
 // DATA:
 private:
-  CSIPState m_sip;
-  CVMDlg      m_VMPg;
-  CTimingDlg  m_TimingPg;
+  CSIPState       m_sip;
+  CBrowseSettings m_BrowsePg;
+  CVMDlg          m_VMPg;
+  CTimingDlg      m_TimingPg;
 };

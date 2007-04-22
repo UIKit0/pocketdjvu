@@ -1,3 +1,6 @@
+#pragma once
+#ifndef __RSETTINGS_H__
+#   define __RSETTINGS_H__
 /********************************************************************
 
 
@@ -496,3 +499,5 @@ public:
 		return dwResult;
 	}
 };
+
+#endif // __RSETTINGS_H__

@@ -460,6 +460,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\BrowseSettings.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\DjVuToolBar.cpp"
 				>
 			</File>
@@ -562,6 +566,10 @@
 			</File>
 			<File
 				RelativePath=".\BookmarkInfo.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BrowseSettings.h"
 				>
 			</File>
 			<File

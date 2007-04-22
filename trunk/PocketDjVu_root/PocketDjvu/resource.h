@@ -34,12 +34,15 @@
 #define IDB_BACK_VGA                    219
 #define IDR_                            220
 #define IDR_MENU_SAVE_GOTO              220
+#define IDD_BROWSE                      221
 #define IDC_PAGES                       1000
 #define IDC_EDIT1                       1002
 #define IDC_PG_NUM                      1002
 #define IDC_BOOKMARK_NAME               1002
 #define IDC_INFO                        1002
+#define IDC_VERT_SCROLL                 1002
 #define IDC_SPIN1                       1003
+#define IDC_HOR_SCROLL                  1003
 #define IDC_SIP1                        1007
 #define IDC_STATIC_CR                   1008
 #define IDC_STATIC_LIC                  1009
@@ -69,6 +72,14 @@
 #define IDC_ST2                         1031
 #define IDC_ST3                         1032
 #define IDC_TOTAL_PGS                   1033
+#define IDC_BROWSE_MODE_LAB             1034
+#define IDC_BROWSE_MODE_COMBO           1035
+#define IDC_SCROLL_GRP                  1036
+#define IDC_VERT_SCROLL_LAB             1037
+#define IDC_HOR_SCROLL_LAB              1038
+#define IDC_VERT_SPIN                   1039
+#define IDC_SPIN3                       1040
+#define IDC_HOR_SPIN                    1040
 #define ID_FILE_NEW_WINDOW              32771
 #define ID_TOOLS_OPTIONS                32772
 #define ID_NAVIGATE_ADDBOOKMARK         32775
@@ -99,9 +110,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        221
+#define _APS_NEXT_RESOURCE_VALUE        223
 #define _APS_NEXT_COMMAND_VALUE         32801
-#define _APS_NEXT_CONTROL_VALUE         1034
-#define _APS_NEXT_SYMED_VALUE           104
+#define _APS_NEXT_CONTROL_VALUE         1041
+#define _APS_NEXT_SYMED_VALUE           106
 #endif
 #endif
