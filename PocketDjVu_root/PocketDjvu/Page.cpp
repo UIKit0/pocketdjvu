@@ -22,7 +22,7 @@ bool CPage::LoadBmpSync()
   return true;
 }
 
-void CPage::Draw( WTL::CDCHandle dc )
+void CPage::Draw( WTL::CDCHandle dc, int dx, int dy )
 {
   if ( !m_pBmp )
   {
@@ -31,7 +31,7 @@ void CPage::Draw( WTL::CDCHandle dc )
   }
   void * pvBits =(char*)m_pBmp + sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD)*m_pBmp->bmiHeader.biClrUsed;
   int lines = dc.SetDIBitsToDevice(
-                m_rc.left, m_rc.top,
+                dx + m_rc.left, dy + m_rc.top,
                 m_rc.Width(), m_rc.Height(), 
                 0, 0, 
                 0, m_pBmp->bmiHeader.biHeight,
