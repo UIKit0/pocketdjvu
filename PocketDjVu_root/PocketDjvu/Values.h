@@ -65,6 +65,8 @@ public:
   };
 
 public:
+  static bool Init();
+
   enum BROWSE_MODE { CValues::DEF_MODE, CValues::PARROT_MODE };
   static BROWSE_MODE GetBrowseMode()
   {

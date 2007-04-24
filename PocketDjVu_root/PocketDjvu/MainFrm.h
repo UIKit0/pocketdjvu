@@ -153,6 +153,7 @@ private:
   bool IsVisible( WTL::CRect const & rect );
   void ScrollPagesVert( int & moveY );
   void ScrollPagesHor( int & moveX );
+  bool IsParrotMode();
   void ClearRedundantCache();
   void AddVisibleButNotLoaded();
   bool OpenFile( LPCWSTR fullFileName, CBookmarkInfo bm );
