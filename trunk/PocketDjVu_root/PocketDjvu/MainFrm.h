@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "../libdjvu/DjVuDocument.h"
-#include "./Constants.h"
+#include "./Values.h"
 #include "./Page.h"
 #include "./RectZoomCtrl.h"
 #include "./CNofyIcon.h"

@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 
-#include "Constants.h"
-#include "MoveByStylus.h"
+#include "./Values.h"
+#include "./MoveByStylus.h"
 
 LRESULT CMoveByStylus::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& bHandled )
 {

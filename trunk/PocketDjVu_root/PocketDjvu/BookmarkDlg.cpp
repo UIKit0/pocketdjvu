@@ -2,7 +2,7 @@
 
 #include "stdafx.h"
 
-#include "./Constants.h"
+#include "./Values.h"
 #include "./BookmarkDlg.h"
 #include "./misc.h"
 

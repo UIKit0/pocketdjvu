@@ -1,5 +1,7 @@
 #pragma once
 
+#include "./rsettings.h"
+
 static wchar_t const * APP_REG_PATH    = L"Software\\landi-soft.com\\PocketDjVu";
 static wchar_t const * APP_REG_PATH_VM = L"Software\\landi-soft.com\\PocketDjVu\\VM\\";
 static wchar_t const * APP_REG_PATH_BROWSE = L"Software\\landi-soft.com\\PocketDjVu\\Browse\\";
@@ -41,3 +43,44 @@ const int g_cHistoryLength = 11;
 
 static wchar_t const * BOOKMARK_REG_KEY       = L"\\Bookmarks";
 static wchar_t const * BOOKMARK_REG_AUTOSAVE  = L"AutoSave";
+
+class CBrowseSettings;
+//------------------------------------------------------------------------------
+class CValues
+{
+// TYPES:
+public:
+  class CRegBrowseValues : public CRegSettings
+  {
+  public:
+    DWORD browseMode;
+    DWORD pageScrollVertPercent;
+    DWORD pageScrollHorPercent;    
+
+    BEGIN_REG_MAP( CRegBrowseValues )
+      REG_ITEM( browseMode, CValues::DEF_MODE)
+      REG_ITEM( pageScrollVertPercent, g_cPageScrollVertPercent )
+      REG_ITEM( pageScrollHorPercent,  g_cPageScrollHorPercent )
+    END_REG_MAP()
+  };
+
+public:
+  enum BROWSE_MODE { CValues::DEF_MODE, CValues::PARROT_MODE };
+  static BROWSE_MODE GetBrowseMode()
+  {
+    return BROWSE_MODE(m_regBrowseValues.browseMode);
+  }
+  static unsigned GetPageScrollVertPercent()
+  {
+    return m_regBrowseValues.pageScrollVertPercent;
+  }
+  static unsigned GetPageScrollHorPercent()
+  {
+    return m_regBrowseValues.pageScrollHorPercent;
+  }
+
+  static void Assign( CRegBrowseValues const & set );
+
+private:
+  static CRegBrowseValues m_regBrowseValues;
+};

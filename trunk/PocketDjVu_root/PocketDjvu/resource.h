@@ -17,6 +17,9 @@
 #define IDS_TOTAL_PGS                   134
 #define IDS_TOO_LONG_TEXT_VALUE         135
 #define IDS_HIST_MENUITEM               136
+#define IDS_STRING_BR_DEF_MODE          137
+#define IDS_BR_DEF_MODE                 137
+#define IDS_BR_PARROT_MODE              138
 #define IDR_MFRTB                       202
 #define IDD_BOOKMARK                    204
 #define IDR_MENU_OKCANCEL               205
@@ -78,8 +81,8 @@
 #define IDC_VERT_SCROLL_LAB             1037
 #define IDC_HOR_SCROLL_LAB              1038
 #define IDC_VERT_SPIN                   1039
-#define IDC_SPIN3                       1040
 #define IDC_HOR_SPIN                    1040
+#define IDC_STATIC_LN1                  1041
 #define ID_FILE_NEW_WINDOW              32771
 #define ID_TOOLS_OPTIONS                32772
 #define ID_NAVIGATE_ADDBOOKMARK         32775
@@ -112,7 +115,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        223
 #define _APS_NEXT_COMMAND_VALUE         32801
-#define _APS_NEXT_CONTROL_VALUE         1041
+#define _APS_NEXT_CONTROL_VALUE         1042
 #define _APS_NEXT_SYMED_VALUE           106
 #endif
 #endif

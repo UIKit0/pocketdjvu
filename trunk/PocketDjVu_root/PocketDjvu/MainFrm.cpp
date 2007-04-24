@@ -329,7 +329,7 @@ void CMainFrame::OnPageUpDn( bool bDown, bool bByPage )
   int dy = 0;
   if ( bByPage )
   {
-    dy = rc.Height() * g_cPageScrollVertPercent / 100;
+    dy = rc.Height() * CValues::GetPageScrollVertPercent() / 100;
   }
   else
   {
@@ -355,7 +355,7 @@ void CMainFrame::OnPageLeftRight( bool toRight, bool bByPage )
   if ( bByPage )
   {
     dX = clientRect.Width();
-    dX = dX * g_cPageScrollHorPercent / 100;
+    dX = dX * CValues::GetPageScrollHorPercent() / 100;
   }
   dX *= toRight ? 1 : -1;
 
@@ -824,7 +824,7 @@ void CMainFrame::ScrollPagesHor( int & moveX )
 
   WTL::CRect const & r = (*m_Pages.begin())->GetRect();
 
-  if ( 0 )
+  if ( CValues::GetBrowseMode() == CValues::DEF_MODE )
   {
     if ( moveX < 0 )
     {
@@ -839,7 +839,7 @@ void CMainFrame::ScrollPagesHor( int & moveX )
         return;
     }
   }
-  else
+  if ( CValues::GetBrowseMode() == CValues::PARROT_MODE )
   {
     int x = r.left + moveX;
     x = x % r.Width();

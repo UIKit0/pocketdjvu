@@ -6,12 +6,6 @@
 CBrowseSettings::CBrowseSettings() :
   m_storage( HKEY_CURRENT_USER, APP_REG_PATH_BROWSE )
 {
-  if ( ERROR_SUCCESS != m_storage.Load() )
-  {
-    m_storage.m_browseMode = CRegStorage::DEF_MODE;
-    m_storage.m_pageScrollVertPercent = g_cPageScrollVertPercent;
-    m_storage.m_pageScrollHorPercent  = g_cPageScrollHorPercent;
-  }
 }
 
 CBrowseSettings::~CBrowseSettings()
@@ -19,16 +13,21 @@ CBrowseSettings::~CBrowseSettings()
 }
 
 LRESULT CBrowseSettings::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
-{  
+{
+  m_storage.Load();
   DlgResize_Init( false, false, 0 );
   DoDataExchange();
 
-  m_comboMode.AddString( L"Default mode" );
-  m_comboMode.AddString( L"Parrot mode" );
-  m_comboMode.SetCurSel( m_storage.m_browseMode );
+  {
+    WTL::CString s;
+    s.LoadString( IDS_BR_DEF_MODE );
+    m_comboMode.AddString( !s.IsEmpty() ? s : L"Default mode" );
 
-  m_spinVert.SetRange( 5, 100 );
-  m_spinHor.SetRange( 5, 100 );
+    s.Empty();
+    s.LoadString( IDS_BR_PARROT_MODE );
+    m_comboMode.AddString( !s.IsEmpty() ? s : L"Parrot mode" );
+    m_comboMode.SetCurSel( m_storage.browseMode );  
+  }
 
   return 0;
 }
@@ -51,7 +50,9 @@ int CBrowseSettings::OnApply()
 
   if ( PSNRET_NOERROR == ret )
   {
+    m_storage.browseMode = m_comboMode.GetCurSel();
     m_storage.Save();
+    CValues::Assign( m_storage );
   }
   return ret;
 }
