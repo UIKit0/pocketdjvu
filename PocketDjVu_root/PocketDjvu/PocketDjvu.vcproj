@@ -548,6 +548,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Values.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\VMDlg.cpp"
 				>
 			</File>
@@ -574,10 +578,6 @@
 			</File>
 			<File
 				RelativePath=".\CNofyIcon.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Constants.h"
 				>
 			</File>
 			<File
@@ -650,6 +650,10 @@
 			</File>
 			<File
 				RelativePath=".\TimingDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Values.h"
 				>
 			</File>
 			<File

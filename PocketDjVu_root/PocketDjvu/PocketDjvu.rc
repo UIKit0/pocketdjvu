@@ -213,8 +213,8 @@ BEGIN
     EDITTEXT        IDC_SWAPFILE,2,41,123,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_BROWSE_PATH,128,41,14,12
     LTEXT           "Swap-file size (MB): ",IDC_MBSIZE_STATIC,2,59,63,8
-    EDITTEXT        IDC_MBSIZE,72,57,57,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_MBSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS,131,57,11,12
+    EDITTEXT        IDC_MBSIZE,72,57,61,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_MBSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS,135,57,7,12
 END
 
 IDD_TIMING DIALOG  0, 0, 145, 90
@@ -234,13 +234,14 @@ FONT 8, "Microsoft Sans Serif"
 BEGIN
     LTEXT           "Browse mode:",IDC_BROWSE_MODE_LAB,2,4,46,8
     COMBOBOX        IDC_BROWSE_MODE_COMBO,56,2,128,68,CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | WS_VSCROLL | WS_GROUP | WS_TABSTOP
-    CTEXT           "Scrolling parameters",IDC_SCROLL_GRP,2,17,182,10,0,WS_EX_STATICEDGE
-    LTEXT           "Vertical %:",IDC_VERT_SCROLL_LAB,2,33,34,8
-    EDITTEXT        IDC_VERT_SCROLL,56,30,115,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_VERT_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS,174,30,10,12
-    LTEXT           "Horizontal %:",IDC_HOR_SCROLL_LAB,2,46,42,8
-    EDITTEXT        IDC_HOR_SCROLL,56,44,115,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_HOR_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS,174,44,10,12
+    CTEXT           "Scrolling parameters",IDC_SCROLL_GRP,2,20,182,10
+    LTEXT           "Vertical %:",IDC_VERT_SCROLL_LAB,2,36,34,8
+    EDITTEXT        IDC_VERT_SCROLL,56,32,119,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_VERT_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS,178,32,7,12
+    LTEXT           "Horizontal %:",IDC_HOR_SCROLL_LAB,2,49,42,8
+    EDITTEXT        IDC_HOR_SCROLL,56,47,119,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_HOR_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS,178,47,7,12
+    GROUPBOX        "",IDC_STATIC_LN1,0,15,186,5
 END
 
 
@@ -390,21 +391,6 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Dialog Info
-//
-
-IDD_BROWSE DLGINIT
-BEGIN
-    IDC_BROWSE_MODE_COMBO, 0x403, 13, 0
-0x6544, 0x6166, 0x6c75, 0x2074, 0x6f6d, 0x6564, "\000" 
-    IDC_BROWSE_MODE_COMBO, 0x403, 12, 0
-0x6150, 0x7272, 0x746f, 0x6d20, 0x646f, 0x0065, 
-    0
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // String Table
 //
 
@@ -419,6 +405,8 @@ BEGIN
     IDS_TOTAL_PGS           "/ %d pg."
     IDS_TOO_LONG_TEXT_VALUE "The text value is too long"
     IDS_HIST_MENUITEM       "Page %d"
+    IDS_BR_DEF_MODE         "Default mode"
+    IDS_BR_PARROT_MODE      "Parrot mode"
 END
 
 STRINGTABLE 

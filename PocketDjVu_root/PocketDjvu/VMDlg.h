@@ -2,7 +2,7 @@
 
 #include "resource.h"
 #include "./rsettings.h"
-#include "./Constants.h"
+#include "./Values.h"
 
 class CVMDlg :
   public WTL::CPropertyPageImpl<CVMDlg>
