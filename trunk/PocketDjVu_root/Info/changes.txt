@@ -5,7 +5,9 @@
 
 v.0.9.6
 =================
-+ - "Tile" mode (in progress)...
++ - "Parrot" mode.
++ - "Browse" settings dialog (in progress).
++ - Wireless MMX usage on Intel PXA 27x processors (optionally) (in progress).
 
 v.0.9.5
 =================
