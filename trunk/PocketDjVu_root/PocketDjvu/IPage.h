@@ -15,7 +15,7 @@ struct IPage : public siv_hlpr::CRefCntr<>
   virtual bool LoadBmpSync() = 0;
   virtual bool LoadBmpAsync() = 0;
 
-  virtual void Draw( WTL::CDCHandle dc ) = 0;
+  virtual void Draw( WTL::CDCHandle dc, int dx, int dy ) = 0;
 };
 
 //-----------------------------------------------------------------------------

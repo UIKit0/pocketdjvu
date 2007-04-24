@@ -640,17 +640,12 @@ void CMainFrame::DoPaint( WTL::CDCHandle dc )
     {
       continue;
     }
-    (*i)->Draw( dc );
+    (*i)->Draw( dc, 0, 0 );
     
     if ( bDrawParrots )
     {
-      ::SetWindowOrgEx( dc, r.Width() + g_cBetweenPageGap, 0, NULL );
-      (*i)->Draw( dc );
-
-      ::SetWindowOrgEx( dc, -r.Width() - g_cBetweenPageGap, 0, NULL );
-      (*i)->Draw( dc );
-
-      ::SetWindowOrgEx( dc, 0, 0, NULL );
+      (*i)->Draw( dc,  r.Width() + g_cBetweenPageGap, 0 );
+      (*i)->Draw( dc, -r.Width() - g_cBetweenPageGap, 0 );
     }
   }
 }

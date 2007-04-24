@@ -64,7 +64,7 @@ public:
     return LoadBmpSync();
   }
 
-  virtual void Draw( WTL::CDCHandle dc );
+  virtual void Draw( WTL::CDCHandle dc, int dx, int dy );
   
 private:
   CPage & operator =( CPage const & );
