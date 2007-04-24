@@ -606,19 +606,35 @@ void CMainFrame::UpdateScreenMode()
   }
 }
 
-void CMainFrame::DoPaint( WTL::CDCHandle dc )
+bool CMainFrame::IsParrotMode()
 {
   WTL::CRect rect;
   GetClientRect( &rect );
 
+  if ( CValues::GetBrowseMode() == CValues::PARROT_MODE && !m_Pages.empty() )
+  {
+    WTL::CRect const & r = (*m_Pages.begin())->GetRect();
+    if ( r.Width() >= rect.Width() )
+    {
+      return true;
+    }
+  }
+  return false;
+}
+void CMainFrame::DoPaint( WTL::CDCHandle dc )
+{
+  WTL::CRect rect;
+  GetClientRect( &rect );
   dc.FillRect( rect, (HBRUSH)GetStockObject(DKGRAY_BRUSH) );
   
   if ( !m_pDjVuDoc )
     return;
 
+  bool bDrawParrots = IsParrotMode();
+
   for ( Pages::iterator i=m_Pages.begin(); i!=m_Pages.end(); ++i )
   {
-    WTL::CRect r = (*i)->GetRect();
+    WTL::CRect const & r = (*i)->GetRect();
     // this checking reduces accesses to bitmaps potentially stored in the swap file.
     if ( !IsVisible( r ) )
     {
@@ -626,14 +642,16 @@ void CMainFrame::DoPaint( WTL::CDCHandle dc )
     }
     (*i)->Draw( dc );
     
-    // TODO: check if the r.Width > ScreenWidth
-    ::SetWindowOrgEx( dc, r.Width() + g_cBetweenPageGap, 0, NULL );
-    (*i)->Draw( dc );
+    if ( bDrawParrots )
+    {
+      ::SetWindowOrgEx( dc, r.Width() + g_cBetweenPageGap, 0, NULL );
+      (*i)->Draw( dc );
 
-    ::SetWindowOrgEx( dc, -r.Width() - g_cBetweenPageGap, 0, NULL );
-    (*i)->Draw( dc );
+      ::SetWindowOrgEx( dc, -r.Width() - g_cBetweenPageGap, 0, NULL );
+      (*i)->Draw( dc );
 
-    ::SetWindowOrgEx( dc, 0, 0, NULL );
+      ::SetWindowOrgEx( dc, 0, 0, NULL );
+    }
   }
 }
 
@@ -824,7 +842,13 @@ void CMainFrame::ScrollPagesHor( int & moveX )
 
   WTL::CRect const & r = (*m_Pages.begin())->GetRect();
 
-  if ( CValues::GetBrowseMode() == CValues::DEF_MODE )
+  if ( IsParrotMode() )
+  {
+    int x = r.left + moveX;
+    x = x % r.Width();
+    moveX = x - r.left;
+  }
+  else
   {
     if ( moveX < 0 )
     {
@@ -838,12 +862,6 @@ void CMainFrame::ScrollPagesHor( int & moveX )
       if ( x >= cr.right )
         return;
     }
-  }
-  if ( CValues::GetBrowseMode() == CValues::PARROT_MODE )
-  {
-    int x = r.left + moveX;
-    x = x % r.Width();
-    moveX = x - r.left;
   }
 
   m_bDirty = true;
