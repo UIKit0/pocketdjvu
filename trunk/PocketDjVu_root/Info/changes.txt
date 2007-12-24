@@ -9,6 +9,8 @@ v.0.9.6
 + - "Browse" settings dialog (in progress).
 + - WTL 8.0 final
 + - margin retention (in progress).
++ - new file dialogs (in progress).
+# - VM memory bugs.
 
 v.0.9.5
 =================
