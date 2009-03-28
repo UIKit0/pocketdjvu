@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<!-- RSS Validator: http://validator.w3.org/feed/  -->
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
+        <atom:link href="http://pocketdjvu.googlecode.com/svn/trunk/PocketDjVu_root/Info/Releases-feed.xml" rel="self" type="application/rss+xml" />
         <title>PocketDjVu updates notification.</title>
         <description>If you want to keep up to date PocketDjVu installed on your handheld PC you could subscribe on this feed.</description>
         <link>http://Igor.Solovyov.googlepages.com</link>
@@ -10,7 +12,7 @@
       
         <image>
             <url>http://igor.solovyov.googlepages.com/capture001.png/capture001-medium.jpg</url>
-            <title>PocketDjVu</title>
+            <title>PocketDjVu updates notification.</title>
             <link>http://Igor.Solovyov.googlepages.com</link>
             <description>PocketDjVu updates notification.</description>          
         </image>
@@ -19,7 +21,7 @@
         <title>The PocketDjVu 0.9.5.0 is released.</title>
         <link>http://code.google.com/p/pocketdjvu/downloads/list</link>
         <guid isPermaLink="false">{3911EBC8-10FB-4c7c-B942-FDD1E1A29F57}</guid>
-        <pubDate>Sun, 15 Apr 2007 21:46:50</pubDate>
+        <pubDate>Sun, 15 Apr 2007 21:46:50 +0200</pubDate>
         <description>
           The changes made in 0.9.5.0 version you can find
           <![CDATA[          
