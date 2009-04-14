@@ -18,7 +18,7 @@ public:
   enum { IDD = IDD_BROWSE };
 
   CBrowseSettings();
-	~CBrowseSettings();
+  ~CBrowseSettings();
 
 BEGIN_DLGRESIZE_MAP(CBrowseSettings)
   DLGRESIZE_CONTROL(IDC_BROWSE_MODE_LAB,0)
@@ -48,7 +48,7 @@ BEGIN_DDX_MAP(CBrowseSettings)
 END_DDX_MAP()
 
 BEGIN_MSG_MAP(CBrowseSettings)
-	MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+  MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
   CHAIN_MSG_MAP(BaseResize)
   CHAIN_MSG_MAP(BaseWnd)
 END_MSG_MAP()

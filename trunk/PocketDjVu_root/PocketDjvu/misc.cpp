@@ -216,14 +216,3 @@ bool IsPortrait()
   }
   return false;
 }
-//------------------------------------------------------------------------------
-//#include <mmintrin.h>
-//int WMMXt1()
-//{
-//  __m64 op1 = _mm_set1_pi32( 7 );
-//  __m64 op2 = op1;
-//
-//  return 11;
-//}
-//
-//static int aaa_aaa = WMMXt1();

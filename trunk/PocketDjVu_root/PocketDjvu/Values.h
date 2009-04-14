@@ -2,9 +2,10 @@
 
 #include "./rsettings.h"
 
-static wchar_t const * APP_REG_PATH    = L"Software\\landi-soft.com\\PocketDjVu";
-static wchar_t const * APP_REG_PATH_VM = L"Software\\landi-soft.com\\PocketDjVu\\VM\\";
-static wchar_t const * APP_REG_PATH_BROWSE = L"Software\\landi-soft.com\\PocketDjVu\\Browse\\";
+static wchar_t const * APP_REG_PATH    = L"Software\\Igor.Solovyov\\PocketDjVu";
+static wchar_t const * APP_REG_PATH_VM = L"Software\\Igor.Solovyov\\PocketDjVu\\VM\\";
+static wchar_t const * APP_REG_PATH_BROWSE = L"Software\\Igor.Solovyov\\PocketDjVu\\Browse\\";
+static wchar_t const * APP_REG_MISC = L"Software\\Igor.Solovyov\\PocketDjVu\\Misc\\";
 
 const float     g_cEps = 1.e-5;
 const int       g_cBetweenPageGap = 4;
@@ -24,14 +25,14 @@ const int       g_cCacheMax = 1; // Preserved invisible pages in cache.
 
 static wchar_t const * SWAP_FILENAME = L"\\SD Card\\file.swp";
 static wchar_t const * SWAP_NAME     = L"\\file.swp";
-const unsigned  g_cSwapLowLimitMB = 16;
-const unsigned  g_cSwapUpperLimitMB = 128;
-const unsigned  g_cSwapDefaultMB = 64;
+const unsigned  g_cSwapLowLimitMB = 64;
+const unsigned  g_cSwapUpperLimitMB = 256;
+const unsigned  g_cSwapDefaultMB = 92;
 
 /// It's pixels for double click recognitions.
 /// On my PPC 40 ones were returned by GetSystemMetrics(SM_CXDOUBLECLK) and it's unacceptable.
 /// And I don't like to change settings on system level.
-const int g_sDxDblClck = 6; 
+const int g_sDxDblClck = 6;
 
 /// Toolbar metrics.
 const int g_cToolBarOuterGap = 4;
@@ -44,7 +45,6 @@ const int g_cHistoryLength = 11;
 static wchar_t const * BOOKMARK_REG_KEY       = L"\\Bookmarks";
 static wchar_t const * BOOKMARK_REG_AUTOSAVE  = L"AutoSave";
 
-class CBrowseSettings;
 //------------------------------------------------------------------------------
 class CValues
 {
@@ -55,7 +55,7 @@ public:
   public:
     DWORD browseMode;
     DWORD pageScrollVertPercent;
-    DWORD pageScrollHorPercent;    
+    DWORD pageScrollHorPercent;
 
     BEGIN_REG_MAP( CRegBrowseValues )
       REG_ITEM( browseMode, CValues::DEF_MODE)
@@ -64,9 +64,20 @@ public:
     END_REG_MAP()
   };
 
+  class CRegMiscValues : public CRegSettings
+  {
+  public:
+    BOOL m_bShowTrayIcon;
+
+    BEGIN_REG_MAP( CRegMiscValues  )
+      REG_ITEM( m_bShowTrayIcon, TRUE)
+    END_REG_MAP()
+  };
+
 public:
   static bool Init();
 
+  /// @{
   enum BROWSE_MODE { CValues::DEF_MODE, CValues::PARROT_MODE };
   static BROWSE_MODE GetBrowseMode()
   {
@@ -80,9 +91,19 @@ public:
   {
     return m_regBrowseValues.pageScrollHorPercent;
   }
+  /// @}
+
+  /// @{
+  static CRegMiscValues const & GetMiscValues()
+  {
+      return m_regMiscValues;
+  }
+  /// @}
 
   static void Assign( CRegBrowseValues const & set );
+  static void Assign( CRegMiscValues const & set );
 
 private:
   static CRegBrowseValues m_regBrowseValues;
+  static CRegMiscValues   m_regMiscValues;
 };

@@ -166,9 +166,9 @@ EXSTYLE 0x80000000L
 CAPTION "About"
 FONT 8, "MS Sans Serif"
 BEGIN
-    ICON            IDR_MAINFRAME,IDC_STATIC,2,2,21,20
+    ICON            IDR_MAINFRAME,IDC_STATIC,2,2,20,20
     LTEXT           "PocketDjVu v.",IDC_STATIC_VER,35,7,70,8,SS_NOPREFIX
-    LTEXT           "Copyright © 2007 Igor.Solovyov@gmail.com",IDC_STATIC_CR,2,25,142,8
+    LTEXT           "Copyright © 2007-09 Igor.Solovyov@gmail.com",IDC_STATIC_CR,2,25,142,8
     LTEXT           "This program is licensed under GNU GPL version 2, or above",IDC_STATIC_LIC,2,48,142,18
     EDITTEXT        IDC_INFO,2,69,142,37,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | NOT WS_BORDER | WS_VSCROLL,WS_EX_STATICEDGE
     LTEXT           "http://Igor.Solovyov.googlepages.com",IDC_HOMEPAGE,2,37,142,8
@@ -215,6 +215,7 @@ BEGIN
     LTEXT           "Swap-file size (MB): ",IDC_MBSIZE_STATIC,2,59,67,8
     EDITTEXT        IDC_MBSIZE,72,57,61,12,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "",IDC_MBSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS,135,57,7,12
+    LTEXT           "*) To apply changes, you have to restart application.",IDC_COMMENT,2,91,140,20
 END
 
 IDD_TIMING DIALOG  0, 0, 145, 90
@@ -242,6 +243,15 @@ BEGIN
     EDITTEXT        IDC_HOR_SCROLL,56,47,119,12,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "",IDC_HOR_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS,177,47,7,12
     GROUPBOX        "",IDC_STATIC_LN1,0,15,186,5
+END
+
+IDD_MISC_SETTINGS DIALOG  0, 0, 154, 90
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Miscellaneous"
+FONT 8, "Microsoft Sans Serif"
+BEGIN
+    CONTROL         "show &tray icon *",IDC_SHOW_TRAY_ICON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,2,2,150,10
+    LTEXT           "*) To apply changes, you have to restart application.",IDC_COMMENT,2,68,150,20
 END
 
 
@@ -305,6 +315,14 @@ BEGIN
         BOTTOMMARGIN, 123
         HORZGUIDE, 107
     END
+
+    IDD_MISC_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 2
+        RIGHTMARGIN, 152
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 88
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -338,8 +356,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,9,6,0
- PRODUCTVERSION 0,9,6,0
+ FILEVERSION 0,9,6,1
+ PRODUCTVERSION 0,9,6,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x21L
@@ -356,13 +374,13 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Igor Solovyov"
             VALUE "FileDescription", "PocketDjvu Module"
-            VALUE "FileVersion", "0, 9, 6, 0"
+            VALUE "FileVersion", "0, 9, 6, 1"
             VALUE "InternalName", "PocketDjvu"
-            VALUE "LegalCopyright", "Copyright © 2007, Igor Solovyov"
+            VALUE "LegalCopyright", "Copyright © 2007-09, Igor Solovyov"
             VALUE "OriginalFilename", "PocketDjvu.exe"
             VALUE "ProductName", "PocketDjvu Module"
-            VALUE "ProductVersion", "0, 9, 6, 0"
-            VALUE "SpecialBuild", "070423"
+            VALUE "ProductVersion", "0, 9, 6, 1"
+            VALUE "SpecialBuild", "090412"
         END
     END
     BLOCK "VarFileInfo"
