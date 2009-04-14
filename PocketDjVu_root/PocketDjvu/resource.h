@@ -38,6 +38,7 @@
 #define IDR_                            220
 #define IDR_MENU_SAVE_GOTO              220
 #define IDD_BROWSE                      221
+#define IDD_MISC_SETTINGS               223
 #define IDC_PAGES                       1000
 #define IDC_EDIT1                       1002
 #define IDC_PG_NUM                      1002
@@ -83,6 +84,8 @@
 #define IDC_VERT_SPIN                   1039
 #define IDC_HOR_SPIN                    1040
 #define IDC_STATIC_LN1                  1041
+#define IDC_SHOW_TRAY_ICON              1042
+#define IDC_COMMENT                     1043
 #define ID_FILE_NEW_WINDOW              32771
 #define ID_TOOLS_OPTIONS                32772
 #define ID_NAVIGATE_ADDBOOKMARK         32775
@@ -113,9 +116,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        223
+#define _APS_NEXT_RESOURCE_VALUE        224
 #define _APS_NEXT_COMMAND_VALUE         32801
-#define _APS_NEXT_CONTROL_VALUE         1042
+#define _APS_NEXT_CONTROL_VALUE         1044
 #define _APS_NEXT_SYMED_VALUE           106
 #endif
 #endif

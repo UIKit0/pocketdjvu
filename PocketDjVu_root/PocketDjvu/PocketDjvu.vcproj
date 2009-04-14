@@ -5,9 +5,6 @@
 	Name="PocketDjVu"
 	ProjectGUID="{EBAC0589-178D-4DFA-BD0E-E7516F4DD861}"
 	RootNamespace="PocketDjvu"
-	SccProjectName="&quot;$/WM/DjvuCE.root/PocketDjVu_root&quot;, RLAAAAAA"
-	SccLocalPath=".."
-	SccProvider="MSSCCI:Microsoft Visual SourceSafe"
 	>
 	<Platforms>
 		<Platform
@@ -54,7 +51,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
-				AdditionalOptions="/QRxscale"
+				AdditionalOptions="/QRxscale /QRxscalesched"
 				Optimization="0"
 				PreprocessorDefinitions="_WIN32_WCE=$(CEVER);UNDER_CE=$(CEVER);WINCE;_DEBUG;$(PLATFORMDEFINES);$(ARCHFAM);$(_ARCHFAM_);_UNICODE;_WINDOWS;HAS_WCHAR=1;HAS_MBSTATE=1;HAVE_NAMESPACES;_ATL_NO_AUTOMATIC_NAMESPACE;_WTL_NO_AUTOMATIC_NAMESPACE"
 				StringPooling="true"
@@ -108,7 +105,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir)&#x0D;&#x0A;&#x0D;&#x0A;&quot;$(VSInstallDir)SmartDevices\SDK\SDKTools\cabwiz.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /compress /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot;&#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;echo --------------&#x0D;&#x0A;"
+				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir)&#x0D;&#x0A;&#x0D;&#x0A;&quot;$(VSInstallDir)SmartDevices\SDK\SDKTools\cabwiz.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /compress /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot;&#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;"
 			/>
 			<DeploymentTool
 				ForceDirty="-1"
@@ -210,7 +207,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir)&#x0D;&#x0A;&#x0D;&#x0A;@rem Unfortunately CabWiz from VS2005 generates incompatible with PocketPC 2003 CAB-files.&#x0D;&#x0A;$(SolutionDir)CabWiz2003\Cabwiz.exe &quot;$(TargetDir)$(TargetName).inf&quot; /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot;&#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;echo --------------&#x0D;&#x0A;"
+				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir)&#x0D;&#x0A;&#x0D;&#x0A;@rem Unfortunately CabWiz from VS2005 generates incompatible with PocketPC 2003 CAB-files.&#x0D;&#x0A;$(SolutionDir)CabWiz2003\Cabwiz.exe &quot;$(TargetDir)$(TargetName).inf&quot; /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot;&#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;"
 			/>
 			<DeploymentTool
 				ForceDirty="-1"
@@ -255,7 +252,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
-				AdditionalOptions="/QRxscale"
+				AdditionalOptions="/QRxscale /QRxscalesched"
 				Optimization="3"
 				InlineFunctionExpansion="1"
 				EnableIntrinsicFunctions="true"
@@ -315,12 +312,12 @@
 			<Tool
 				Name="VCCodeSignTool"
 				AuthenticodeSignature="false"
-				Certificate="SHA-1 Hash=|"
+				Certificate="SHA-1 Hash=1049B790EDA3C369E9C206B44AF16B2657CC1555|1049B790EDA3C369E9C206B44AF16B2657CC1555"
 				ProvisionDevice="2"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir)&#x0D;&#x0A;&#x0D;&#x0A;&quot;$(VSInstallDir)SmartDevices\SDK\SDKTools\cabwiz.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /compress /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot;&#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;echo --------------&#x0D;&#x0A;"
+				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir)&#x0D;&#x0A;&#x0D;&#x0A;&quot;$(VSInstallDir)SmartDevices\SDK\SDKTools\cabwiz.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /compress /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot;&#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;"
 			/>
 			<DeploymentTool
 				ForceDirty="-1"
@@ -432,7 +429,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir)&#x0D;&#x0A;&#x0D;&#x0A;@rem Unfortunately CabWiz from VS2005 generates incompatible with PocketPC 2003 CAB-files.&#x0D;&#x0A;$(SolutionDir)CabWiz2003\Cabwiz.exe &quot;$(TargetDir)$(TargetName).inf&quot; /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot;&#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;echo --------------&#x0D;&#x0A;"
+				CommandLine="@echo on&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;@echo Installator is beeing maked...&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\PocketDjVu.inf&quot;  &quot;$(TargetDir)$(TargetName).inf&quot;&#x0D;&#x0A;&quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; &quot;$(TargetDir)$(TargetName).inf&quot; /sec Strings /key ExeName /val $(TargetFileName)&#x0D;&#x0A;&#x0D;&#x0A;@cd $(TargetDir)&#x0D;&#x0A;&#x0D;&#x0A;@rem Unfortunately CabWiz from VS2005 generates incompatible with PocketPC 2003 CAB-files.&#x0D;&#x0A;$(SolutionDir)CabWiz2003\Cabwiz.exe &quot;$(TargetDir)$(TargetName).inf&quot; /cpu ARM&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)Info\ez.bat&quot; &quot;$(TargetDir)ez.bat&quot;&#x0D;&#x0A;call ez.bat &quot;$(SolutionDir)Util\EditIni\bin\$(ConfigurationName)\EditIni.exe&quot; $(TargetName)&#x0D;&#x0A;&#x0D;&#x0A;@echo --------------&#x0D;&#x0A;"
 			/>
 			<DeploymentTool
 				ForceDirty="-1"
@@ -477,6 +474,10 @@
 			</File>
 			<File
 				RelativePath=".\misc.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MiscSettings.cpp"
 				>
 			</File>
 			<File
@@ -602,6 +603,10 @@
 			</File>
 			<File
 				RelativePath=".\misc.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MiscSettings.h"
 				>
 			</File>
 			<File

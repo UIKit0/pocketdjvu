@@ -3,7 +3,7 @@
 #include "./resource.h"
 #include "./DjVuToolBar.h"
 #include "./misc.h"
-#include "./constants.h"
+#include "./Values.h"
 
 #include <strsafe.h>
 

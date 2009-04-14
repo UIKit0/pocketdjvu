@@ -164,8 +164,11 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
   m_tb.SubclassToolbar( m_hWndCECommandBar );
   m_tb.SetFrameWnd( m_hWnd );
   //...........................................................................
-  m_notyfyIcon.Setup( m_hWnd, WM_ICON_NOTIFICATION, IDR_MAINFRAME );
-  res = m_notyfyIcon.Install();  
+  if ( CValues::GetMiscValues().m_bShowTrayIcon )
+  {
+    m_notyfyIcon.Setup( m_hWnd, WM_ICON_NOTIFICATION, IDR_MAINFRAME );
+    res = m_notyfyIcon.Install();  
+  }
 
   WTL::CRect r;
   GetClientRect( &r );

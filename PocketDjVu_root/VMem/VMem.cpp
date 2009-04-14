@@ -4,7 +4,7 @@
 #include "./malloc.h"
 
 #include "../PocketDjvu/misc.h"
-#include "../PocketDjvu/constants.h"
+#include "../PocketDjvu/Values.h"
 #include "../PocketDjvu/resource.h"
 
 extern "C"
@@ -51,18 +51,18 @@ namespace siv
                               NULL );
       if ( INVALID_HANDLE_VALUE == hF )
       {
-        m_err = GetLastError();
+        m_err = ::GetLastError();
         return;
       }
 
       if ( OPEN_EXISTING == dwCreateDisposition )
       {
         SetFilePointer( hF, m_size, NULL, FILE_BEGIN );
-        if( NO_ERROR == GetLastError() )
+        if( NO_ERROR == ::GetLastError() )
         {
           if ( !SetEndOfFile( hF ) )
           {
-            m_err = GetLastError();
+            m_err = ::GetLastError();
             CloseHandle( hF );
             return;
           }
@@ -72,7 +72,7 @@ namespace siv
       HANDLE hFM = CreateFileMapping( hF, NULL, PAGE_READWRITE, 0, m_size, NULL );
       if ( !hFM )
       {
-        m_err = GetLastError();
+        m_err = ::GetLastError();
         CloseHandle( hF );
         return;
       }
@@ -82,7 +82,7 @@ namespace siv
       m_baseAddr = MapViewOfFile( hFM, FILE_MAP_WRITE, 0, 0, m_size );
       if ( !m_baseAddr )
       {
-        m_err = GetLastError();
+        m_err = ::GetLastError();
       }
       CloseHandle( hFM );
       
@@ -94,7 +94,7 @@ namespace siv
       Destroy();
     }
     //.........................................................................
-    void Destroy()
+    void Destroy( bool bClearInitFlag=false )
     {
       if ( m_baseAddr )
       {
@@ -106,16 +106,47 @@ namespace siv
         UnmapViewOfFile( m_baseAddr );
         m_baseAddr = 0;
       }
-      m_bInited = false;
+      if ( bClearInitFlag )
+      {
+        m_bInited = false;
+      }
     }
     //.........................................................................
-    static void ShowWarning()
+    static void ShowWarning( DWORD err )
     {
       WTL::CString szWarning;
       szWarning.LoadString( IDS_WARNING );
 
       WTL::CString szText;
       szText.LoadString( IDS_CAN_NOT_CREATE_MMFILE );
+      if ( err )
+      {
+          LPWSTR pszMsg = 0;
+          FormatMessageW( FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
+                          NULL,
+                          err,
+                          MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                          (LPWSTR )&pszMsg,
+                          0,
+                          NULL );
+          if ( pszMsg )
+          {
+              int len = wcslen( pszMsg );
+              if ( len > 1 && '\n' == pszMsg[ len-1 ] )
+              {
+                  pszMsg[ len-1 ] = 0;
+                  if ( '\r' == pszMsg[ len-2 ] )
+                  {
+                      pszMsg[ len-2] = 0;
+                  }
+              }
+          }
+          WTL::CString txt( (LPCWSTR)szText );
+          txt += L" Error: ";
+          txt += pszMsg;
+          LocalFree( pszMsg );
+          szText = txt;
+      }
       ShowNotification( 0, szWarning, szText );
     }
     //.........................................................................
@@ -170,10 +201,11 @@ namespace siv
             m_instance = ::new( m_space ) CMemInit( g_SwapFileName );
             if ( !m_instance->IsValid() )
             {
+              DWORD err = m_instance->GetLastError();
               m_instance->~CMemInit();
               m_instance = 0;
               
-              ShowWarning();
+              ShowWarning( err );
             }
           }          
         }
@@ -256,7 +288,7 @@ namespace siv
 
     if ( !p )
     {
-      throw std::bad_alloc( "Not enought memory." );
+      throw std::bad_alloc( "Not enough memory." );
     }
     return p;
   }
@@ -277,7 +309,7 @@ namespace siv
 
     if ( !p )
     {
-      throw std::bad_alloc( "Not enought memory." );
+      throw std::bad_alloc( "Not enough memory." );
     }
     return p;
   }
@@ -298,7 +330,7 @@ namespace siv
 
     if ( !p )
     {
-      throw std::bad_alloc( "Not enought memory." );
+      throw std::bad_alloc( "Not enough memory." );
     }
     return p;
   }
