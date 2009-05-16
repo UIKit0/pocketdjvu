@@ -61,6 +61,7 @@
 #define IDC_SLIDER2                     1020
 #define IDC_LEVEL_SLIDER                1020
 #define IDC_EDIT2                       1021
+#define IDC_RAM_PERCENT_SLIDER          1021
 #define IDC_BUTTON1                     1022
 #define IDC_EDIT4                       1022
 #define IDC_BROWSE_PATH                 1022
@@ -76,6 +77,7 @@
 #define IDC_ST2                         1031
 #define IDC_ST3                         1032
 #define IDC_TOTAL_PGS                   1033
+#define IDC_PERCENT                     1033
 #define IDC_BROWSE_MODE_LAB             1034
 #define IDC_BROWSE_MODE_COMBO           1035
 #define IDC_SCROLL_GRP                  1036
@@ -86,6 +88,8 @@
 #define IDC_STATIC_LN1                  1041
 #define IDC_SHOW_TRAY_ICON              1042
 #define IDC_COMMENT                     1043
+#define IDC_SWAP_FILE                   1045
+#define IDC_RAM_ONLY                    1046
 #define ID_FILE_NEW_WINDOW              32771
 #define ID_TOOLS_OPTIONS                32772
 #define ID_NAVIGATE_ADDBOOKMARK         32775
@@ -113,12 +117,12 @@
 #define ID_GOTOBOOKMARK                 32800
 
 // Next default values for new objects
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        224
 #define _APS_NEXT_COMMAND_VALUE         32801
-#define _APS_NEXT_CONTROL_VALUE         1044
+#define _APS_NEXT_CONTROL_VALUE         1046
 #define _APS_NEXT_SYMED_VALUE           106
 #endif
 #endif
