@@ -19,30 +19,38 @@ public:
   ~CVMDlg();
 
 BEGIN_DLGRESIZE_MAP(CVMDlg)
-  DLGRESIZE_CONTROL(IDC_LEVEL_PLACEHOLDER,0)
-  DLGRESIZE_CONTROL(IDC_ST1,              0)
-  DLGRESIZE_CONTROL(IDC_ST2,              DLSZ_SIZE_X)
-  DLGRESIZE_CONTROL(IDC_ST3,              DLSZ_MOVE_X)
+  DLGRESIZE_CONTROL(IDC_LEVEL_PLACEHOLDER,  0)
+  DLGRESIZE_CONTROL(IDC_ST1,                0)
+  DLGRESIZE_CONTROL(IDC_ST2,                DLSZ_SIZE_X)
+  DLGRESIZE_CONTROL(IDC_ST3,                DLSZ_MOVE_X)
 
   DLGRESIZE_CONTROL(IDC_LEVEL, 0)
-  DLGRESIZE_CONTROL(IDC_LEVEL_SLIDER,     DLSZ_SIZE_X)
+  DLGRESIZE_CONTROL(IDC_LEVEL_SLIDER,       DLSZ_SIZE_X)
 
-  DLGRESIZE_CONTROL(IDC_SWAPFILE_STATIC,  DLSZ_SIZE_X)
-  DLGRESIZE_CONTROL(IDC_SWAPFILE,         DLSZ_SIZE_X)
-  DLGRESIZE_CONTROL(IDC_BROWSE_PATH,      DLSZ_MOVE_X)
+  DLGRESIZE_CONTROL(IDC_SWAP_FILE,          DLSZ_SIZE_X) // (*)
+  DLGRESIZE_CONTROL(IDC_RAM_ONLY,           DLSZ_SIZE_X|DLSZ_MOVE_X) // (*)
 
-  DLGRESIZE_CONTROL(IDC_MBSIZE_STATIC,    0)
-  DLGRESIZE_CONTROL(IDC_MBSIZE,           DLSZ_SIZE_X)
-  DLGRESIZE_CONTROL(IDC_MBSIZE_SPIN,      DLSZ_MOVE_X)
+  DLGRESIZE_CONTROL(IDC_SWAPFILE_STATIC,    DLSZ_SIZE_X)
+  DLGRESIZE_CONTROL(IDC_SWAPFILE,           DLSZ_SIZE_X)
+  DLGRESIZE_CONTROL(IDC_BROWSE_PATH,        DLSZ_MOVE_X)
 
-  DLGRESIZE_CONTROL(IDC_COMMENT,          DLSZ_SIZE_X|DLSZ_MOVE_Y)
+  DLGRESIZE_CONTROL(IDC_MBSIZE_STATIC,      0)
+  DLGRESIZE_CONTROL(IDC_MBSIZE,             DLSZ_SIZE_X)
+  DLGRESIZE_CONTROL(IDC_MBSIZE_SPIN,        DLSZ_MOVE_X)
+
+  DLGRESIZE_CONTROL(IDC_PERCENT,            0)
+  DLGRESIZE_CONTROL(IDC_RAM_PERCENT_SLIDER, DLSZ_SIZE_X)
+
+  DLGRESIZE_CONTROL(IDC_COMMENT,            DLSZ_SIZE_X/*|DLSZ_MOVE_Y*/)
 END_DLGRESIZE_MAP()
 
 BEGIN_DDX_MAP(CVMDlg)
-  DDX_TEXT_LEN(IDC_SWAPFILE,            m_storage.SwapFileName, MAX_PATH)
-  DDX_UINT_RANGE(IDC_MBSIZE,            m_storage.SizeMB, DWORD(g_cSwapLowLimitMB), DWORD(g_cSwapUpperLimitMB))
-  DDX_CONTROL_HANDLE(IDC_LEVEL_SLIDER,  m_LevelSlider)
-  DDX_CONTROL_HANDLE(IDC_MBSIZE_SPIN,   m_spin)
+  DDX_TEXT_LEN(IDC_SWAPFILE,                    m_storage.SwapFileName, MAX_PATH)
+  DDX_UINT_RANGE(IDC_MBSIZE,                    m_storage.SizeMB, DWORD(g_cSwapLowLimitMB), DWORD(g_cSwapUpperLimitMB))
+  DDX_CONTROL_HANDLE(IDC_LEVEL_SLIDER,          m_LevelSlider)
+  DDX_CONTROL_HANDLE(IDC_MBSIZE_SPIN,           m_spin)
+  DDX_RADIO(IDC_SWAP_FILE,                      m_storage.SwapOrRam)
+  DDX_CONTROL_HANDLE(IDC_RAM_PERCENT_SLIDER,    m_ramPercent)
 END_DDX_MAP()
 
 BEGIN_MSG_MAP(CBookmarkDlg)
@@ -60,28 +68,36 @@ END_MSG_MAP()
   LRESULT OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled );
   LRESULT OnBrowsePath(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
-  //... CWinDataExchange "overridings" ...
+  //... CWinDataExchange "overriding" ...
   void OnDataValidateError( UINT nCtrlID, BOOL bSave, _XData & data );
 
-  //... CPropertyPageImpl "overridings" ...
+  //... CPropertyPageImpl "overriding" ...
   int OnApply();
+
+private:
+  void ToggleControlsByVmMode();
 
 private:
   class CRegStorage : public CRegSettings
   {
   public:
-    DWORD SizeMB;
-    WTL::CString SwapFileName;
-    DWORD Level;
+    DWORD           SizeMB;
+    WTL::CString    SwapFileName;
+    DWORD           Level;
+    int             SwapOrRam;
 
     BEGIN_REG_MAP( CRegStorage )
       REG_ITEM( SizeMB, g_cSwapDefaultMB )
       REG_ITEM( SwapFileName, SWAP_FILENAME )
       REG_ITEM( Level, 0 )
+      REG_ITEM( SwapOrRam, 0 )
     END_REG_MAP()
   };
 
-  CRegStorage         m_storage;
-  WTL::CTrackBarCtrl  m_LevelSlider;
-  WTL::CUpDownCtrl    m_spin;
+  CRegStorage           m_storage;
+  WTL::CButton          m_radioSwap;
+  WTL::CButton          m_radioRam;
+  WTL::CTrackBarCtrl    m_LevelSlider;
+  WTL::CUpDownCtrl      m_spin;
+  WTL::CTrackBarCtrl    m_ramPercent;
 };

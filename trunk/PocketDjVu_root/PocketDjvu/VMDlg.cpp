@@ -13,16 +13,36 @@ CVMDlg::~CVMDlg()
 
 LRESULT CVMDlg::OnInitDialog( UINT uMsg,WPARAM wParam,LPARAM lParam,BOOL& bHandled )
 {
-  m_storage.Load();
-  DlgResize_Init( false, false, 0 );
-  DoDataExchange();
+    m_storage.Load();
+    DlgResize_Init( false, false, 0 );
+    DoDataExchange();
 
-  m_LevelSlider.SetRange( 0, 2 );
-  m_LevelSlider.SetPos( m_storage.Level );
+    m_LevelSlider.SetRange( 0, 2 );
+    m_LevelSlider.SetPos( m_storage.Level );
 
-  m_spin.SetRange( g_cSwapLowLimitMB, g_cSwapUpperLimitMB );
-  
-  return 0;
+    m_spin.SetRange( g_cSwapLowLimitMB, g_cSwapUpperLimitMB );
+    m_ramPercent.SetRange( g_cVmRAMLowPercentage, g_cVmRAMHighPercentage );
+
+    ToggleControlsByVmMode();
+
+    return 0;
+}
+
+void CVMDlg::ToggleControlsByVmMode()
+{
+    bool bEnable = false;
+    if ( 0 == m_storage.SwapOrRam )
+    {
+        bEnable = true;
+    }
+    //........................................
+    GetDlgItem(IDC_SWAPFILE).EnableWindow( bEnable );
+    GetDlgItem(IDC_BROWSE_PATH).EnableWindow( bEnable );
+    GetDlgItem(IDC_MBSIZE).EnableWindow( bEnable );
+    m_spin.EnableWindow( bEnable );
+    //........................................
+    GetDlgItem(IDC_PERCENT).EnableWindow( !bEnable );
+    m_ramPercent.EnableWindow( !bEnable );
 }
 
 int CVMDlg::OnApply()
