@@ -258,14 +258,14 @@ GPBufferBaseVM::GPBufferBaseVM(void *&xptr,const size_t n,const size_t t)
   : ptr(xptr), num(n)
 {
   if (n)
-    xptr = ::siv::vm_malloc( n*t, 2 );
+    xptr = ::siv_vm::vm_malloc( n*t, 2 );
   else
     xptr = 0;
 }
 
 GPBufferBaseVM::~GPBufferBaseVM()
 {
-  ::siv::vm_free( ptr, 2 );
+  ::siv_vm::vm_free( ptr, 2 );
 }
 
 void 

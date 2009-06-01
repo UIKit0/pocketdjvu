@@ -27,9 +27,9 @@ static wchar_t const * SWAP_FILENAME = L"\\SD Card\\file.swp";
 static wchar_t const * SWAP_NAME     = L"\\file.swp";
 const unsigned  g_cSwapLowLimitMB = 64;
 const unsigned  g_cSwapUpperLimitMB = 256;
-const unsigned  g_cSwapDefaultMB = 92;
 const unsigned  g_cVmRAMLowPercentage = 10;
 const unsigned  g_cVmRAMHighPercentage = 90;
+const unsigned  g_cVmRAMDefaultPercentage = 33;
 
 /// It's pixels for double click recognitions.
 /// On my PPC 40 ones were returned by GetSystemMetrics(SM_CXDOUBLECLK) and it's unacceptable.

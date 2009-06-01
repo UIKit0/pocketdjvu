@@ -136,12 +136,12 @@ struct GPixel
 
   void *operator new[] (size_t sz)
   {
-    return ::siv::vm_malloc( sz, 2 );
+    return ::siv_vm::vm_malloc( sz, 2 );
   }
 
   void operator delete[] (void * p)
   {
-    ::siv::vm_free( p, 2 );
+    ::siv_vm::vm_free( p, 2 );
   }
 };
 

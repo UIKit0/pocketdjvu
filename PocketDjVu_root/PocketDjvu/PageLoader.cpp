@@ -33,7 +33,7 @@ CPageLoader::~CPageLoader()
 {
   if ( m_pBmp )
   {
-    siv::vm_free( m_pBmp, 1 );
+    siv_vm::vm_free( m_pBmp, 1 );
   }
 }
 
@@ -142,7 +142,7 @@ bool CPageLoader::ConstructDIBbyPixmap( int width, int height, GPixmap & pixm )
   int bytesInRow = ((width*3+3)>>2)<<2;
   unsigned bitmapSize = HEADER_SIZE + bytesInRow*height;
 
-  m_pBmp = (BITMAPINFO *)siv::vm_malloc( bitmapSize, 1 );
+  m_pBmp = (BITMAPINFO *)siv_vm::vm_malloc( bitmapSize, 1 );
   ZeroMemory( m_pBmp, HEADER_SIZE );
 
   m_pBmp->bmiHeader.biSize              = sizeof BITMAPINFOHEADER;
@@ -180,7 +180,7 @@ bool CPageLoader::ConstructDIBbyBitmap( int width, int height, GBitmap & bitmap 
   int bytesInRow = ((width+3)>>2)<<2;
   unsigned bitmapSize = HEADER_SIZE + bytesInRow*height;
 
-  m_pBmp = (BITMAPINFO *)siv::vm_malloc( bitmapSize, 1 );
+  m_pBmp = (BITMAPINFO *)siv_vm::vm_malloc( bitmapSize, 1 );
   ZeroMemory( m_pBmp, HEADER_SIZE );
 
   m_pBmp->bmiHeader.biSize              = sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD)*256;
