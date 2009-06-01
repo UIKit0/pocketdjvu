@@ -3,7 +3,7 @@
 #include "./VMDlg.h"
 #include "./misc.h"
 
-CVMDlg::CVMDlg() : m_storage( HKEY_CURRENT_USER, APP_REG_PATH_VM )
+CVMDlg::CVMDlg() : m_regVmValues( HKEY_CURRENT_USER, APP_REG_PATH_VM )
 {
 }
 
@@ -13,15 +13,17 @@ CVMDlg::~CVMDlg()
 
 LRESULT CVMDlg::OnInitDialog( UINT uMsg,WPARAM wParam,LPARAM lParam,BOOL& bHandled )
 {
-    m_storage.Load();
+    m_regVmValues.Load();
     DlgResize_Init( false, false, 0 );
     DoDataExchange();
 
     m_LevelSlider.SetRange( 0, 2 );
-    m_LevelSlider.SetPos( m_storage.Level );
+    m_LevelSlider.SetPos( m_regVmValues.Level );
 
     m_spin.SetRange( g_cSwapLowLimitMB, g_cSwapUpperLimitMB );
+    
     m_ramPercent.SetRange( g_cVmRAMLowPercentage, g_cVmRAMHighPercentage );
+    m_ramPercent.SetPos( m_regVmValues.RamPercent );
 
     ToggleControlsByVmMode();
 
@@ -31,7 +33,7 @@ LRESULT CVMDlg::OnInitDialog( UINT uMsg,WPARAM wParam,LPARAM lParam,BOOL& bHandl
 void CVMDlg::ToggleControlsByVmMode()
 {
     bool bEnable = false;
-    if ( 0 == m_storage.SwapOrRam )
+    if ( 0 == m_regVmValues.SwapOrRam )
     {
         bEnable = true;
     }
@@ -55,13 +57,14 @@ int CVMDlg::OnApply()
   // PSNRET_INVALID = apply not OK, return to this page
   // PSNRET_INVALID_NOCHANGEPAGE = apply not OK, don't change focus
   int ret = DoDataExchange(TRUE) ? PSNRET_NOERROR : PSNRET_INVALID;
-
-  m_storage.Level = m_LevelSlider.GetPos();
-
   if ( PSNRET_NOERROR == ret )
   {
-    m_storage.Save();
+      m_regVmValues.Level      = m_LevelSlider.GetPos();
+      m_regVmValues.RamPercent = m_ramPercent.GetPos();
+
+      m_regVmValues.Save();
   }
+
   return ret;
 }
 
@@ -73,8 +76,8 @@ LRESULT CVMDlg::OnBrowsePath(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*
     return 0;
   }
 
-  m_storage.SwapFileName = fd.m_szFileName;
-  m_storage.SwapFileName += SWAP_NAME;
+  m_regVmValues.SwapFileName = fd.m_szFileName;
+  m_regVmValues.SwapFileName += SWAP_NAME;
 
   DoDataExchange( FALSE, IDC_SWAPFILE );
   return 0;
@@ -84,4 +87,21 @@ void CVMDlg::OnDataValidateError( UINT nCtrlID, BOOL bSave, _XData & data )
 {
   BaseEx::OnDataValidateError( nCtrlID, bSave, data );
   NotifyDataValidateError<CVMDlg>( m_hWnd, nCtrlID, bSave, data );
+}
+
+LRESULT CVMDlg::OnBnClickedSwapOrRAM(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+    switch ( wID )
+    {
+    case IDC_SWAP_FILE:
+        m_regVmValues.SwapOrRam = 0;
+        ToggleControlsByVmMode();
+    break;
+    case IDC_RAM_ONLY:
+        m_regVmValues.SwapOrRam = 1;
+        ToggleControlsByVmMode();
+    break;
+    }
+
+    return 0;
 }

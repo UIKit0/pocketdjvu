@@ -4,7 +4,7 @@
 #include "./malloc.h"
 
 #include "../PocketDjvu/misc.h"
-#include "../PocketDjvu/Values.h"
+#include "../PocketDjvu/RegVMValues.h"
 #include "../PocketDjvu/resource.h"
 
 extern "C"
@@ -20,20 +20,16 @@ extern "C"
     void*  mspace_memalign(mspace msp, size_t alignment, size_t bytes);
 };
 
-namespace siv
-{
-
-    static WTL::CString g_SwapFileName( SWAP_FILENAME );
-    static DWORD g_SizeMB = 64;
-    static DWORD g_OnlyROM = false;
+namespace siv_vm
+{    
     //---------------------------------------------------------------------------
     class CMemInit
     {
     private:
         //.........................................................................
-        explicit CMemInit( wchar_t const * szSwapFileName, bool bOnlyROM = false ) :
+        explicit CMemInit( DWORD size, wchar_t const * szSwapFileName, bool bOnlyROM ) :
         m_baseAddr()
-            , m_size(g_SizeMB*1024*1024)
+            , m_size(size)
             , m_err()
             , m_msp()
         {
@@ -162,51 +158,22 @@ namespace siv
             }
             ShowNotification( 0, szWarning, szText );
         }
-        //.........................................................................
-        static bool ReadRegValues()
+
+        static DWORD AvailVirtualMemory( CRegVMValues const & vmValues )
         {
-            ATL::CRegKey rk;
-
-            bool res = ERROR_SUCCESS == rk.Open( HKEY_CURRENT_USER, APP_REG_PATH_VM );
-            if ( !res )
+            bool bOnlyRom = CRegVMValues::USE_RAM_ONLY == vmValues.SwapOrRam;
+            if ( !bOnlyRom )
             {
-                return false;
+                return vmValues.SizeMB*1024*1024;
             }
 
-            g_SizeMB = 0;
-            res = (ERROR_SUCCESS == rk.QueryDWORDValue( L"SizeMB", g_SizeMB )) && g_SizeMB;
-            if ( !res || g_SizeMB < g_cSwapLowLimitMB || g_cSwapUpperLimitMB < g_SizeMB )
-            {
-                return false;
-            }
-
-
-            ULONG nChars = MAX_PATH;
-            res = 
-                ERROR_SUCCESS == rk.QueryStringValue( L"SwapFileName", 
-                g_SwapFileName.GetBufferSetLength(nChars),
-                &nChars );
-            g_SwapFileName.ReleaseBuffer();
-            if ( !res )
-            {
-                return false;
-            }            
-
-            DWORD l=0;
-            res = (ERROR_SUCCESS == rk.QueryDWORDValue( L"Level", l )) && l;
-            m_level = l;
-
-            g_OnlyROM = false;
-            res = (ERROR_SUCCESS == rk.QueryDWORDValue( L"OnlyROM", g_OnlyROM )) && g_OnlyROM;
-            if ( !res  )
-            {
-                return false;
-            }
-
-            return res;
+            MEMORYSTATUS ms = {0};
+            ms.dwLength = sizeof ms;
+            GlobalMemoryStatus( &ms );
+            return DWORD(ms.dwAvailPhys * float(vmValues.RamPercent) / 100);
         }
 
-    public:
+    public:        
         //.........................................................................
         static CMemInit * GetInstance()
         {
@@ -216,9 +183,17 @@ namespace siv
                 if ( !m_bInited )
                 {
                     m_bInited = true;
-                    if ( ReadRegValues() )
+                    
+                    CRegVMValues vmValues( HKEY_CURRENT_USER, APP_REG_PATH_VM );
+                    if ( ERROR_SUCCESS == vmValues.Load() )
                     {
-                        m_instance = ::new( m_space ) CMemInit( g_SwapFileName, !!g_OnlyROM );
+                        DWORD memSize = AvailVirtualMemory( vmValues );
+
+                        m_instance = ::new( m_space )
+                            CMemInit( memSize,
+                                      vmValues.SwapFileName,
+                                      CRegVMValues::USE_RAM_ONLY == vmValues.SwapOrRam );
+
                         if ( !m_instance->IsValid() )
                         {
                             DWORD err = m_instance->GetLastError();

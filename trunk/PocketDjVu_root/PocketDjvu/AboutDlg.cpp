@@ -36,7 +36,6 @@ LRESULT CAboutDlg::OnInitDialog( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
   if ( siWnd.IsWindow() )
   {
     WTL::CString s;
-    PROCESSOR_ARCHITECTURE_ARM;
     s.Format( L"TotalPhys : %d\r\nAvailPhys : %d\r\nTotalVirtual : %d\r\nAvailVirtual : %d\r\n",
               int(ms.dwTotalPhys),
               int(ms.dwAvailPhys),
