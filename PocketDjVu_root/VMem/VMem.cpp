@@ -187,6 +187,8 @@ namespace siv_vm
                     CRegVMValues vmValues( HKEY_CURRENT_USER, APP_REG_PATH_VM );
                     if ( ERROR_SUCCESS == vmValues.Load() )
                     {
+                        m_level = vmValues.Level;
+
                         DWORD memSize = AvailVirtualMemory( vmValues );
 
                         m_instance = ::new( m_space )
