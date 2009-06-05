@@ -187,7 +187,7 @@ LRESULT CDjVuToolBar::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
     {
       HFONT olfF = dc.SelectFont( f );
       int oldBkMode = dc.SetBkMode( TRANSPARENT );
-      COLORREF oldCol = dc.SetTextColor( ::GetSysColor(COLOR_BTNTEXT) );
+      COLORREF oldCol = dc.SetTextColor( ::GetSysColor(COLOR_MENUTEXT) );
       
       dc.DrawTextW( str, -1, &r, DT_LEFT|DT_TOP|DT_NOPREFIX|DT_WORDBREAK );
       

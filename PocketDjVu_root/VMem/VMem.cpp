@@ -189,19 +189,33 @@ namespace siv_vm
                     {
                         m_level = vmValues.Level;
 
-                        DWORD memSize = AvailVirtualMemory( vmValues );
+                        int memSize = AvailVirtualMemory( vmValues );
+                        DWORD err = 0;
+                        bool bOnlyROM = CRegVMValues::USE_RAM_ONLY == vmValues.SwapOrRam;
 
-                        m_instance = ::new( m_space )
-                            CMemInit( memSize,
-                                      vmValues.SwapFileName,
-                                      CRegVMValues::USE_RAM_ONLY == vmValues.SwapOrRam );
-
-                        if ( !m_instance->IsValid() )
+                        while ( g_cSwapLowLimitMB*1024*1024 < memSize )
                         {
-                            DWORD err = m_instance->GetLastError();
-                            m_instance->~CMemInit();
-                            m_instance = 0;
+                            m_instance = ::new( m_space )
+                                CMemInit( memSize,
+                                          vmValues.SwapFileName,
+                                          bOnlyROM );
 
+                            if ( m_instance->IsValid() )
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                err = m_instance->GetLastError();
+                                m_instance->~CMemInit();
+                                m_instance = 0;
+                                memSize -= memSize/4;
+                            }
+                        }
+
+                        if ( err && !bOnlyROM &&
+                             (!m_instance || !m_instance->IsValid()) )
+                        {
                             ShowWarning( err );
                         }
                     }          

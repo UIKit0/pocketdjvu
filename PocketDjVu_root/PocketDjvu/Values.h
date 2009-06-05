@@ -25,11 +25,11 @@ const int       g_cCacheMax = 1; // Preserved invisible pages in cache.
 
 static wchar_t const * SWAP_FILENAME = L"\\SD Card\\file.swp";
 static wchar_t const * SWAP_NAME     = L"\\file.swp";
-const unsigned  g_cSwapLowLimitMB = 64;
+const unsigned  g_cSwapLowLimitMB = 33;
 const unsigned  g_cSwapUpperLimitMB = 256;
-const unsigned  g_cVmRAMLowPercentage = 10;
+const unsigned  g_cVmRAMLowPercentage = 50;
 const unsigned  g_cVmRAMHighPercentage = 90;
-const unsigned  g_cVmRAMDefaultPercentage = 33;
+const unsigned  g_cVmRAMDefaultPercentage = 70;
 
 /// It's pixels for double click recognitions.
 /// On my PPC 40 ones were returned by GetSystemMetrics(SM_CXDOUBLECLK) and it's unacceptable.
