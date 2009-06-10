@@ -27,9 +27,9 @@ namespace siv_vm
     {
     private:
         //.........................................................................
-        explicit CMemInit( DWORD size, wchar_t const * szSwapFileName, bool bOnlyROM ) :
+        CMemInit( DWORD sizeMB, wchar_t const * szSwapFileName, bool bOnlyROM ) :
         m_baseAddr()
-            , m_size(size)
+            , m_size(sizeMB*1024*1024)
             , m_err()
             , m_msp()
         {
@@ -51,16 +51,17 @@ namespace siv_vm
                                  FILE_ATTRIBUTE_NORMAL|FILE_ATTRIBUTE_TEMPORARY|
                                     FILE_FLAG_NO_BUFFERING|FILE_FLAG_RANDOM_ACCESS,
                                  NULL );
+                m_err = ::GetLastError();
                 if ( INVALID_HANDLE_VALUE == hF )
                 {
-                    m_err = ::GetLastError();
                     return;
                 }
 
                 if ( OPEN_EXISTING == dwCreateDisposition )
                 {
                     SetFilePointer( hF, m_size, NULL, FILE_BEGIN );
-                    if( NO_ERROR == ::GetLastError() )
+                    m_err = ::GetLastError();
+                    if( NO_ERROR == m_err )
                     {
                         if ( !SetEndOfFile( hF ) )
                         {
@@ -72,30 +73,25 @@ namespace siv_vm
                 }
             }
 
-            HANDLE hFM = CreateFileMapping( hF, NULL, PAGE_READWRITE, 0, m_size, NULL );
-            if ( !hFM )
-            {
-                m_err = ::GetLastError();
-                if ( INVALID_HANDLE_VALUE != hF )
-                {
-                    CloseHandle( hF );
-                }
-                return;
-            }
-
+            HANDLE hFM = CreateFileMapping( hF, NULL, PAGE_READWRITE|SEC_COMMIT, 0, m_size, NULL );
+            m_err = ::GetLastError();
             if ( INVALID_HANDLE_VALUE != hF )
             {
                 CloseHandle( hF );
             }
+            if ( !hFM )
+            {
+                return;
+            }
 
             m_baseAddr = MapViewOfFile( hFM, FILE_MAP_WRITE, 0, 0, m_size );
-            if ( !m_baseAddr )
-            {
-                m_err = ::GetLastError();
-            }
+            m_err = ::GetLastError();
             CloseHandle( hFM );
 
-            m_msp = create_mspace_with_base( m_baseAddr, m_size, true );
+            if ( m_baseAddr )
+            {
+                m_msp = create_mspace_with_base( m_baseAddr, m_size, true );
+            }
         }
         //.........................................................................
         ~CMemInit()
@@ -159,18 +155,28 @@ namespace siv_vm
             ShowNotification( 0, szWarning, szText );
         }
 
-        static DWORD AvailVirtualMemory( CRegVMValues const & vmValues )
+        static DWORD AvailVirtualMemoryMB( CRegVMValues const & vmValues )
         {
             bool bOnlyRom = CRegVMValues::USE_RAM_ONLY == vmValues.SwapOrRam;
             if ( !bOnlyRom )
             {
-                return vmValues.SizeMB*1024*1024;
+                return vmValues.SizeMB;
             }
 
             MEMORYSTATUS ms = {0};
             ms.dwLength = sizeof ms;
             GlobalMemoryStatus( &ms );
-            return DWORD(ms.dwAvailPhys * float(vmValues.RamPercent) / 100);
+            DWORD sz = DWORD(float(vmValues.RamPercent) * ms.dwAvailPhys / 100);
+
+            SYSTEM_INFO sysinfo = {0};
+            GetSystemInfo( &sysinfo );
+            if ( sysinfo.dwAllocationGranularity )
+            {
+                sz /= sysinfo.dwAllocationGranularity;
+                sz *= sysinfo.dwAllocationGranularity;
+            }
+            sz >>= 20; // return size in MB
+            return sz;
         }
 
     public:        
@@ -182,21 +188,19 @@ namespace siv_vm
                 ATL::CCritSecLock lock( m_cs );
                 if ( !m_bInited )
                 {
-                    m_bInited = true;
-                    
                     CRegVMValues vmValues( HKEY_CURRENT_USER, APP_REG_PATH_VM );
                     if ( ERROR_SUCCESS == vmValues.Load() )
                     {
                         m_level = vmValues.Level;
 
-                        int memSize = AvailVirtualMemory( vmValues );
+                        int memSizeMB = AvailVirtualMemoryMB( vmValues );
                         DWORD err = 0;
                         bool bOnlyROM = CRegVMValues::USE_RAM_ONLY == vmValues.SwapOrRam;
 
-                        while ( g_cSwapLowLimitMB*1024*1024 < memSize )
+                        while ( g_cSwapLowLimitMB < memSizeMB )
                         {
                             m_instance = ::new( m_space )
-                                CMemInit( memSize,
+                                CMemInit( memSizeMB,
                                           vmValues.SwapFileName,
                                           bOnlyROM );
 
@@ -209,7 +213,7 @@ namespace siv_vm
                                 err = m_instance->GetLastError();
                                 m_instance->~CMemInit();
                                 m_instance = 0;
-                                memSize -= memSize/4;
+                                memSizeMB -= memSizeMB/4;
                             }
                         }
 
@@ -218,7 +222,8 @@ namespace siv_vm
                         {
                             ShowWarning( err );
                         }
-                    }          
+                    }
+                    m_bInited = true;
                 }
             }
             return m_instance;
