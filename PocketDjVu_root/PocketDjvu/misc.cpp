@@ -193,9 +193,10 @@ HWND FindChildWndByClassName( HWND hWndParent, wchar_t const * pClassName, bool 
 }
 //------------------------------------------------------------------------------
 bool IsVGA()
-{
-  bool bVGA = max( GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN) ) > 320;
-  return bVGA;
+{    
+    bool bVGAx = max( GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN) ) > 320;
+    bool bVGAy = min( GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN) ) > 240;
+    return bVGAx && bVGAy;
 }
 //------------------------------------------------------------------------------
 bool IsPortrait()
