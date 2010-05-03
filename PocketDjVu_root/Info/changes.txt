@@ -10,6 +10,7 @@ v.0.9.6.3
     "Swap file" is not recommended mode.
 # - Toolbar distortion on machines with resolution 240x400 (i.e. Samsung WiTu) is fixed.
 + - "Parrot" mode.
++ - "Show tray icon" setting was added.
 
 v.0.9.5
 =================
