@@ -3,14 +3,13 @@
 *  - modified
 #  - fixed
 
-v.0.9.6
+v.0.9.6.3
 =================
+# - VM memory bugs are fixed.
++ - New "RAM Only" VM mode is introduced for machines with a large amount of RAM, like HTC Touch HD.
+    "Swap file" is not recommended mode.
+# - Toolbar distortion on machines with resolution 240x400 (i.e. Samsung WiTu) is fixed.
 + - "Parrot" mode.
-+ - "Browse" settings dialog (in progress).
-+ - WTL 8.0 final
-+ - margin retention (in progress).
-+ - new file dialogs (in progress).
-# - VM memory bugs.
 
 v.0.9.5
 =================

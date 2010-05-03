@@ -18,6 +18,20 @@
         </image>
 
       <item>
+        <title>The PocketDjVu 0.9.6.3 is released.</title>
+        <link>http://code.google.com/p/pocketdjvu/downloads/list</link>
+        <guid isPermaLink="false">{AD5E5266-7A90-4e39-A7D5-DEAD3C7AA7F7}</guid>
+        <pubDate>Mon, 03 May 2010 12:54:55 +0200</pubDate>
+        <description>
+          The changes made in 0.9.6.3 version you can find
+          <![CDATA[          
+          <a href="http://pocketdjvu.googlecode.com/svn/tags/PocketDjVu_root_v.0.9.6.3/Info/changes.txt">here</a>
+          ]]>
+          Basically this is bug fix release with few changes.
+        </description>
+      </item>
+
+      <item>
         <title>The PocketDjVu 0.9.5.0 is released.</title>
         <link>http://code.google.com/p/pocketdjvu/downloads/list</link>
         <guid isPermaLink="false">{3911EBC8-10FB-4c7c-B942-FDD1E1A29F57}</guid>

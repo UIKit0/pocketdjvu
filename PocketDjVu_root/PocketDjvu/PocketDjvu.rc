@@ -168,7 +168,7 @@ FONT 8, "MS Sans Serif"
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,2,2,20,20
     LTEXT           "PocketDjVu v.",IDC_STATIC_VER,35,7,70,8,SS_NOPREFIX
-    LTEXT           "Copyright © 2007-09 Igor.Solovyov@gmail.com",IDC_STATIC_CR,2,25,142,8
+    LTEXT           "Copyright © 2007-10 Igor.Solovyov@gmail.com",IDC_STATIC_CR,2,25,142,8
     LTEXT           "This program is licensed under GNU GPL version 2, or above",IDC_STATIC_LIC,2,48,142,18
     EDITTEXT        IDC_INFO,2,69,142,37,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | NOT WS_BORDER | WS_VSCROLL,WS_EX_STATICEDGE
     LTEXT           "http://Igor.Solovyov.googlepages.com",IDC_HOMEPAGE,2,37,142,8
@@ -360,8 +360,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,9,6,2
- PRODUCTVERSION 0,9,6,2
+ FILEVERSION 0,9,6,3
+ PRODUCTVERSION 0,9,6,3
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x21L
@@ -378,13 +378,13 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Igor Solovyov"
             VALUE "FileDescription", "PocketDjvu Module"
-            VALUE "FileVersion", "0, 9, 6, 2"
+            VALUE "FileVersion", "0, 9, 6, 3"
             VALUE "InternalName", "PocketDjvu"
-            VALUE "LegalCopyright", "Copyright © 2007-09, Igor Solovyov"
+            VALUE "LegalCopyright", "Copyright © 2007-10, Igor Solovyov"
             VALUE "OriginalFilename", "PocketDjvu.exe"
             VALUE "ProductName", "PocketDjvu Module"
-            VALUE "ProductVersion", "0, 9, 6, 2"
-            VALUE "SpecialBuild", "090605"
+            VALUE "ProductVersion", "0, 9, 6, 3"
+            VALUE "SpecialBuild", "100503"
         END
     END
     BLOCK "VarFileInfo"
